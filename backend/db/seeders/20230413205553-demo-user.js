@@ -18,19 +18,33 @@ module.exports = {
         hashedPassword: bcrypt.hashSync('password')
       },
       {
-        firstName: 'Fake',
-        lastName: 'Usuario',
-        email: 'user1@user.io',
-        username: 'FakeUser1',
+        firstName: 'Homer',
+        lastName: 'Simpson',
+        email: 'cartoon@cartoon.io',
+        username: 'AngryDad',
         hashedPassword: bcrypt.hashSync('password2')
       },
       {
-        firstName: 'Falso',
-        lastName: 'Usuario-Juarez',
-        email: 'user2@user.io',
-        username: 'FakeUser2',
+        firstName: 'Tego',
+        lastName: 'Calderon',
+        email: 'afro@afro.io',
+        username: 'PuroPerreo',
         hashedPassword: bcrypt.hashSync('password3')
-      }
+      },
+      {
+        firstName: 'Spider',
+        lastName: 'Man',
+        email: 'spider@spider.io',
+        username: 'Spiderman',
+        hashedPassword: bcrypt.hashSync('password4')
+      },
+      {
+        firstName: 'Peter',
+        lastName: 'Parker',
+        email: 'peter@peter.io',
+        username: 'PumpkinEater',
+        hashedPassword: bcrypt.hashSync('password5')
+      },
     ], {});
   },
 
@@ -38,7 +52,7 @@ module.exports = {
     options.tableName = 'Users';
     const Op = Sequelize.Op;
     return queryInterface.bulkDelete(options, {
-      username: { [Op.in]: ['Demo-lition', 'FakeUser1', 'FakeUser2'] }
+      username: { [Op.in]: ['Demo-lition', 'AngryDad', 'PuroPerreo', 'Spiderman', 'PumpkinEater'] }
     }, {});
   }
 };
