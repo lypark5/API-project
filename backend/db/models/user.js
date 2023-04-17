@@ -10,6 +10,17 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      User.hasMany(models.Spot, {foreignKey: 'ownerId'});       // 1 user has many spots
+      User.belongsToMany(models.Spot, {                                
+        through: models.Booking,                                // through is joint, many to many
+        foreignKey: 'userId',
+        otherKey: 'spotId'
+      }); 
+      User.belongsToMany(models.Spot, {                                
+        through: models.Review,                                // through is joint, many to many
+        foreignKey: 'userId',
+        otherKey: 'spotId'
+      });     
     }
   }
   User.init({
@@ -33,19 +44,19 @@ module.exports = (sequelize, DataTypes) => {
         }
       }
     },
+    hashedPassword: {
+      type: DataTypes.STRING.BINARY,
+      allowNull: false,
+      validate: {
+        len: [60, 60]
+      }
+    },
     email: {
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
         len: [3, 256],
         isEmail: true
-      }
-    },
-    hashedPassword: {
-      type: DataTypes.STRING.BINARY,
-      allowNull: false,
-      validate: {
-        len: [60, 60]
       }
     }
   }, {
