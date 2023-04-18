@@ -7,7 +7,7 @@ if (process.env.NODE_ENV === 'production') {
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    options.tableName = 'ReviewImage';
+    options.tableName = 'ReviewImages';
     await queryInterface.bulkInsert(options, [
       { 
         reviewId: 1,
