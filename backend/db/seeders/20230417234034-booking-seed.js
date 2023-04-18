@@ -1,8 +1,5 @@
 'use strict';
 
-const { Booking, User, Spot } = require('../models');
-// need to modify joint tables
-
 let options = {};
 if (process.env.NODE_ENV === 'production') {
   options.schema = process.env.SCHEMA;  // define your schema in options object
