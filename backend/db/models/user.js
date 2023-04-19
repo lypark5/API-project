@@ -10,17 +10,9 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      User.hasMany(models.Spot, {foreignKey: 'ownerId'});       // 1 user has many spots
-      User.belongsToMany(models.Spot, {                                
-        through: models.Booking,                                // through is joint, many to many
-        foreignKey: 'userId',
-        otherKey: 'spotId'
-      }); 
-      User.belongsToMany(models.Spot, {                                
-        through: models.Review,                                // through is joint, many to many
-        foreignKey: 'userId',
-        otherKey: 'spotId'
-      });     
+      User.hasMany(models.Spot, {foreignKey: 'ownerId'});    // 1 user owns many spots.
+      User.hasMany(models.Booking, {foreignKey: 'userId'});  // 1 user reserves many bookings.
+      User.hasMany(models.Reviews, {foreignKey: 'userId'});  // 1 user posts many reviews.
     }
   }
   User.init({
