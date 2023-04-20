@@ -32,7 +32,7 @@ const setTokenCookie = (res, user) => {
   return token;
 };
 
-const restoreUser = (req, res, next) => {
+const restoreUser = (req, res, next) => {       // checks if u're logged in, puts user data on req object
   // token parsed from cookies
   const { token } = req.cookies;
   req.user = null;
@@ -63,7 +63,7 @@ const restoreUser = (req, res, next) => {
 };
 
 // If there is no current user, return an error
-const requireAuth = function (req, _res, next) {
+const requireAuth = function (req, _res, next) {      // blocks user if not logged in, with error.
   if (req.user) return next();
 
   const err = new Error('Authentication required');
