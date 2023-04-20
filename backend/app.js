@@ -7,6 +7,7 @@ const helmet = require('helmet');
 const cookieParser = require('cookie-parser');
 
 const routes = require('./routes');
+const spots = require('./routes/api/spots');    // import spots router
 
 const { environment } = require('./config');
 const isProduction = environment === 'production';
@@ -18,6 +19,8 @@ const app = express();
 app.use(morgan('dev'));
 app.use(cookieParser());
 app.use(express.json());
+
+app.use('/api/spots', spots);     // tell ur app.js to use spots router
 
 // Security Middleware
 if (!isProduction) {
