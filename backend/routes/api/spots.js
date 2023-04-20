@@ -7,17 +7,10 @@ const { Spot, User, Review, SpotImage, sequelize } = require('../../db/models');
 // const { Op } = require('sequelize');
 const { requireAuth } = require('../../utils/auth');
 
-// List of spots
+// GET ALL SPOTS ****************
 router.get('/', async (req, res, next) => {
   const spots = await Spot.findAll({      // for every findAll, you need to iterate thru each one to json it
-    include: [
-      {
-        model: Review
-      },
-      {
-        model: SpotImage
-      }
-    ]
+    include: [ Review, SpotImage ]        // can write the models in 1 array.
   });
   let spotsList = [];
   for (let spot of spots) {
@@ -44,7 +37,7 @@ router.get('/', async (req, res, next) => {
     let count = 0;
     for (let review of spotObj.Reviews) {
       sum += review.stars;
-      count++
+      count++;
     }
     let avg = sum / count;
     spotObj.avgRating = avg;
@@ -72,5 +65,71 @@ router.get('/', async (req, res, next) => {
 
   res.json(spotsList);
 });
+
+
+// SPOT BY ID **********
+router.get('/:spotId', async (req, res, next) => {
+  let spotById = await Spot.findByPk(req.params.spotId, {
+      include: [ 
+        {
+          model: Review
+        }, 
+        {
+          model: SpotImage,
+          attributes: [ 'id', 'url', 'preview' ] 
+        }, 
+        {
+          model: User,
+          as: 'Owner',
+          attributes: [ 'id', 'firstName', 'lastName' ]
+        }
+      ]    
+
+  });    // this returns a regular spot, need to add numReviews, avgStarRating,SpotImages(id,url,preview),Owner(id,firstName,lastName)
+
+  // make spotById obj workable by making it json'ed.
+  let jsonedSpotById = spotById.toJSON();   
+
+  // numReviews
+  jsonedSpotById.numReviews = jsonedSpotById.Reviews.length
+ 
+  // avgRating
+  let sum = 0;
+  let count = 0;
+  for (let review of jsonedSpotById.Reviews) {
+    sum += review.stars;
+    count++;
+  }
+  let avg = sum / count;
+  jsonedSpotById.avgStarRating = avg;
+  if (!jsonedSpotById.avgStarRating) {
+    jsonedSpotById.avgStarRating = 'no reviews yet'
+  }
+
+  //////////SpotImages only necessary attributes//////////
+  // const newSpotImagesArr = [];
+  // jsonedSpotById.SpotImages.forEach(obj => {
+  //   let newObj = {};
+
+  //   newObj.id = obj.id
+  //   newObj.url = obj.url
+  //   newObj.preview = obj.preview
+
+  //   newSpotImagesArr.push(newObj)
+  // });
+
+  // jsonedSpotById.SpotImages = newSpotImagesArr;
+  /////////////////////////////////////////////////////
+  // rewrite this with includes
+
+
+  delete jsonedSpotById.Reviews;
+
+
+
+  res.json(jsonedSpotById);
+});
+
+
 
 module.exports = router;
