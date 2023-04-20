@@ -99,12 +99,13 @@ router.get('/:spotId', async (req, res, next) => {
 
 // CREATE A SPOT **********
 router.post('/', requireAuth, async (req, res, next) => {
-  const { user } = req;
+  const { user } = req;             // destructuring/extracting user key from req, and naming it
   // console.log(req.user);         // testing to see if req has a user attribute.
+  console.log('----------This is user in create spot', user.id)
   if (user) {
     const { address, city, state, country, lat, lng, name, description, price } = req.body;
     let createdSpot = await Spot.create({
-      ownerId: Spot.ownerId,
+      ownerId: user.id,
       address,
       city,
       state,
