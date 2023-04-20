@@ -106,28 +106,29 @@ router.get('/:spotId', async (req, res, next) => {
     jsonedSpotById.avgStarRating = 'no reviews yet'
   }
 
-  //////////SpotImages only necessary attributes//////////
-  // const newSpotImagesArr = [];
-  // jsonedSpotById.SpotImages.forEach(obj => {
-  //   let newObj = {};
-
-  //   newObj.id = obj.id
-  //   newObj.url = obj.url
-  //   newObj.preview = obj.preview
-
-  //   newSpotImagesArr.push(newObj)
-  // });
-
-  // jsonedSpotById.SpotImages = newSpotImagesArr;
-  /////////////////////////////////////////////////////
-  // rewrite this with includes
-
-
   delete jsonedSpotById.Reviews;
 
-
-
   res.json(jsonedSpotById);
+});
+
+
+
+// CREATE A SPOT **********
+router.post('/', async (req, res, next) => {
+  const { address, city, state, country, lat, lng, name, description, price} = req.body;
+  let createdSpot = await Spot.create({
+    address,
+    city,
+    state,
+    country,
+    lat,
+    lng,
+    name,
+    description,
+    price
+  });
+
+  return res.status(201).json(createdSpot);
 });
 
 
