@@ -12,7 +12,7 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
       Spot.hasMany(models.SpotImage, {foreignKey: 'spotId'});   // 1 spot has many spot images
-      Spot.belongsTo(models.User, {foreignKey: 'ownerId'});     // many spots have 1 owner
+      Spot.belongsTo(models.User, {as: 'Owner', foreignKey: 'ownerId'});     // many spots have 1 owner  // added alias to use alias in Spots router
       Spot.hasMany(models.Review, {foreignKey: 'spotId'});      // 1 spot has many reviews
     }
   }
