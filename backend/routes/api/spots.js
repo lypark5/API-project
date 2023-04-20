@@ -4,8 +4,8 @@ const router = express.Router();
 
 // Import model(s)
 const { Spot, User, Review, SpotImage } = require('../../db/models');      // include the models we'll need.
-// const { Op } = require('sequelize');
-const { requireAuth } = require('../../utils/auth');
+// const { Op } = require('sequelize');       // only need to use this if u gonna use like comparers like Op.lte later
+const { requireAuth } = require('../../utils/auth');          // import the middlewares.
 
 // GET ALL SPOTS ****************
 router.get('/', async (req, res, next) => {
@@ -14,25 +14,23 @@ router.get('/', async (req, res, next) => {
   });
   let spotsList = [];
   for (let spot of spots) {
-    spotsList.push(spot.toJSON())             // this makes each spot object json'ed.
+    spotsList.push(spot.toJSON())                 // this makes each spot object json'ed.
   }
+  // console.log(spotsList);                      // this shows the correct array response of all the big objects.
 
-  // spots.forEach(spot => {
-  //   spotsList.push(spot.toJSON())             // this makes each spot object json'ed.
-  // })
-
-
-
-  for (let spotObj of spotsList) {
-    for (let image of spotObj.SpotImages) {
-      if (image.preview) {
-        spotObj.previewImage = image.url
+  // making previewImage key for the big spotObj
+  for (let spotObj of spotsList) {                // for each json'ed spotObj,
+    for (let image of spotObj.SpotImages) {       // go thru each spotObj's image one by one.
+      if (image.preview) {                        // here we check that each image's preview returns true.
+        spotObj.previewImage = image.url;           // add previewImage key to big spotObj, make value the image's url value.
       }
     }
     if (!spotObj.previewImage) {
       spotObj.previewImage = 'no preview image found'
     }
 
+
+    // making avgRating key for big spotObj
     let sum = 0;
     let count = 0;
     for (let review of spotObj.Reviews) {
@@ -45,26 +43,12 @@ router.get('/', async (req, res, next) => {
       spotObj.avgRating = 'no reviews yet'
     }
 
-    delete spotObj.Reviews;
-    delete spotObj.SpotImages;
-
+    delete spotObj.Reviews;           // delete big model objects which we don't need any more
+    delete spotObj.SpotImages;        // delete big model objects which we don't need any more
   }
 
-
-  // console.log(spotsList);                     // this shows the correct array response of all the big objects.
-
-  // spotsList.forEach(spot => {                 // for each json'ed spot obj (called spot)
-  //   spot.SpotImages.forEach(spotimage => {      // go thru each spot's image one by one
-  //     // console.log(spotimage.preview)         // here we check that each spotimage's preview returns true or false.
-  //     if (spotimage.preview === true) {
-  //       // console.log(spotimage)             // these return every spotimage object whose preview is true.
-  //       spot.previewImage = spotimage.url
-  //     }
-  //   })
-  // })
-
-  res.json({Spots:spotsList});
-});
+  res.json({Spots:spotsList});        // res.json(spotsList) returns [{},{}],
+});                                      // this returns {"Sports": [{}, {}]}
 
 
 // SPOT BY ID **********
@@ -115,9 +99,9 @@ router.get('/:spotId', async (req, res, next) => {
 
 // CREATE A SPOT **********
 router.post('/', requireAuth, async (req, res, next) => {
-  const {user} = req;
-  // console.log(req.user);
-  if ( user ) {
+  const { user } = req;
+  // console.log(req.user);         // testing to see if req has a user attribute.
+  if (user) {
     const { address, city, state, country, lat, lng, name, description, price } = req.body;
     let createdSpot = await Spot.create({
       ownerId: Spot.ownerId,
