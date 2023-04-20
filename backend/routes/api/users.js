@@ -31,14 +31,14 @@ const validateSignup = [
     .isEmail()
     .withMessage('Username cannot be an email.'),
 ////////
-  check('firstName')
-    .exists({ checkFalsy: true })
-    .isAlpha()
-    .withMessage('Please only use the alphabet, and it must not be empty.'),
-  check('lastName')
-    .exists({ checkFalsy: true })
-    .isAlpha()
-    .withMessage('Please only use the alphabet, and it must not be empty.'),
+  // check('firstName')
+  //   .exists({ checkFalsy: true })
+  //   .isAlpha()
+  //   .withMessage('Please only use the alphabet, and it must not be empty.'),
+  // check('lastName')
+  //   .exists({ checkFalsy: true })
+  //   .isAlpha()
+  //   .withMessage('Please only use the alphabet, and it must not be empty.'),
 ///////
   check('password')
     .exists({ checkFalsy: true })
