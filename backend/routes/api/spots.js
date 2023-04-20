@@ -3,7 +3,7 @@ const express = require('express');
 const router = express.Router();
 
 // Import model(s)
-const { Spot, User, Review, SpotImage, sequelize } = require('../../db/models');      // include the models we'll need.
+const { Spot, User, Review, SpotImage } = require('../../db/models');      // include the models we'll need.
 // const { Op } = require('sequelize');
 const { requireAuth } = require('../../utils/auth');
 
@@ -63,7 +63,7 @@ router.get('/', async (req, res, next) => {
   //   })
   // })
 
-  res.json(spotsList);
+  res.json({Spots:spotsList});
 });
 
 
@@ -114,21 +114,26 @@ router.get('/:spotId', async (req, res, next) => {
 
 
 // CREATE A SPOT **********
-router.post('/', async (req, res, next) => {
-  const { address, city, state, country, lat, lng, name, description, price} = req.body;
-  let createdSpot = await Spot.create({
-    address,
-    city,
-    state,
-    country,
-    lat,
-    lng,
-    name,
-    description,
-    price
-  });
+router.post('/', requireAuth, async (req, res, next) => {
+  const {user} = req;
+  // console.log(req.user);
+  if ( user ) {
+    const { address, city, state, country, lat, lng, name, description, price } = req.body;
+    let createdSpot = await Spot.create({
+      ownerId: Spot.ownerId,
+      address,
+      city,
+      state,
+      country,
+      lat,
+      lng,
+      name,
+      description,
+      price
+    });
 
-  return res.status(201).json(createdSpot);
+    return res.status(201).json(createdSpot);
+  }
 });
 
 

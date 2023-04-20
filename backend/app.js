@@ -20,7 +20,7 @@ app.use(morgan('dev'));
 app.use(cookieParser());
 app.use(express.json());
 
-app.use('/api/spots', spots);     // tell ur app.js to use spots router
+
 
 // Security Middleware
 if (!isProduction) {
