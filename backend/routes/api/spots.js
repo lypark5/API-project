@@ -112,8 +112,9 @@ router.post('/:spotId/images', requireAuth, async (req, res, next) => {
 
   // take out createdAt, updatedAt.
   let jsoned = newSpotImg.toJSON();                 // need to json the big thing to manipulate it before sending off, REMEMBER TO CALL ON THE METHOD
-  delete jsoned.createdAt;                          // can now delete creatdAt, updatedAt.
+  delete jsoned.createdAt;                          // can now delete createdAt, updatedAt, spotId.
   delete jsoned.updatedAt;
+  delete jsoned.spotId;
 
   return res.json(jsoned);                          // send it off with the nice features.
 });
