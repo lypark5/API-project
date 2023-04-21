@@ -57,7 +57,11 @@ router.get('/current', requireAuth, async (req, res, next) => {
 
 // ADD IMG TO SPOT BY SPOT ID *******************************************************************
 // router.post('/:spotId/images', requireAuth, async (req, res, next) => {
+  // -they gonna give me url and preview in req.body
+  // -check if spot id from their param thing exists
+        // if true, create a new image (spotId, url, preview)
 
+  // 
 // })
 
 // DELETE A SPOT
@@ -65,22 +69,22 @@ router.delete('/:spotId', requireAuth, async (req, res, next) => {
   const { user } = req;             // destructuring/extracting user key from req, and naming it
   // console.log(user.id);
   const deletedSpot = await Spot.findByPk(req.params.spotId);
-  // console.log(user.id, deletedSpot.ownerId)     // user.id is the current user's id, deletedSpot.ownerId is the id of the owner of the spot property param
-  if (!deletedSpot) {
-    let err = new Error("Spot couldn't be found");
-    err.status = 404;
-    next(err);
+  // console.log(user.id, deletedSpot.ownerId)      // user.id is the current user's id, deletedSpot.ownerId is the id of the owner of the spot property param
+  if (!deletedSpot) {                               // if the target spot to be deleted doesn't exist
+    let err = new Error("Spot couldn't be found");  // make a relevant error
+    err.status = 404;                               // make error status
+    next(err);                                      // pass along error if this doesn't hit.
   }
-  if (user.id === deletedSpot.ownerId) {
-    await deletedSpot.destroy();
-      // console.log('-------- entered if block-----')
-    return res.json({
-      message: 'Successfully deleted'
+  if (user.id === deletedSpot.ownerId) {            // if the currently logged-in user's id (user.id) === the target property's owner's id,
+    await deletedSpot.destroy();                    // destroy the targeted property.
+      // console.log('-------- entered if block')                   // (testing if it enters this if block)
+    return res.json({                               // return the json'ed response:
+      message: 'Successfully deleted'               // success msg.
     });
-  } else {
-    let err = new Error('Forbidden');
-    err.status = 403;
-    next(err);
+  } else {                                          // if logged in user is diff to owner of this property
+    let err = new Error('Forbidden');               // make a new error called forbidden.
+    err.status = 403;                               // make error status
+    next(err);                                      // pass on error if this doesn't catch.
   };
 });
 
@@ -106,7 +110,7 @@ router.get('/:spotId', async (req, res, next) => {
   });    // this returns a regular spot, need to add numReviews, avgStarRating,SpotImages(id,url,preview),Owner(id,firstName,lastName)
 
   // make spotById obj workable by making it json'ed.
-  let jsonedSpotById = spotById.toJSON();   
+  let jsonedSpotById = spotById.toJSON();   // only need this when i eager load
 
   // numReviews
   jsonedSpotById.numReviews = jsonedSpotById.Reviews.length
@@ -195,6 +199,40 @@ router.post('/', requireAuth, async (req, res, next) => {
 
     return res.status(201).json(createdSpot);
   }
+});
+
+
+// EDIT A SPOT **************************************************************************
+router.put('/:spotId', requireAuth, async (req, res, next) => {
+  const { user } = req;
+  const { address, city, state, country, lat, lng, name, description, price } = req.body;
+  let editSpot = await Spot.findByPk(req.params.spotId);
+
+  
+  if (!editSpot) {                                  // if the target spot to be edited doesn't exist
+    let err = new Error("Spot couldn't be found");  // make a relevant error
+    err.status = 404;                               // make error status
+    next(err);                                      // pass along error if this doesn't hit.
+  }
+  if (user.id !== editSpot.ownerId) {               // if the currently logged-in user's id (user.id) !== the target property's owner's id,
+                                                    // if logged in user is diff to owner of this property
+    let err = new Error('Forbidden');               // make a new error called forbidden.
+    err.status = 403;                               // make error status
+    next(err);                                      // pass on error if this doesn't catch.
+  };
+
+  let errorObj = {};
+  if (!address) errorObj.address = 'Street address is required'
+  if (!city) errorObj.city = 'City is required';
+
+  if (Object.keys(errorObj).length > 0) {
+    return res.status(400).json({message: 'Bad Request', errors: errorObj})
+  }
+  ////edit meat
+  editSpot.address = address;
+  editSpot.city = city;
+  await editSpot.save();
+  return res.json(editSpot);
 });
 
 
