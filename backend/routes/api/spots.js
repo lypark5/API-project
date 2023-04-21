@@ -218,8 +218,6 @@ router.get('/', async (req, res, next) => {
 // CREATE A SPOT **************************************************************************
 router.post('/', requireAuth, async (req, res, next) => {
   const { user } = req;             // destructuring/extracting user key from req, and naming it
-  // console.log(req.user);         // testing to see if req has a user attribute.
-  // console.log('----------This is user in create spot', user.id)
   if (user) {
     const { address, city, state, country, lat, lng, name, description, price } = req.body;
     let createdSpot = await Spot.create({
@@ -234,6 +232,27 @@ router.post('/', requireAuth, async (req, res, next) => {
       description,
       price
     });
+
+    // checking for errors and collecting them
+    let errorObj = {};                                                   // this where all the real errors will be held and returned
+    if (!address) errorObj.address = 'Street address is required';       // if address in req body is empty, add address key to errorObj with msg value
+    if (!city) errorObj.city = 'City is required';                       // if city in req body is empty, add city key to errorObj with msg value
+    if (!state) errorObj.state = 'State is required';                    // if state in req body is empty, add state key to errorObj with msg value
+    if (!country) errorObj.country = 'Country is required';              // if country in req body is empty, add country key to errorObj with msg value
+    if (typeof lat !== 'number' || (lat < -90 || lat > 90)) {            // if latitude in req body is invalid, add lat key to errorObj with msg value
+      errorObj.lat = 'Latitude is not valid';  
+    };                  
+    if (typeof lng !== 'number' || (lng < -180 || lng > 180)) {             // if longitude in req body is invalid, add lng key to errorObj with msg value
+      errorObj.lng = 'Longitude is not valid';
+    };                   
+    if (name.length >= 50) errorObj.name = 'Name must be less than 50 characters';   // if name in req body is too long, add name key to errorObj with msg value
+    if (!description) errorObj.description = 'Description is required';  // if description in req body is empty, add description key to errorObj with msg value
+    if (!price) errorObj.price = 'Price per day is required';            // if price in req body is empty, add price key to errorObj with msg value
+
+    // return an error with the error obj if sth is invalid
+    if (Object.keys(errorObj).length) {                                              // if the array of all the keys inside errorObj has length > 0
+      return res.status(400).json({message: 'Bad Request', errors: errorObj})        // status code 400, plus "message: Bad Request", plus "errors:" plus the errorObj.
+    }
 
     return res.status(201).json(createdSpot);
   }
@@ -276,7 +295,7 @@ router.put('/:spotId', requireAuth, async (req, res, next) => {                 
   if (!price) errorObj.price = 'Price per day is required';            // if price in req body is empty, add price key to errorObj with msg value
 
   // return an error with the error obj if sth is invalid
-  if (Object.keys(errorObj).length > 0) {                                          // if the array of all the keys inside errorObj has length > 0
+  if (Object.keys(errorObj).length) {                                              // if the array of all the keys inside errorObj has length > 0
     return res.status(400).json({message: 'Bad Request', errors: errorObj})        // status code 400, plus "message: Bad Request", plus "errors:" plus the errorObj.
   }
 
