@@ -34,7 +34,6 @@ router.get('/current', requireAuth, async (req, res, next) => {
       spotObj.previewImage = 'no preview image found'
     }
 
-
     // making avgRating key for big spotObj
     let sum = 0;
     let count = 0;
@@ -54,6 +53,38 @@ router.get('/current', requireAuth, async (req, res, next) => {
 
   res.json({Spots:spotsList});        // res.json(spotsList) returns [{},{}],
 });                                      // this returns {"Sports": [{}, {}]}
+
+
+// ADD IMG TO SPOT BY SPOT ID *******************************************************************
+// router.post('/:spotId/images', requireAuth, async (req, res, next) => {
+
+// })
+
+// DELETE A SPOT
+router.delete('/:spotId', requireAuth, async (req, res, next) => {
+  // if spot id belongs to current user
+      // delete spot  where
+      // res.send "successfully deleted"
+  const { user } = req;             // destructuring/extracting user key from req, and naming it
+  // console.log(user.id);
+  // if ()
+  const deletedSpot = await Spot.findByPk(req.params.spotId);
+  console.log(user.id, deletedSpot.ownerId)
+  if (user.id === deletedSpot.ownerId) {
+  await deletedSpot.destroy();
+    // console.log('-------- entered if block-----')
+    return res.json({
+      message: 'Successfully deleted'
+    });
+  } else {
+    let err = new Error('Forbidden');
+    err.status = 403;
+    next(err);
+  }
+
+    // if spot id does not exist,
+    // return res. send spot 
+});
 
 
 // SPOT BY ID **************************************************************************
