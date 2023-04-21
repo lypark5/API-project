@@ -138,7 +138,14 @@ router.get('/:spotId', async (req, res, next) => {
         }
       ]    
 
-  });    // this returns a regular spot, need to add numReviews, avgStarRating,SpotImages(id,url,preview),Owner(id,firstName,lastName)
+  }); // this returns a regular spot, need to add numReviews, avgStarRating,SpotImages(id,url,preview),Owner(id,firstName,lastName)
+
+  // catch error if spot doesn't exist  
+  if (!spotById) {                                // if the target spot to be edited doesn't exist
+    let err = new Error("Spot couldn't be found");  // make a relevant error
+    err.status = 404;                               // make error status
+    next(err);                                      // pass along error if this doesn't hit.
+  }
 
   // make spotById obj workable by making it json'ed.
   let jsonedSpotById = spotById.toJSON();   // only need this when i eager load
