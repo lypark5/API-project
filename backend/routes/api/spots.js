@@ -11,9 +11,9 @@ const { requireAuth } = require('../../utils/auth');          // import the midd
 
 // GET ALL SPOTS OWNED BY CURRENT LOGGED IN USER************************************************
 router.get('/current', requireAuth, async (req, res, next) => {
-  const { user } = req;             // destructuring/extracting user key from req, and naming it
-  // console.log('----------', user.id);  // to test if this endpoint is hitting.
+  const { user } = req;                   // destructuring/extracting user key from req, and naming it
 
+  // finding all the spots owned by current
   const spots = await Spot.findAll({      // for every findAll, you need to iterate thru each one to json it
     where: {ownerId: user.id},            // all spots whose ownerId matches logged-in id
     include: [ Review, SpotImage ]        // can write the models in 1 array.
@@ -206,7 +206,7 @@ router.post('/:spotId/images', requireAuth, async (req, res, next) => {
 });
 
 
-// SPOT BY ID **************************************************************************
+// GET SPOT BY ID **************************************************************************
 router.get('/:spotId', async (req, res, next) => {
   let spotById = await Spot.findByPk(req.params.spotId, {
       include: [ 
