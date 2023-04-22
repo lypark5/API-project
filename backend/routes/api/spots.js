@@ -192,6 +192,108 @@ router.post('/:spotId/reviews', requireAuth, async (req, res, next) => {
 
 
 
+
+
+
+
+
+// CREATE A BOOKING FOR A SPOT BY SPOT ID **************************************************************************
+router.post('/:spotId/bookings', requireAuth, async (req, res, next) => {
+  const { user } = req;                               // destructuring/extracting u
+  const { startDate, endDate } = req.body;                 // pull variables i need from req.body
+
+  // grab house 4
+  let spotById = await Spot.findByPk(req.params.spotId);  // get the specific spot from id.
+
+  // find all bookings of this property
+  let currentBookings = await Booking.findAll({
+    where: {spotId: spotById.id} 
+  });
+
+  // now json the findAll bookings array:
+  let bookingsList = [];
+  for (let booking of currentBookings) {
+    bookingsList.push(booking.toJSON())               // this makes each booking object json'ed.
+  };
+
+  if (user) {                                         // if someone is logged in,
+    // check if this spot id spot exists
+    if (!spotById) {                                  // if the target spot to be deleted doesn't exist
+      let err = new Error("Spot couldn't be found");  // make a relevant error
+      err.status = 404;                               // make error status
+      next(err);                                      // pass along error if this doesn't hit.
+    };
+
+    // error for if you own this spot, can't book it
+    if (user.id === spotById.ownerId) {               // if the currently logged-in user(user.id) is not the same as the target property's owner (addPicSpot.ownerId),
+      let err = new Error('Forbidden');               // make a new error called forbidden.
+      err.status = 403;                               // make error status
+      next(err);                                      // pass on error if this doesn't catch.
+    };
+
+    // error for past dates
+    if ((Date.parse(startDate) < Date.now())) {                   // if the currently logged-in user(user.id) is not the same as the target property's owner (addPicSpot.ownerId),
+      let err = new Error("Past bookings can't be modified");     // make a relevant error
+      err.status = 403;                                           // make error status
+      next(err);                                                  // pass along error if this doesn't hit.
+    };
+
+    // checking for errors and collecting them
+    let errorObj = {};                                                              // this where all the real errors will be held and returned
+    if (Date.parse(startDate) >= Date.parse(endDate)) {                             // if stars is not a num, not between 1 n 5,
+      errorObj.endDate = 'endDate cannot be on or before startDate';                // add stars key to error obj w/ msg value
+    }
+
+    if (Object.keys(errorObj).length) {                                             // if the array of all the keys inside errorObj has length > 0
+      return res.status(400).json({message: 'Bad Request', errors: errorObj})       // status code 400, plus "message: Bad Request", plus "errors:" plus the errorObj.
+    }
+
+
+
+    ///////////////////////
+    // overlapping dates error
+    for (let currentBooking of bookingsList) {
+      if (
+  const { startDate, endDate } = req.body; 
+  vs
+  (Date.parse(startDate) > Date.parse(currentBooking.startDate) && )
+
+
+
+      ) {
+        errorObj.startDate = 'Start date conflicts with an existing booking'          // add startDate key to error obj w/ msg value
+        errorObj.endDate = 'End Date conflicts with an existing booking';                                       
+      }
+
+      if (Object.keys(errorObj).length) {                                             // if the array of all the keys inside errorObj has length > 0
+        return res.status(403).json({message: 'Sorry, this spot is already booked for the specified dates', errors: errorObj})  // status code 400, plus "message: Bad Request", plus "errors:" plus the errorObj.
+      }
+    }
+    ///////////////////
+
+
+    
+
+    // create a new spotImg 
+    let newBooking = await Booking.create({         // variable for new img created
+      spotId: spotById.id,
+      userId: spotById.ownerId,
+      startDate,
+      endDate
+    });  
+
+    return res.json(newBooking);
+  }
+});
+
+
+
+
+
+
+
+
+
 // DELETE A SPOT******************************************************************************************
 router.delete('/:spotId', requireAuth, async (req, res, next) => {
   const { user } = req;                             // destructuring/extracting user key from req, and naming it
