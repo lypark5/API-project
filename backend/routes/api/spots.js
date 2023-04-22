@@ -85,8 +85,63 @@ router.get('/:spotId/reviews', async (req, res, next) => {
 
 
 
-// CREATE A REVIEW SPOT **************************************************************************
-// router.post('/', requireAuth, async (req, res, next) => {
+// CREATE A REVIEW FOR A SPOT BY SPOT ID **************************************************************************
+router.post('/:spotId/reviews', requireAuth, async (req, res, next) => {
+  const { user } = req;                               // destructuring/extracting u
+  const { review, stars } = req.body;                 // pull variables i need from req.body
+
+  if (user) {                                         // if user is logged in
+    // check if this spot id spot exists
+    const targetSpot = await Spot.findByPk(req.params.spotId);      // this is the targeted spot by spotId
+    if (!targetSpot) {                                // if the target spot to be deleted doesn't exist
+      let err = new Error("Spot couldn't be found");  // make a relevant error
+      err.status = 404;                               // make error status
+      next(err);                                      // pass along error if this doesn't hit.
+    }
+
+    // checking for errors and collecting them
+    let errorObj = {};                                              // this where all the real errors will be held and returned
+    if (!review) errorObj.review = 'Review text is required';       // if review in req body is empty, add review key to errorObj with msg value
+    if (typeof stars !== 'number' || (stars < 1 || stars > 5)) {    // if stars is not a num, not between 1 n 5,
+      errorObj.stars = 'Stars must be an integer from 1 to 5';      // add stars key to error obj w/ msg value
+    }
+
+    if (Object.keys(errorObj).length) {                                              // if the array of all the keys inside errorObj has length > 0
+      return res.status(400).json({message: 'Bad Request', errors: errorObj})        // status code 400, plus "message: Bad Request", plus "errors:" plus the errorObj.
+    }
+
+    // find all reviews of this property
+    let currentReviews = await Review.findAll({
+      where: {spotId: targetSpot.id} 
+    });
+
+    let reviewsList = [];                               // need this cuz u did findAll and need to use each one
+    for (let review of currentReviews) {                // without this it breaks
+      reviewsList.push(review.toJSON())                 // this makes each spot object json'ed.
+    }
+
+    // for each review, check if logged-in user already wrote one, throw error
+    for (let currentReview of reviewsList) {
+      if (currentReview.userId === user.id) {
+        let err = new Error("User already has a review for this spot");  // make a relevant error
+        err.status = 500;                               // make error status
+        next(err);                                      // pass along error if this doesn't hit.
+      }
+    }
+
+    // create review
+    let newReview = await Review.create({
+      userId: user.id,
+      spotId: targetSpot.id,
+      review,
+      stars
+    });
+
+    return res.json(newReview);
+  }
+});
+
+
 
 // DELETE A SPOT******************************************************************************************
 router.delete('/:spotId', requireAuth, async (req, res, next) => {
