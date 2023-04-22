@@ -142,7 +142,45 @@ router.post('/:reviewId/images', requireAuth, async (req, res, next) => {
 
 
 // EDIT A REVIEW **************************************************************************
-// router.put('/:spotId', requireAuth, async (req, res, next) => {   
+router.put('/:reviewId', requireAuth, async (req, res, next) => {  // need requireAuth cuz need logged-in guy to have power to edit.
+  const { user } = req;                                            // get user from req (the logged in user's info)
+  const { review, stars } = req.body;                              // all the variables we want to use from req body
+  let editReview = await Review.findByPk(req.params.reviewId);     // get the specific review from id.
+
+  // error for nonexistent review
+  if (!editReview) {                                  // if the target spot to be edited doesn't exist
+    let err = new Error("Review couldn't be found");  // make a relevant error
+    err.status = 404;                                 // make error status
+    next(err);                                        // pass along error if this doesn't hit.
+  }
+  // error for this current user is unauthorized to edit the post
+  if (user.id !== editReview.userId) {                // if the currently logged-in user's id (user.id) !== the target property's owner's id,
+    let err = new Error('Forbidden');                 // make a new error called forbidden.
+    err.status = 403;                                 // make error status
+    next(err);                                        // pass on error if this doesn't catch.
+  };
+
+  // checking for errors and collecting them
+  let errorObj = {};                                              // this where all the errors will be held and returned
+  if (!review) errorObj.review = 'Review text is required';       // if review in req body is empty, add review key to errorObj with msg value
+  if (typeof stars !== 'number' || (stars < 1 || stars > 5)) {    // if stars in req body is invalid, add stars key to errorObj with msg value
+    errorObj.stars = 'Stars must be an integer from 1 to 5';     
+  };
+
+  // return an error with the error obj if sth is invalid
+  if (Object.keys(errorObj).length) {                                          // if the array of all the keys inside errorObj has length > 0
+    return res.status(400).json({message: 'Bad Request', errors: errorObj})    // status code 400, plus "message: Bad Request", plus "errors:" plus the errorObj.
+  };
+
+  // if good, make the current spot's key to equal the value from the req body.
+  editReview.review = review;                                     // must be explicit with this assignment.
+  editReview.stars = stars;
+
+  // return the updated editSpot
+  await editReview.save();
+  return res.json(editReview);
+});
+
 
 
 
