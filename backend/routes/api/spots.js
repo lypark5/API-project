@@ -56,17 +56,20 @@ router.get('/current', requireAuth, async (req, res, next) => {
 
 
 
-// DELETE A SPOT
+// DELETE A SPOT******************************************************************************************
 router.delete('/:spotId', requireAuth, async (req, res, next) => {
   const { user } = req;                             // destructuring/extracting user key from req, and naming it
   // console.log(user.id);                          // user.id is the id of the logged-in user.
   const deletedSpot = await Spot.findByPk(req.params.spotId);
-  // console.log(user.id, deletedSpot.ownerId)      // user.id is the current user's id, deletedSpot.ownerId is the id of the owner of the spot property param
+
+  // check if this spot id spot exists
   if (!deletedSpot) {                               // if the target spot to be deleted doesn't exist
     let err = new Error("Spot couldn't be found");  // make a relevant error
     err.status = 404;                               // make error status
     next(err);                                      // pass along error if this doesn't hit.
   }
+
+  // match up logged-in user id to owner id in target spot
   if (user.id === deletedSpot.ownerId) {            // if the currently logged-in user's id (user.id) === the target property's owner's id,
     await deletedSpot.destroy();                    // destroy the targeted property.
       // console.log('-------- entered if block')                   // (testing if it enters this if block)

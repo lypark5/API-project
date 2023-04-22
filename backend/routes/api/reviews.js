@@ -60,4 +60,33 @@ router.get('/current', requireAuth, async (req, res, next) => {
 });                                       // this returns {"Reviews": [{}, {}]}
 
 
+
+// DELETE A REVIEW**********************************************************************
+router.delete('/:reviewId', requireAuth, async (req, res, next) => {
+  const { user } = req;                               // destructuring/extracting user key from req, and naming it
+  // console.log(user.id);                            // user.id is the id of the logged-in user.
+  const deletedReview = await Review.findByPk(req.params.reviewId);
+
+  // check if this review id review exists
+  if (!deletedReview) {                               // if the target review to be deleted doesn't exist
+    let err = new Error("Review couldn't be found");  // make a relevant error
+    err.status = 404;                                 // make error status
+    next(err);                                        // pass along error if this doesn't hit.
+  }
+
+  // match up logged-in user id to this review's author's id in target spot
+  if (user.id === deletedReview.userId) {             // if the currently logged-in user's id (user.id) === the target review's author's id,
+    await deletedReview.destroy();                    // destroy the targeted review.
+    return res.json({                                 // return the json'ed response:
+      message: 'Successfully deleted'                 // success msg.
+    });
+  } else {                                            // if logged in user is diff to author of this review
+    let err = new Error('Forbidden');                 // make a new error called forbidden.
+    err.status = 403;                                 // make error status
+    next(err);                                        // pass on error if this doesn't catch.
+  };
+});
+
+
+
 module.exports = router;
