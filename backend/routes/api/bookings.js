@@ -46,13 +46,17 @@ router.get('/current', requireAuth, async (req, res, next) => {
       spot.previewImage = 'no preview image found'    // add previewImage key, make value this msg.
     }
 
-  delete spot.description;                // get rid of anything u don't need        
-  delete spot.updatedAt;                  // remember spot is big review obj's Spot model key.
-  delete spot.createdAt; 
-  delete spot.SpotImages;                 // works plural or singular for some reason
+    delete spot.description;                // get rid of anything u don't need        
+    delete spot.updatedAt;                  // remember spot is big review obj's Spot model key.
+    delete spot.createdAt; 
+    delete spot.SpotImages;                 // works plural or singular for some reason
   }
+
   res.json({Bookings: bookingsList});     // res.json(bookingsList) returns [{},{}],
 });                                       // this returns {"Bookings": [{}, {}]}
+
+
+
 
 
 

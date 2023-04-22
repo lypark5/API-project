@@ -3,7 +3,7 @@ const express = require('express');
 const router = express.Router();
 
 // Import model(s)
-const { Spot, User, Review, SpotImage, ReviewImage } = require('../../db/models');      // include the models we'll need.
+const { Spot, User, Review, SpotImage, ReviewImage, Booking } = require('../../db/models');      // include the models we'll need.
 // const { Op } = require('sequelize');       // only need to use this if u gonna use like comparers like Op.lte later
 const { requireAuth } = require('../../utils/auth');          // import the middlewares.
 
@@ -81,6 +81,55 @@ router.get('/:spotId/reviews', async (req, res, next) => {
   }
 
   res.json({Reviews: reviewsById});
+});
+
+
+
+// GET ALL BOOKINGS BY SPOT ID **************************************************************************
+router.get('/:spotId/bookings', requireAuth, async (req, res, next) => {
+  const { user } = req;                             // destructuring/extracting user key from req, and naming it
+
+  // find all bookings for spot 4
+  let bookings = await Booking.findAll({
+    where: {
+      spotId: req.params.spotId,    
+    },
+    include: [
+      {
+        model: User,
+        attributes: [ 'id', 'firstName', 'lastName' ]
+      }
+    ]
+  });
+  // we got all the bookings of spot 4.
+
+  // gotta json everything for eager
+  let bookingsList = [];
+  for (let booking of bookings) {
+    bookingsList.push(booking.toJSON())             // this makes each spot object json'ed.
+  }
+
+  // find Spot 4 obj
+  let spotById = await Spot.findByPk(req.params.spotId);    
+
+  if (!spotById) {                                  // if the target spot to be edited doesn't exist
+    let err = new Error("Spot couldn't be found");  // make a relevant error
+    err.status = 404;                               // make error status
+    next(err);                                      // pass along error if this doesn't hit.
+  }
+
+  // for loop for every booking obj
+  for (let currentBooking of bookingsList) {
+    if (spotById.ownerId !== user.id) {             // if owner of Spot 4 is not current user,
+      delete currentBooking.User;                   // delete all this stuff
+      delete currentBooking.id;
+      delete currentBooking.userId;
+      delete currentBooking.createdAt;
+      delete currentBooking.updatedAt;
+    }
+  }
+
+  return res.json({Bookings: bookingsList});        // finally return the manipulated or unmanipulated bookings list.
 });
 
 
