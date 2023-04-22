@@ -12,6 +12,8 @@ const { requireAuth } = require('../../utils/auth');          // import the midd
 // GET ALL REVIEWS BY CURRENT LOGGED IN USER************************************************
 router.get('/current', requireAuth, async (req, res, next) => {
   const { user } = req;                           // destructuring/extracting user key from req, and naming it.  req.user = there is a logged-in user.
+  
+  // find all reviews of current
   const reviewsOfUser = await Review.findAll({    // for every findAll, you need to iterate thru each one to json it
     where: {userId: user.id},                     // all spots whose ownerId matches logged-in id
     include: [ 
@@ -40,9 +42,9 @@ router.get('/current', requireAuth, async (req, res, next) => {
 
   // making previewImage key for the inner Spot model inside big Review obj.
   for (let currentReview of reviewsList) {            // for each big review obj from this user
-    let spot = currentReview.Spot;                    // this is the current Spot obj inside current big review obj.
+    let spot = currentReview.Spot;                    // this is the included model Spot obj inside current big review obj.
 
-    for (let image of spot.SpotImages) {              // for each img of all the spot's images MAKE SURE TO PLURALIZE CUZ THE ALIAS
+    for (let image of spot.SpotImages) {              // for each img of all the spot's images MAKE SURE TO PLURALIZE CUZ THE ALIAS?  only works as plural
       if (image.preview) {                            // if that image's preview = true,
         spot.previewImage = image.url;                // add previewImage key to spot (spot model inside review), make its value the image's url value.
       }
@@ -54,7 +56,7 @@ router.get('/current', requireAuth, async (req, res, next) => {
   delete spot.description;                // get rid of anything u don't need        
   delete spot.updatedAt;                  // remember spot is big review obj's Spot model key.
   delete spot.createdAt; 
-  delete spot.SpotImages;                 // remember to pluralize this cuz of alias.
+  delete spot.SpotImages;                 // works plural or singular for some reason
   }
   res.json({Reviews:reviewsList});        // res.json(reviewsList) returns [{},{}],
 });                                       // this returns {"Reviews": [{}, {}]}
