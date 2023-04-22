@@ -133,11 +133,16 @@ router.post('/:reviewId/images', requireAuth, async (req, res, next) => {
 
   // let toUser = {};
   // toUser.url = newReviewImg.url
-  // toUser.id = newReviewImg.id
+  // toUser.id = newReviewImg.id                      // alternative way to return select keys
 
 
   return res.json(jsoned);                            // send it off with the nice features.
 });
+
+
+
+// EDIT A REVIEW **************************************************************************
+// router.put('/:spotId', requireAuth, async (req, res, next) => {   
 
 
 

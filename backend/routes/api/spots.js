@@ -3,7 +3,7 @@ const express = require('express');
 const router = express.Router();
 
 // Import model(s)
-const { Spot, User, Review, SpotImage } = require('../../db/models');      // include the models we'll need.
+const { Spot, User, Review, SpotImage, ReviewImage } = require('../../db/models');      // include the models we'll need.
 // const { Op } = require('sequelize');       // only need to use this if u gonna use like comparers like Op.lte later
 const { requireAuth } = require('../../utils/auth');          // import the middlewares.
 
@@ -55,6 +55,38 @@ router.get('/current', requireAuth, async (req, res, next) => {
 });                                   // this returns {"Spots": [{}, {}]}
 
 
+// GET ALL REVIEWS BY SPOT ID **************************************************************************
+router.get('/:spotId/reviews', async (req, res, next) => {
+  let reviewsById = await Review.findAll({
+    where: {spotId: req.params.spotId},
+    include: [
+      {
+        model: User,
+        attributes: [ 'id', 'firstName', 'lastName' ]
+      },
+      {
+        model: ReviewImage,
+        as: 'ReviewImages',                     // make sure to add alias in association under Review model √√
+        attributes: [ 'id', 'url' ]
+      }
+    ]
+  });
+
+  // error for nonexistent spot
+  let targetSpot = await Spot.findByPk(req.params.spotId);
+  if (!targetSpot) {                                  // if the target spot to pull reviews from doesn't exist
+    let err = new Error("Spot couldn't be found");   // make a relevant error
+    err.status = 404;                                  // make error status
+    next(err);                                         // pass along error if this doesn't hit.
+  }
+
+  res.json({Reviews: reviewsById});
+});
+
+
+
+// CREATE A REVIEW SPOT **************************************************************************
+// router.post('/', requireAuth, async (req, res, next) => {
 
 // DELETE A SPOT******************************************************************************************
 router.delete('/:spotId', requireAuth, async (req, res, next) => {
