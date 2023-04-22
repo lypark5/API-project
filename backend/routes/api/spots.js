@@ -15,7 +15,7 @@ router.get('/current', requireAuth, async (req, res, next) => {
   // console.log('----------', user.id);  // to test if this endpoint is hitting.
 
   const spots = await Spot.findAll({      // for every findAll, you need to iterate thru each one to json it
-    where: {ownerId: user.id},
+    where: {ownerId: user.id},            // all spots whose ownerId matches logged-in id
     include: [ Review, SpotImage ]        // can write the models in 1 array.
   });
   let spotsList = [];
@@ -26,12 +26,12 @@ router.get('/current', requireAuth, async (req, res, next) => {
   // making previewImage key for the big spotObj
   for (let spotObj of spotsList) {                // for each json'ed spotObj,
     for (let image of spotObj.SpotImages) {       // go thru each spotObj's image one by one.
-      if (image.preview) {                        // here we check that each image's preview returns true.
-        spotObj.previewImage = image.url;           // add previewImage key to big spotObj, make value the image's url value.
+      if (image.preview) {                        // if that image's preview = true,
+        spotObj.previewImage = image.url;         // add previewImage key to big spotObj, make value the image's url value.
       }
     }
-    if (!spotObj.previewImage) {
-      spotObj.previewImage = 'no preview image found'
+    if (!spotObj.previewImage) {                        // if no preview image found, previewImage key not added,
+      spotObj.previewImage = 'no preview image found'   // add previewImage key, make value this msg.
     }
 
     // making avgRating key for big spotObj
@@ -52,14 +52,14 @@ router.get('/current', requireAuth, async (req, res, next) => {
   }
 
   res.json({Spots:spotsList});        // res.json(spotsList) returns [{},{}],
-});                                      // this returns {"Sports": [{}, {}]}
+});                                   // this returns {"Spots": [{}, {}]}
 
 
 
 // DELETE A SPOT
 router.delete('/:spotId', requireAuth, async (req, res, next) => {
-  const { user } = req;             // destructuring/extracting user key from req, and naming it
-  // console.log(user.id);
+  const { user } = req;                             // destructuring/extracting user key from req, and naming it
+  // console.log(user.id);                          // user.id is the id of the logged-in user.
   const deletedSpot = await Spot.findByPk(req.params.spotId);
   // console.log(user.id, deletedSpot.ownerId)      // user.id is the current user's id, deletedSpot.ownerId is the id of the owner of the spot property param
   if (!deletedSpot) {                               // if the target spot to be deleted doesn't exist
@@ -83,10 +83,6 @@ router.delete('/:spotId', requireAuth, async (req, res, next) => {
 
 // ADD IMG TO SPOT BY SPOT ID *******************************************************************
 router.post('/:spotId/images', requireAuth, async (req, res, next) => {
-  // -they gonna give me url and preview in req.body
-  // -check if spot id from their param thing exists
-        // if true, create a new image (spotId, url, preview)
-
   const { user } = req;                                     // get user from req
   const { url, preview } = req.body;                        // all the variables we want to use from req body
   let addPicSpot = await Spot.findByPk(req.params.spotId);  // get the specific spot from id.
@@ -133,22 +129,21 @@ router.get('/:spotId', async (req, res, next) => {
         }, 
         {
           model: User,
-          as: 'Owner',
+          as: 'Owner',                // make sure to go to Spot model and add this alias to this foreign key. √√
           attributes: [ 'id', 'firstName', 'lastName' ]
         }
       ]    
-
-  }); // this returns a regular spot, need to add numReviews, avgStarRating,SpotImages(id,url,preview),Owner(id,firstName,lastName)
+  }); // up to here returns a regular spot, need to add numReviews, avgStarRating,SpotImages(id,url,preview),Owner(id,firstName,lastName)
 
   // catch error if spot doesn't exist  
-  if (!spotById) {                                // if the target spot to be edited doesn't exist
+  if (!spotById) {                                  // if the target spot to be edited doesn't exist
     let err = new Error("Spot couldn't be found");  // make a relevant error
     err.status = 404;                               // make error status
     next(err);                                      // pass along error if this doesn't hit.
   }
 
   // make spotById obj workable by making it json'ed.
-  let jsonedSpotById = spotById.toJSON();   // only need this when i eager load
+  let jsonedSpotById = spotById.toJSON();           // only need this when i eager load
 
   // numReviews
   jsonedSpotById.numReviews = jsonedSpotById.Reviews.length
@@ -174,8 +169,8 @@ router.get('/:spotId', async (req, res, next) => {
 
 // GET ALL SPOTS *********************************************************************************
 router.get('/', async (req, res, next) => {
-  const spots = await Spot.findAll({      // for every findAll, you need to iterate thru each one to json it
-    include: [ Review, SpotImage ]        // can write the models in 1 array.
+  const spots = await Spot.findAll({              // for every findAll, you need to iterate thru each one to json it
+    include: [ Review, SpotImage ]                // can write the models in 1 array.
   });
   let spotsList = [];
   for (let spot of spots) {
@@ -186,12 +181,12 @@ router.get('/', async (req, res, next) => {
   // making previewImage key for the big spotObj
   for (let spotObj of spotsList) {                // for each json'ed spotObj,
     for (let image of spotObj.SpotImages) {       // go thru each spotObj's image one by one.
-      if (image.preview) {                        // here we check that each image's preview returns true.
-        spotObj.previewImage = image.url;           // add previewImage key to big spotObj, make value the image's url value.
+      if (image.preview) {                        // if that image's preview = true,
+        spotObj.previewImage = image.url;         // add previewImage key to big spotObj, make value the image's url value.
       }
     }
-    if (!spotObj.previewImage) {
-      spotObj.previewImage = 'no preview image found'
+    if (!spotObj.previewImage) {                        // if no preview image found, previewImage key not added,
+      spotObj.previewImage = 'no preview image found'   // add previewImage key, make value this msg.
     }
 
     // making avgRating key for big spotObj
@@ -212,13 +207,13 @@ router.get('/', async (req, res, next) => {
   }
 
   res.json({Spots:spotsList});        // res.json(spotsList) returns [{},{}],
-});                                      // this returns {"Sports": [{}, {}]}
+});                                   // this returns {"Sports": [{}, {}]}
 
 
 // CREATE A SPOT **************************************************************************
 router.post('/', requireAuth, async (req, res, next) => {
-  const { user } = req;             // destructuring/extracting user key from req, and naming it
-  if (user) {                       // if user is logged in
+  const { user } = req;               // destructuring/extracting user key from req, and naming it
+  if (user) {                         // if user is logged in
     const { address, city, state, country, lat, lng, name, description, price } = req.body;   // take out these variables from req.body
 
     // checking for errors and collecting them
@@ -285,10 +280,10 @@ router.put('/:spotId', requireAuth, async (req, res, next) => {                 
   if (!city) errorObj.city = 'City is required';                       // if city in req body is empty, add city key to errorObj with msg value
   if (!state) errorObj.state = 'State is required';                    // if state in req body is empty, add state key to errorObj with msg value
   if (!country) errorObj.country = 'Country is required';              // if country in req body is empty, add country key to errorObj with msg value
-  if (typeof lat !== 'number' || (lat < -90 || lat > 90)) {               // if latitude in req body is invalid, add lat key to errorObj with msg value
+  if (typeof lat !== 'number' || (lat < -90 || lat > 90)) {            // if latitude in req body is invalid, add lat key to errorObj with msg value
     errorObj.lat = 'Latitude is not valid';  
   };                  
-  if (typeof lng !== 'number' || (lng < -180 || lng > 180)) {             // if longitude in req body is invalid, add lng key to errorObj with msg value
+  if (typeof lng !== 'number' || (lng < -180 || lng > 180)) {          // if longitude in req body is invalid, add lng key to errorObj with msg value
     errorObj.lng = 'Longitude is not valid';
   };                   
   if (name.length >= 50) errorObj.name = 'Name must be less than 50 characters';   // if name in req body is too long, add name key to errorObj with msg value

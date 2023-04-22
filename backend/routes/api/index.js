@@ -4,6 +4,7 @@ const router = require('express').Router();
 const sessionRouter = require('./session.js');  // add this every time for connecting router
 const usersRouter = require('./users.js');      // add this every time for connecting router
 const spots = require('./spots.js');            // add this every time for connecting router
+const reviews = require('./reviews.js');        // add this every time for connecting router
 const { restoreUser } = require("../../utils/auth.js");
 
 // Connect restoreUser middleware to the API router
@@ -14,6 +15,7 @@ router.use(restoreUser);             // want to hit this first before all router
 router.use('/session', sessionRouter);    // tell ur app.js to use login router
 router.use('/users', usersRouter);        // tell ur app.js to use signup router
 router.use('/spots', spots);              // tell ur app.js to use spots router
+router.use('/reviews', reviews);          // tell ur app.js to use reviews router
 
 router.post('/test', (req, res) => {
   res.json({ requestBody: req.body });
