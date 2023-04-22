@@ -137,7 +137,7 @@ router.post('/:spotId/reviews', requireAuth, async (req, res, next) => {
       stars
     });
 
-    return res.json(newReview);
+    return res.status(201).json(newReview);
   }
 });
 
