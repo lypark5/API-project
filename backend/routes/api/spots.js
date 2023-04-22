@@ -90,24 +90,24 @@ router.post('/:spotId/images', requireAuth, async (req, res, next) => {
   const { url, preview } = req.body;                        // all the variables we want to use from req body
   let addPicSpot = await Spot.findByPk(req.params.spotId);  // get the specific spot from id.
 
-  
-  if (!addPicSpot) {                                // if the target spot to be edited doesn't exist
+  // error for nonexistent spot
+  if (!addPicSpot) {                                // if the target spot to add pic to doesn't exist
     let err = new Error("Spot couldn't be found");  // make a relevant error
     err.status = 404;                               // make error status
     next(err);                                      // pass along error if this doesn't hit.
   }
-  if (user.id !== addPicSpot.ownerId) {             // if the currently logged-in user's id (user.id) !== the target property's owner's id,
-                                                    // if logged in user is diff to owner of this property
+  // error for if you don't own this spot
+  if (user.id !== addPicSpot.ownerId) {             // if the currently logged-in user(user.id) is not the same as the target property's owner (addPicSpot.ownerId),
     let err = new Error('Forbidden');               // make a new error called forbidden.
     err.status = 403;                               // make error status
     next(err);                                      // pass on error if this doesn't catch.
   };
 
   // create a new spotImg 
-  let newSpotImg = await SpotImage.create({         
-    url,                                            // with body consisting of url, preview equaling to the url, preview from req.body.
-    preview
-  });
+  let newSpotImg = await SpotImage.create({         // variable for new img created
+    url,                                            // its attributes upon creation (only 1 word cuz same name)
+    preview                                         // url of newSpotImg: url from req.body
+  });                                               // preview of newSpotImg: preview from req.body
 
   // take out createdAt, updatedAt.
   let jsoned = newSpotImg.toJSON();                 // need to json the big thing to manipulate it before sending off, REMEMBER TO CALL ON THE METHOD

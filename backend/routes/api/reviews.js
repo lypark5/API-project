@@ -89,4 +89,57 @@ router.delete('/:reviewId', requireAuth, async (req, res, next) => {
 
 
 
+// ADD IMG TO REVIEW BY REVIEW ID *******************************************************************
+router.post('/:reviewId/images', requireAuth, async (req, res, next) => {
+  const { user } = req;                                           // get user from req
+  const { url } = req.body;                                       // all the variables we want to use from req body
+
+  let addPicReview = await Review.findByPk(req.params.reviewId);  // get the specific spot from id.
+
+  // error for nonexistent review
+  if (!addPicReview) {                                 // if the target review to add pic to doesn't exist
+    let err = new Error("Review couldn't be found");   // make a relevant error
+    err.status = 404;                                  // make error status
+    next(err);                                         // pass along error if this doesn't hit.
+  }
+
+  // error for exceeding max imgs
+  let count = await ReviewImage.findAll({where: {reviewId: addPicReview.id}});
+  // console.log('---------------', count)
+  if (count.length >= 10) {
+    let err = new Error('Maximum number of images for this resource was reached');
+    err.status = 403;
+    next(err);
+  }
+
+  // error for if u don't own this review
+  if (user.id !== addPicReview.userId) {               // if the currently logged-in user(user.id) is not the same as the author of this review(addPicReview.userId),
+    let err = new Error('Forbidden');                  // make a new error called forbidden.
+    err.status = 403;                                  // make error status
+    next(err);                                         // pass on error if this doesn't catch.
+  };
+
+  // create a new reviewImg 
+  let newReviewImg = await ReviewImage.create({        // variable for new img created                                           // its attributes upon creation (only 1 word cuz same name)
+    reviewId: addPicReview.id,                         // this is the anchor for the target Review's id, U NEED THIS
+    url                                                // id of newReviewImg: newly generated id
+  });                                                  // url of newReviewImg: url from req.body
+
+  // take out createdAt, updatedAt.
+  let jsoned = newReviewImg.toJSON();                  // need to json the big thing to manipulate it before sending off, REMEMBER TO CALL ON THE METHOD
+  delete jsoned.createdAt;                             // can now delete createdAt, updatedAt, spotId.
+  delete jsoned.updatedAt;
+  delete jsoned.reviewId;
+
+  // let toUser = {};
+  // toUser.url = newReviewImg.url
+  // toUser.id = newReviewImg.id
+
+
+  return res.json(jsoned);                            // send it off with the nice features.
+});
+
+
+
+
 module.exports = router;
