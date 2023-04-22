@@ -347,25 +347,25 @@ router.post('/', requireAuth, async (req, res, next) => {
 
 // EDIT A SPOT **************************************************************************
 router.put('/:spotId', requireAuth, async (req, res, next) => {                                 // need requireAuth cuz need logged-in guy to have power to edit.
-  const { user } = req;                                                                         // get user from req
+  const { user } = req;                                                                         // get user from req (the logged in user's info)
   const { address, city, state, country, lat, lng, name, description, price } = req.body;       // all the variables we want to use from req body
   let editSpot = await Spot.findByPk(req.params.spotId);                                        // get the specific spot from id.
 
-  
+  // error for nonexistent spot
   if (!editSpot) {                                  // if the target spot to be edited doesn't exist
     let err = new Error("Spot couldn't be found");  // make a relevant error
     err.status = 404;                               // make error status
     next(err);                                      // pass along error if this doesn't hit.
   }
+  // error for if this user is unauthorized to edit this spot
   if (user.id !== editSpot.ownerId) {               // if the currently logged-in user's id (user.id) !== the target property's owner's id,
-                                                    // if logged in user is diff to owner of this property
     let err = new Error('Forbidden');               // make a new error called forbidden.
     err.status = 403;                               // make error status
     next(err);                                      // pass on error if this doesn't catch.
   };
 
   // checking for errors and collecting them
-  let errorObj = {};                                                   // this where all the real errors will be held and returned
+  let errorObj = {};                                                   // this where all the errors will be held and returned
   if (!address) errorObj.address = 'Street address is required';       // if address in req body is empty, add address key to errorObj with msg value
   if (!city) errorObj.city = 'City is required';                       // if city in req body is empty, add city key to errorObj with msg value
   if (!state) errorObj.state = 'State is required';                    // if state in req body is empty, add state key to errorObj with msg value
