@@ -57,9 +57,31 @@ router.get('/current', requireAuth, async (req, res, next) => {
 
 
 
+// DELETE A BOOKING******************************************************************************************
+router.delete('/:bookingId', requireAuth, async (req, res, next) => {
+  const { user } = req;                             // destructuring/extracting user key from req, and naming it
+  // find the booking by its id
+  const deletedBooking = await Booking.findByPk(req.params.bookingId);
 
+  // check if this booking id exists
+  if (!deletedBooking) {                               // if the target booking to be deleted doesn't exist
+    let err = new Error("Booking couldn't be found");  // make a relevant error
+    err.status = 404;                                  // make error status
+    next(err);                                         // pass along error if this doesn't hit.
+  }
 
-
+  // match up logged-in user id to owner id in target spot
+  if (user.id === deletedBooking.userId) {             // if the currently logged-in user's id (user.id) === the target property's owner's id,
+    await deletedBooking.destroy();                    // destroy the targeted property.
+    return res.json({                                  // return the json'ed response:
+      message: 'Successfully deleted'                  // success msg.
+    });
+  } else {                                             // if logged in user is diff to owner of this property
+    let err = new Error('Forbidden');                  // make a new error called forbidden.
+    err.status = 403;                                  // make error status
+    next(err);                                         // pass on error if this doesn't catch.
+  };
+});
 
 
 
