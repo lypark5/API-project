@@ -3,7 +3,7 @@ const express = require('express');
 const router = express.Router();
 
 // Import model(s)
-const { Spot, SpotImage, User } = require('../../db/models');   // include the models we'll need.
+const { Spot, SpotImage } = require('../../db/models');   // include the models we'll need.
 // const { Op } = require('sequelize');       // only need to use this if u gonna use like comparers like Op.lte later
 const { requireAuth } = require('../../utils/auth');          // import the middlewares.
 
@@ -15,7 +15,7 @@ const { requireAuth } = require('../../utils/auth');          // import the midd
 router.delete('/:imageId', requireAuth, async (req, res, next) => {
   const { user } = req;                                   // destructuring/extracting user key from req
 
-  // find the booking by its id
+  // find the spot img by its id
   const deletedImg = await SpotImage.findByPk(req.params.imageId);
 
   // check if this spot img id exists
@@ -42,17 +42,6 @@ router.delete('/:imageId', requireAuth, async (req, res, next) => {
     next(err);                                          // pass on error if this doesn't catch.
   };
 });
-
-
-
-
-
-
-
-
-
-
-
 
 
 
