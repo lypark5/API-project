@@ -62,6 +62,9 @@ router.delete('/:bookingId', requireAuth, async (req, res, next) => {
   const { user } = req;                             // destructuring/extracting user key from req, and naming it
   // find the booking by its id
   const deletedBooking = await Booking.findByPk(req.params.bookingId);
+  const thisBookingSpot = await Spot.findOne({
+    where: {id: deletedBooking.spotId}
+  });
 
   // check if this booking id exists
   if (!deletedBooking) {                               // if the target booking to be deleted doesn't exist
@@ -78,7 +81,7 @@ router.delete('/:bookingId', requireAuth, async (req, res, next) => {
   }
 
   // match up logged-in user id to owner id in target spot
-  if (user.id === deletedBooking.userId) {             // if the currently logged-in user's id (user.id) === the target property's owner's id,
+  if (user.id === deletedBooking.userId || user.id === thisBookingSpot.ownerId) {             // if the currently logged-in user's id (user.id) === the target property's owner's id,
     await deletedBooking.destroy();                    // destroy the targeted property.
     return res.json({                                  // return the json'ed response:
       message: 'Successfully deleted'                  // success msg.
