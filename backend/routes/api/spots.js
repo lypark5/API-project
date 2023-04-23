@@ -9,6 +9,43 @@ const { requireAuth } = require('../../utils/auth');          // import the midd
 
 
 
+
+
+
+
+
+
+
+
+
+
+if (minLat) {
+  if (isNaN(minLat)) errors.minLat = {message: "Minimum latitude is invalid"}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 // GET ALL SPOTS OWNED BY CURRENT LOGGED IN USER************************************************
 router.get('/current', requireAuth, async (req, res, next) => {
   const { user } = req;                   // destructuring/extracting user key from req, and naming it
@@ -192,11 +229,6 @@ router.post('/:spotId/reviews', requireAuth, async (req, res, next) => {
 
 
 
-
-
-
-
-
 // CREATE A BOOKING FOR A SPOT BY SPOT ID **************************************************************************
 router.post('/:spotId/bookings', requireAuth, async (req, res, next) => {
   const { user } = req;                               // destructuring/extracting u
@@ -340,6 +372,7 @@ router.post('/:spotId/images', requireAuth, async (req, res, next) => {
 });
 
 
+
 // GET SPOT BY ID **************************************************************************
 router.get('/:spotId', async (req, res, next) => {
   let spotById = await Spot.findByPk(req.params.spotId, {
@@ -391,8 +424,38 @@ router.get('/:spotId', async (req, res, next) => {
 });
 
 
+
 // GET ALL SPOTS *********************************************************************************
 router.get('/', async (req, res, next) => {
+
+  const { page, size, minLat, maxLat, minLng, maxLng, minPrice, maxPrice } = req.query
+
+  page = parseInt(page);
+  size = parseInt(size);
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   const spots = await Spot.findAll({              // for every findAll, you need to iterate thru each one to json it
     include: [ Review, SpotImage ]                // can write the models in 1 array.
   });
