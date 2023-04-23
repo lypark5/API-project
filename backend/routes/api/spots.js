@@ -4,45 +4,8 @@ const router = express.Router();
 
 // Import model(s)
 const { Spot, User, Review, SpotImage, ReviewImage, Booking } = require('../../db/models');      // include the models we'll need.
-// const { Op } = require('sequelize');       // only need to use this if u gonna use like comparers like Op.lte later
+const { Op } = require('sequelize');       // only need to use this if u gonna use like comparers like Op.lte later
 const { requireAuth } = require('../../utils/auth');          // import the middlewares.
-
-
-
-
-
-
-
-
-
-
-
-
-
-if (minLat) {
-  if (isNaN(minLat)) errors.minLat = {message: "Minimum latitude is invalid"}
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -428,43 +391,75 @@ router.get('/:spotId', async (req, res, next) => {
 // GET ALL SPOTS *********************************************************************************
 router.get('/', async (req, res, next) => {
 
-  const { page, size, minLat, maxLat, minLng, maxLng, minPrice, maxPrice } = req.query
+  let { minLat, maxLat, minLng, maxLng, minPrice, maxPrice, page, size} = req.query
+  const where = {};
+  const errorObj = {};
 
+  minLat = parseInt(minLat);
+  maxLat = parseInt(maxLat);
+  minLng = parseInt(minLng);
+  maxLng = parseInt(maxLng);
+  minPrice = parseFloat(minPrice);
+  maxPrice = parseFloat(maxPrice);
   page = parseInt(page);
   size = parseInt(size);
-  
+
+  // minLat
+  if (minLat) {
+    if (typeof minLat === 'number' && (minLat >= -90 && minLat <= 90)){
+      where.lat = {[Op.gte]: minLat};
+    } else {
+      errorObj.minLat = 'Minimum latitude is invalid'
+    }
+  };
+
+  //maxLat
+  if (maxLat) {
+    if (typeof maxLat === 'number' && (maxLat >= -90 && maxLat <= 90)){
+      where.lat = {[Op.lte]: maxLat};
+    } else {
+      errorObj.maxLat = 'Maximum latitude is invalid'
+    }
+  };
+
+  // PAGINATION~~~~
+  let pagination = {};
+
+  // default 
+  if (isNaN(page) || !page) page = 1;      
+  if (isNaN(size) || !size ) size = 20;    
+  //max
+  if (page > 10) page = 10;
+  if (size > 20) size = 20;        
+  //errors
+  if (page < 1) errorObj.page = 'Page must be greater than or equal to 1';
+  if (size < 1) errorObj.size = 'Size must be greater than or equal to 1';
 
 
+  // limit n offset
+  pagination.limit = size;
+  pagination.offset = size * (page - 1);
 
+  // collecting all the errors
+  if (Object.keys(errorObj).length) {                                              // if the array of all the keys inside errorObj has length > 0
+    return res.status(400).json({message: 'Bad Request', errors: errorObj})        // status code 400, plus "message: Bad Request", plus "errors:" plus the errorObj.
+  };                                                                               // BE MINDFUL OF PLACEMENT, this needs to include all the top filters plus pagination errors.
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+  // **********************************
+  // the real GET ALL SPOTS!!~~~
   const spots = await Spot.findAll({              // for every findAll, you need to iterate thru each one to json it
+    where,                                        // *** i added this for the query filter step
+    ...pagination,                                // *** i added this for the pagination step
+
     include: [ Review, SpotImage ]                // can write the models in 1 array.
   });
-  let spotsList = [];
+
+  // json'ed array
+  let spotsList = [];                             // this shows the correct array response of all the big objects.
   for (let spot of spots) {
     spotsList.push(spot.toJSON())                 // this makes each spot object json'ed.
   }
-  // console.log(spotsList);                      // this shows the correct array response of all the big objects.
-
+           
   // making previewImage key for the big spotObj
   for (let spotObj of spotsList) {                // for each json'ed spotObj,
     for (let image of spotObj.SpotImages) {       // go thru each spotObj's image one by one.
@@ -493,8 +488,14 @@ router.get('/', async (req, res, next) => {
     delete spotObj.SpotImages;        // delete big model objects which we don't need any more
   }
 
-  res.json({Spots:spotsList});        // res.json(spotsList) returns [{},{}],
-});                                   // this returns {"Sports": [{}, {}]}
+  // FINALLY!! return as usual except tack on page, size
+  return res.json({                   // res.json(spotsList) returns [{},{}],
+    Spots:spotsList,                  // this returns {"Spots": [{}, {}]}
+    page,                             // ***added this during pagination phase
+    size                              // ***added this during pagination phase
+  })
+});                                   
+
 
 
 // CREATE A SPOT **************************************************************************
@@ -540,6 +541,7 @@ router.post('/', requireAuth, async (req, res, next) => {
     return res.status(201).json(createdSpot);
   }
 });
+
 
 
 // EDIT A SPOT **************************************************************************
@@ -597,6 +599,7 @@ router.put('/:spotId', requireAuth, async (req, res, next) => {                 
   await editSpot.save();
   return res.json(editSpot);
 });
+
 
 
 
