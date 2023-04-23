@@ -277,12 +277,6 @@ router.post('/:spotId/bookings', requireAuth, async (req, res, next) => {
 
 
 
-
-
-
-
-
-
 // DELETE A SPOT******************************************************************************************
 router.delete('/:spotId', requireAuth, async (req, res, next) => {
   const { user } = req;                             // destructuring/extracting user key from req, and naming it

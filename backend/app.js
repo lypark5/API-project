@@ -7,9 +7,10 @@ const helmet = require('helmet');
 const cookieParser = require('cookie-parser');
 
 const routes = require('./routes');
-const spots = require('./routes/api/spots');        // import spots router
-const reviews = require('./routes/api/reviews');    // import reviews router
-const bookings = require('./routes/api/bookings');  // import bookings router
+const spots = require('./routes/api/spots');                // import spots router
+const reviews = require('./routes/api/reviews');            // import reviews router
+const bookings = require('./routes/api/bookings');          // import bookings router
+const spotimages = require('./routes/api/spot-images');     // import spotimages router
 
 const { environment } = require('./config');
 const isProduction = environment === 'production';
