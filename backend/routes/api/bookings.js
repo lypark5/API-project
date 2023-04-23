@@ -95,6 +95,102 @@ router.delete('/:bookingId', requireAuth, async (req, res, next) => {
 
 
 
+// EDIT A BOOKING **************************************************************************
+router.put('/:bookingId', requireAuth, async (req, res, next) => {         // need requireAuth cuz need logged-in guy to have power to edit.
+  const { user } = req;                                                    // get user from req (the logged in user's info)
+  const { startDate, endDate } = req.body;              // all the variables we want to use from req body
+  let editBooking = await Booking.findByPk(req.params.bookingId);          // get the specific booking from id.
+
+  // error for nonexistent booking
+  if (!editBooking) {                                   // if the target booking to be edited doesn't exist
+    let err = new Error("Booking couldn't be found");   // make a relevant error
+    err.status = 404;                                   // make error status
+    next(err);                                          // pass along error if this doesn't hit.
+  }
+  // error for if this user is unauthorized to edit this booking
+  if (user.id !== editBooking.userId) {                 // if the currently logged-in user's id (user.id) is not the author of this booking (editBooking.userId),
+    let err = new Error('Forbidden');                   // make a new error called forbidden.
+    err.status = 403;                                   // make error status
+    next(err);                                          // pass on error if this doesn't catch.
+  };
+
+  // checking for errors and collecting them
+  let errorObj = {};                                                   // this where all the errors will be held and returned
+  if (Date.parse(startDate) >= Date.parse(endDate)) {                             // if stars is not a num, not between 1 n 5,
+    errorObj.endDate = 'endDate cannot be on or before startDate';                // add stars key to error obj w/ msg value
+  }
+  if (Object.keys(errorObj).length) {                                             // if the array of all the keys inside errorObj has length > 0
+    return res.status(400).json({message: 'Bad Request', errors: errorObj})       // status code 400, plus "message: Bad Request", plus "errors:" plus the errorObj.
+  }
+
+
+  // error for past dates
+  if ((Date.parse(endDate) < Date.now())) {                   // if the currently logged-in user(user.id) is not the same as the target property's owner (addPicSpot.ownerId),
+    let err = new Error("Past bookings can't be modified");     // make a relevant error
+    err.status = 403;                                           // make error status
+    next(err);                                                  // pass along error if this doesn't hit.
+  };  
+
+  // return an error with the error obj if sth is invalid
+  if (Object.keys(errorObj).length) {                                              // if the array of all the keys inside errorObj has length > 0
+    return res.status(400).json({message: 'Bad Request', errors: errorObj})        // status code 400, plus "message: Bad Request", plus "errors:" plus the errorObj.
+  };
+
+
+
+
+
+
+
+
+
+
+
+
+  // i gotta a find all bookings with this spot id
+  let currentBookings = await Booking.findAll({
+    where: {spotId: spotById.id} 
+  });
+
+  // now json the findAll bookings array:
+  let bookingsList = [];
+  for (let booking of currentBookings) {
+    bookingsList.push(booking.toJSON())               // this makes each booking object json'ed.
+  };
+  // change names of endDAte below here.
+
+  ///////////////////////
+  // overlapping dates error, HARDDDDDD
+  // refer to my drawing to understand
+  // attempted startDates compared to each existing booking dates
+  if (Date.parse(startDate) < Date.parse(g.endDate)
+    && Date.parse(startDate) > Date.parse(g.startDate)) {             // if created startDate starts before an existing booking is over
+      errorObj.startDate = 'Start date conflicts with an existing booking';     // add startDate key to error obj w/ msg value
+  }
+  if (Date.parse(endDate) > Date.parse(g.startDate)
+    && Date.parse(endDate) < Date.parse(g.endDate)) {             // if created endDate is too long, stepping over existing booking start
+      errorObj.endDate = 'End Date conflicts with an existing booking';         // add endDate key to error obj w/ msg value
+  }                                      
+  if (Object.keys(errorObj).length) {                                             // if the array of all the keys inside errorObj has length > 0
+    return res.status(403).json({message: 'Sorry, this spot is already booked for the specified dates', errors: errorObj})  // status code 400, plus "message: Bad Request", plus "errors:" plus the errorObj.
+  };
+
+  // if good, make the current spot's key to equal the value from the req body.
+  editSpot.address = address;
+  editSpot.city = city;
+  editSpot.state = state;
+  editSpot.country = country;
+  editSpot.lat = lat;
+  editSpot.lng = lng;
+  editSpot.name = name;
+  editSpot.description = description;
+  editSpot.price = price;
+
+  // return the updated editSpot
+  await editSpot.save();
+  return res.json(editSpot);
+});
+
 
 
 
