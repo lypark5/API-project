@@ -70,6 +70,13 @@ router.delete('/:bookingId', requireAuth, async (req, res, next) => {
     next(err);                                         // pass along error if this doesn't hit.
   }
 
+  // check if it's too late to delete
+  if (Date.parse(deletedBooking.startDate) < Date.now()) {                               // if the target booking to be deleted doesn't exist
+    let err = new Error("Bookings that have been started can't be deleted");  // make a relevant error
+    err.status = 403;                                  // make error status
+    next(err);                                         // pass along error if this doesn't hit.
+  }
+
   // match up logged-in user id to owner id in target spot
   if (user.id === deletedBooking.userId) {             // if the currently logged-in user's id (user.id) === the target property's owner's id,
     await deletedBooking.destroy();                    // destroy the targeted property.
