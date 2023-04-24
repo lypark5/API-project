@@ -7,6 +7,8 @@ const { Spot, User, Review, SpotImage, ReviewImage, Booking } = require('../../d
 const { Op } = require('sequelize');       // only need to use this if u gonna use like comparers like Op.lte later
 const { requireAuth } = require('../../utils/auth');          // import the middlewares.
 
+// first gotta import reviews in 1) api/index.js, then 2) app.js √√
+
 
 
 // GET ALL SPOTS OWNED BY CURRENT LOGGED IN USER************************************************
@@ -53,6 +55,7 @@ router.get('/current', requireAuth, async (req, res, next) => {
 
   res.json({Spots:spotsList});        // res.json(spotsList) returns [{},{}],
 });                                   // this returns {"Spots": [{}, {}]}
+
 
 
 // GET ALL REVIEWS BY SPOT ID **************************************************************************
@@ -146,7 +149,7 @@ router.post('/:spotId/reviews', requireAuth, async (req, res, next) => {
       let err = new Error("Spot couldn't be found");  // make a relevant error
       err.status = 404;                               // make error status
       next(err);                                      // pass along error if this doesn't hit.
-    }
+    };
 
     // checking for errors and collecting them
     let errorObj = {};                                              // this where all the real errors will be held and returned
@@ -252,7 +255,6 @@ router.post('/:spotId/bookings', requireAuth, async (req, res, next) => {
       }                                      
     };
      ///////////////////////
-
     if (Object.keys(errorObj).length) {                                             // if the array of all the keys inside errorObj has length > 0
       return res.status(403).json({message: 'Sorry, this spot is already booked for the specified dates', errors: errorObj})  // status code 400, plus "message: Bad Request", plus "errors:" plus the errorObj.
     // }
@@ -300,6 +302,7 @@ router.delete('/:spotId', requireAuth, async (req, res, next) => {
 });
 
 
+
 // ADD IMG TO SPOT BY SPOT ID *******************************************************************
 router.post('/:spotId/images', requireAuth, async (req, res, next) => {
   const { user } = req;                                     // get user from req
@@ -339,20 +342,20 @@ router.post('/:spotId/images', requireAuth, async (req, res, next) => {
 // GET SPOT BY ID **************************************************************************
 router.get('/:spotId', async (req, res, next) => {
   let spotById = await Spot.findByPk(req.params.spotId, {
-      include: [ 
-        {
-          model: Review
-        }, 
-        {
-          model: SpotImage,
-          attributes: [ 'id', 'url', 'preview' ] 
-        }, 
-        {
-          model: User,
-          as: 'Owner',                // make sure to go to Spot model and add this alias to this foreign key. √√
-          attributes: [ 'id', 'firstName', 'lastName' ]
-        }
-      ]    
+    include: [ 
+      {
+        model: Review
+      }, 
+      {
+        model: SpotImage,
+        attributes: [ 'id', 'url', 'preview' ] 
+      }, 
+      {
+        model: User,
+        as: 'Owner',                // make sure to go to Spot model and add this alias to this foreign key. √√
+        attributes: [ 'id', 'firstName', 'lastName' ]
+      }
+    ]    
   }); // up to here returns a regular spot, need to add numReviews, avgStarRating,SpotImages(id,url,preview),Owner(id,firstName,lastName)
 
   // catch error if spot doesn't exist  
@@ -390,7 +393,6 @@ router.get('/:spotId', async (req, res, next) => {
 
 // GET ALL SPOTS *********************************************************************************
 router.get('/', async (req, res, next) => {
-
   let { minLat, maxLat, minLng, maxLng, minPrice, maxPrice, page, size} = req.query     // whichever query user might put in url ?___=___
   const where = {};                                      // to catch conditionals of where for all the GET Spots, such as where minPrice = 2
   const errorObj = {};                                   // to catch all errors before sending the whole basket at the end
@@ -534,7 +536,7 @@ router.get('/', async (req, res, next) => {
     page,                             // ***added this during pagination phase
     size                              // ***added this during pagination phase
   })
-});                                   
+});       
 
 
 
@@ -639,6 +641,7 @@ router.put('/:spotId', requireAuth, async (req, res, next) => {                 
   await editSpot.save();
   return res.json(editSpot);
 });
+
 
 
 
