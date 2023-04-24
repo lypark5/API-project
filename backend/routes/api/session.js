@@ -29,6 +29,8 @@ const validateLogin = [
   handleValidationErrors
 ];
 
+
+
 // Log in
 router.post(
   '/',
@@ -82,6 +84,8 @@ router.delete(
   }
 );
 
+
+
 /*
 This will return the session user as JSON under the key of user. ↓↓
 If there is not a session, it will return a JSON with an empty object.
@@ -108,6 +112,7 @@ router.get(
     } else return res.json({ user: null });
   }
 );
+
 
 
 

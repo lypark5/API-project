@@ -30,15 +30,13 @@ const validateSignup = [
     .not()
     .isEmail()
     .withMessage('Username cannot be an email.'),
-////////
-  // check('firstName')
-  //   .exists({ checkFalsy: true })
-  //   .isAlpha()
-  //   .withMessage('Please only use the alphabet, and it must not be empty.'),
-  // check('lastName')
-  //   .exists({ checkFalsy: true })
-  //   .isAlpha()
-  //   .withMessage('Please only use the alphabet, and it must not be empty.'),
+//////
+  check('firstName')
+    .exists({ checkFalsy: true })
+    .withMessage('First Name is required.'),
+  check('lastName')
+    .exists({ checkFalsy: true })
+    .withMessage('Last Name is required.'),
 ///////
   check('password')
     .exists({ checkFalsy: true })
@@ -46,6 +44,7 @@ const validateSignup = [
     .withMessage('Password must be 6 characters or more.'),
   handleValidationErrors
 ];
+
 
 
 // Sign up
@@ -72,6 +71,9 @@ router.post(
     });
   }
 );
+
+
+
 
 
 module.exports = router;

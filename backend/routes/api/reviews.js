@@ -4,10 +4,11 @@ const router = express.Router();
 
 // Import model(s)
 const { Review, Spot, User, ReviewImage, SpotImage } = require('../../db/models');      // include the models we'll need.
-// const { Op } = require('sequelize');       // only need to use this if u gonna use like comparers like Op.lte later
 const { requireAuth } = require('../../utils/auth');          // import the middlewares.
 
 // first gotta import reviews in 1) api/index.js, then 2) app.js √√
+
+
 
 // GET ALL REVIEWS BY CURRENT LOGGED IN USER************************************************
 router.get('/current', requireAuth, async (req, res, next) => {

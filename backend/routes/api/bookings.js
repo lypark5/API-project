@@ -4,7 +4,6 @@ const router = express.Router();
 
 // Import model(s)
 const { Booking, Spot, SpotImage, User } = require('../../db/models');   // include the models we'll need.
-// const { Op } = require('sequelize');       // only need to use this if u gonna use like comparers like Op.lte later
 const { requireAuth } = require('../../utils/auth');          // import the middlewares.
 
 // first gotta import bookings in 1) api/index.js, then 2) app.js √√
@@ -62,9 +61,6 @@ router.delete('/:bookingId', requireAuth, async (req, res, next) => {
   const { user } = req;                             // destructuring/extracting user key from req, and naming it
   // find the booking by its id
   const deletedBooking = await Booking.findByPk(req.params.bookingId);
-  const thisBookingSpot = await Spot.findOne({
-    where: {id: deletedBooking.spotId}
-  });
 
   // check if this booking id exists
   if (!deletedBooking) {                               // if the target booking to be deleted doesn't exist
@@ -80,8 +76,12 @@ router.delete('/:bookingId', requireAuth, async (req, res, next) => {
     next(err);                                         // pass along error if this doesn't hit.
   }
 
+  const thisBookingSpot = await Spot.findOne({         // find this spot
+    where: {id: deletedBooking.spotId}
+  });
+
   // match up logged-in user id to owner id in target spot
-  if (user.id === deletedBooking.userId || user.id === thisBookingSpot.ownerId) {             // if the currently logged-in user's id (user.id) === the target property's owner's id,
+  if (user.id === deletedBooking.userId || user.id === thisBookingSpot.ownerId) {     // if user is booker, or user is owner of this spot,
     await deletedBooking.destroy();                    // destroy the targeted property.
     return res.json({                                  // return the json'ed response:
       message: 'Successfully deleted'                  // success msg.
