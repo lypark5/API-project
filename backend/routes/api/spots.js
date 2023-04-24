@@ -391,59 +391,98 @@ router.get('/:spotId', async (req, res, next) => {
 // GET ALL SPOTS *********************************************************************************
 router.get('/', async (req, res, next) => {
 
-  let { minLat, maxLat, minLng, maxLng, minPrice, maxPrice, page, size} = req.query
-  const where = {};
-  const errorObj = {};
+  let { minLat, maxLat, minLng, maxLng, minPrice, maxPrice, page, size} = req.query     // whichever query user might put in url ?___=___
+  const where = {};                                      // to catch conditionals of where for all the GET Spots, such as where minPrice = 2
+  const errorObj = {};                                   // to catch all errors before sending the whole basket at the end
 
-  minLat = parseInt(minLat);
-  maxLat = parseInt(maxLat);
-  minLng = parseInt(minLng);
-  maxLng = parseInt(maxLng);
+  // need to parse all query stuff before using as normal, cuz i think they are all strings at first
+  minLat = parseFloat(minLat);
+  maxLat = parseFloat(maxLat);
+  minLng = parseFloat(minLng);
+  maxLng = parseFloat(maxLng);
   minPrice = parseFloat(minPrice);
   maxPrice = parseFloat(maxPrice);
   page = parseInt(page);
   size = parseInt(size);
 
-  // minLat
-  if (minLat) {
-    if (typeof minLat === 'number' && (minLat >= -90 && minLat <= 90)){
+  //minLat
+  if (minLat || minLat === 0) {
+    if (typeof minLat === 'number' && (minLat >= -90 && minLat <= 90)) {
       where.lat = {[Op.gte]: minLat};
     } else {
-      errorObj.minLat = 'Minimum latitude is invalid'
+      errorObj.minLat = 'Minimum latitude is invalid';
     }
   };
 
   //maxLat
-  if (maxLat) {
-    if (typeof maxLat === 'number' && (maxLat >= -90 && maxLat <= 90)){
+  if (maxLat || maxLat === 0) {
+    if (typeof maxLat === 'number' && (maxLat >= -90 && maxLat <= 90)) {
       where.lat = {[Op.lte]: maxLat};
     } else {
-      errorObj.maxLat = 'Maximum latitude is invalid'
+      errorObj.maxLat = 'Maximum latitude is invalid';
     }
   };
 
+  //minLng
+  if (minLng || minLng === 0) {
+    if (typeof minLng === 'number' && (minLng >= -180 && minLng <= 180)) {
+      where.lng = {[Op.gte]: minLng};
+    } else {
+      errorObj.minLng = 'Minimum longitude is invalid';
+    }
+  };
+
+  //maxLng
+  if (maxLng || maxLng === 0) {
+    if (typeof maxLng === 'number' && (maxLng >= -180 && maxLng <= 180)) {
+      where.lng = {[Op.lte]: maxLng};
+    } else {
+      errorObj.maxLng = 'Maximum longitude is invalid';
+    }
+  };
+
+  //minPrice
+  if (minPrice || minPrice === 0) {
+    if (typeof minPrice === 'number' && minPrice >= 0) {
+      where.price = {[Op.gte]: minPrice};
+    } else {
+      errorObj.minPrice = 'Minimum price must be greater than or equal to 0';
+    }
+  };
+
+  //maxPrice
+  if (maxPrice || maxPrice === 0) {
+    if (typeof maxPrice === 'number' && maxPrice >= 0) {
+      where.price = {[Op.lte]: maxPrice};
+    } else {
+      errorObj.maxPrice = 'Maximum price must be greater than or equal to 0';
+    }
+  };
+
+
   // PAGINATION~~~~
   let pagination = {};
+
+  //errors
+  if (page < 1) errorObj.page = 'Page must be greater than or equal to 1';
+  if (size < 1) errorObj.size = 'Size must be greater than or equal to 1';  
+  // collecting all the errors
+  if (Object.keys(errorObj).length) {                                              // if the array of all the keys inside errorObj has length > 0
+    return res.status(400).json({message: 'Bad Request', errors: errorObj})        // status code 400, plus "message: Bad Request", plus "errors:" plus the errorObj.
+  };                                                                               // BE MINDFUL OF PLACEMENT, this needs to include all the top filters plus pagination errors.
 
   // default 
   if (isNaN(page) || !page) page = 1;      
   if (isNaN(size) || !size ) size = 20;    
   //max
   if (page > 10) page = 10;
-  if (size > 20) size = 20;        
-  //errors
-  if (page < 1) errorObj.page = 'Page must be greater than or equal to 1';
-  if (size < 1) errorObj.size = 'Size must be greater than or equal to 1';
-
+  if (size > 20) size = 20;    
 
   // limit n offset
   pagination.limit = size;
   pagination.offset = size * (page - 1);
+                                                              
 
-  // collecting all the errors
-  if (Object.keys(errorObj).length) {                                              // if the array of all the keys inside errorObj has length > 0
-    return res.status(400).json({message: 'Bad Request', errors: errorObj})        // status code 400, plus "message: Bad Request", plus "errors:" plus the errorObj.
-  };                                                                               // BE MINDFUL OF PLACEMENT, this needs to include all the top filters plus pagination errors.
 
   // **********************************
   // the real GET ALL SPOTS!!~~~
@@ -488,6 +527,7 @@ router.get('/', async (req, res, next) => {
     delete spotObj.SpotImages;        // delete big model objects which we don't need any more
   }
 
+  
   // FINALLY!! return as usual except tack on page, size
   return res.json({                   // res.json(spotsList) returns [{},{}],
     Spots:spotsList,                  // this returns {"Spots": [{}, {}]}
