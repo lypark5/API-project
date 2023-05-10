@@ -319,7 +319,7 @@ router.post('/:spotId/images', requireAuth, async (req, res, next) => {
   if (user.id !== addPicSpot.ownerId) {             // if the currently logged-in user(user.id) is not the same as the target property's owner (addPicSpot.ownerId),
     let err = new Error('Forbidden');               // make a new error called forbidden.
     err.status = 403;                               // make error status
-    next(err);                                      // pass on error if this doesn't catch.
+    next(err);                                      // pass on error if this doesn't catch
   };
 
   // create a new spotImg 
@@ -388,6 +388,93 @@ router.get('/:spotId', async (req, res, next) => {
 
   res.json(jsonedSpotById);
 });
+
+
+
+
+
+
+
+
+
+
+
+
+
+// GET ALL SPOTS v.2
+router.get('/', async (req, res, next) => {
+  const allSpots = await Spot.findAll();
+  const payload = [];
+
+  for (let spot of allSpots) {
+    const thisSpotReviews = await spot.getReviews();
+    const thisSpotImages = await spot.getSpotImages();
+
+
+
+    // making avgRating key for big spotObj
+    let sum = 0;
+    let count = 0;
+    for (let review of thisSpotReviews) {       // for each of this spot's reviews obj's
+      sum += review.stars;
+      count++;
+    }
+    let avg = sum / count;
+
+    if (!avg) {
+      avg = 'no reviews yet'   // tried to make this edge case message  :c
+    }
+    // let previewImage;
+
+    for (let image of thisSpotImages) {
+      if (image.preview) {                        // if that image's preview = true,
+        let previewImage = image.url;         // add previewImage key to big spotObj, make value the image's url value.
+      }
+    }
+
+    if (!previewImage) {                        // if no preview image found, previewImage key not added,
+      let previewImage = 'no preview image found'   // add previewImage key, make value this msg.
+    }
+    
+
+
+
+    // skelly
+    const spotSkelly = {
+      id: spot.id,
+      ownerId: spot.ownerId,
+      address: spot.address,
+      city: spot.city,
+      state: spot.state,
+      country: spot.country,
+      lat: spot.lat,
+      lng: spot.lng,
+      name: spot.name,
+      description: spot.description,
+      price: spot.price,
+      createdAt: spot.createdAt,
+      updatedAt: spot.updatedAt,
+      avgRating: avg,
+      previewImage: previewImage
+    };
+    payload.push(spotSkelly);
+  }
+  res.json(payload)
+})
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

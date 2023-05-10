@@ -22,7 +22,7 @@ const app = express();
 
 app.use(morgan('dev'));
 app.use(cookieParser());
-app.use(express.json());
+app.use(express.json());            // the req body is now avail in req.body in each route handler's function.
 
 
 
