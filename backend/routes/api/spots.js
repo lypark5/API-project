@@ -410,9 +410,7 @@ router.get('/', async (req, res, next) => {
     const thisSpotReviews = await spot.getReviews();
     const thisSpotImages = await spot.getSpotImages();
 
-
-
-    // making avgRating key for big spotObj
+    // making avg
     let sum = 0;
     let count = 0;
     for (let review of thisSpotReviews) {       // for each of this spot's reviews obj's
@@ -424,20 +422,7 @@ router.get('/', async (req, res, next) => {
     if (!avg) {
       avg = 'no reviews yet'   // tried to make this edge case message  :c
     }
-    // let previewImage;
-
-    for (let image of thisSpotImages) {
-      if (image.preview) {                        // if that image's preview = true,
-        let previewImage = image.url;         // add previewImage key to big spotObj, make value the image's url value.
-      }
-    }
-
-    if (!previewImage) {                        // if no preview image found, previewImage key not added,
-      let previewImage = 'no preview image found'   // add previewImage key, make value this msg.
-    }
-    
-
-
+ 
 
     // skelly
     const spotSkelly = {
@@ -454,12 +439,20 @@ router.get('/', async (req, res, next) => {
       price: spot.price,
       createdAt: spot.createdAt,
       updatedAt: spot.updatedAt,
-      avgRating: avg,
-      previewImage: previewImage
+      avgRating: avg
     };
+
+    for (let image of thisSpotImages) {
+      if (image.preview) {                        // if that image's preview = true,
+        spotSkelly.previewImage = image.url;         // add previewImage key to big spotObj, make value the image's url value.
+      } else {                        // if no preview image found, previewImage key not added,
+        spotSkelly.previewImage = 'no preview image found'   // add previewImage key, make value this msg.
+      }
+    }
+
     payload.push(spotSkelly);
   }
-  res.json(payload)
+  res.json({Spots:payload})
 })
 
 
@@ -573,48 +566,48 @@ router.get('/', async (req, res, next) => {
                                                               
 
 
-  // **********************************
-  // the real GET ALL SPOTS!!~~~
-  const spots = await Spot.findAll({              // for every findAll, you need to iterate thru each one to json it
-    where,                                        // *** i added this for the query filter step
-    ...pagination,                                // *** i added this for the pagination step
+  // // **********************************
+  // // the real GET ALL SPOTS!!~~~
+  // const spots = await Spot.findAll({              // for every findAll, you need to iterate thru each one to json it
+  //   where,                                        // *** i added this for the query filter step
+  //   ...pagination,                                // *** i added this for the pagination step
 
-    include: [ Review, SpotImage ]                // can write the models in 1 array.
-  });
+  //   include: [ Review, SpotImage ]                // can write the models in 1 array.
+  // });
 
-  // json'ed array
-  let spotsList = [];                             // this shows the correct array response of all the big objects.
-  for (let spot of spots) {
-    spotsList.push(spot.toJSON())                 // this makes each spot object json'ed.
-  }
+  // // json'ed array
+  // let spotsList = [];                             // this shows the correct array response of all the big objects.
+  // for (let spot of spots) {
+  //   spotsList.push(spot.toJSON())                 // this makes each spot object json'ed.
+  // }
            
-  // making previewImage key for the big spotObj
-  for (let spotObj of spotsList) {                // for each json'ed spotObj,
-    for (let image of spotObj.SpotImages) {       // go thru each spotObj's image one by one.
-      if (image.preview) {                        // if that image's preview = true,
-        spotObj.previewImage = image.url;         // add previewImage key to big spotObj, make value the image's url value.
-      }
-    }
-    if (!spotObj.previewImage) {                        // if no preview image found, previewImage key not added,
-      spotObj.previewImage = 'no preview image found'   // add previewImage key, make value this msg.
-    }
+  // // making previewImage key for the big spotObj
+  // for (let spotObj of spotsList) {                // for each json'ed spotObj,
+  //   for (let image of spotObj.SpotImages) {       // go thru each spotObj's image one by one.
+  //     if (image.preview) {                        // if that image's preview = true,
+  //       spotObj.previewImage = image.url;         // add previewImage key to big spotObj, make value the image's url value.
+  //     }
+  //   }
+  //   if (!spotObj.previewImage) {                        // if no preview image found, previewImage key not added,
+  //     spotObj.previewImage = 'no preview image found'   // add previewImage key, make value this msg.
+  //   }
 
-    // making avgRating key for big spotObj
-    let sum = 0;
-    let count = 0;
-    for (let review of spotObj.Reviews) {
-      sum += review.stars;
-      count++;
-    }
-    let avg = sum / count;
-    spotObj.avgRating = avg;
-    if (!spotObj.avgRating) {
-      spotObj.avgRating = 'no reviews yet'
-    }
+  //   // making avgRating key for big spotObj
+  //   let sum = 0;
+  //   let count = 0;
+  //   for (let review of spotObj.Reviews) {
+  //     sum += review.stars;
+  //     count++;
+  //   }
+  //   let avg = sum / count;
+  //   spotObj.avgRating = avg;
+  //   if (!spotObj.avgRating) {
+  //     spotObj.avgRating = 'no reviews yet'
+  //   }
 
-    delete spotObj.Reviews;           // delete big model objects which we don't need any more
-    delete spotObj.SpotImages;        // delete big model objects which we don't need any more
-  }
+  //   delete spotObj.Reviews;           // delete big model objects which we don't need any more
+  //   delete spotObj.SpotImages;        // delete big model objects which we don't need any more
+  // }
 
   
   // FINALLY!! return as usual except tack on page, size
