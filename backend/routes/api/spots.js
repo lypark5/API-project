@@ -339,6 +339,82 @@ router.post('/:spotId/images', requireAuth, async (req, res, next) => {
 
 
 
+
+
+// GET SPOT BY ID v.2
+router.get('/:spotId', async (req, res, next) => {
+  const thisSpot = await Spot.findByPk(req.params.spotId);    // get this spot first
+  const thisSpotReviews = await thisSpot.getReviews();            // get all reviews on this spot
+  // const thisSpotImages = await thisSpot.getSpotImages();      // get all images for this spot
+  const thisSpotImages = await SpotImage.findAll({
+    where: {
+      spotId: req.params.spotId
+    }
+  })
+  console.log(thisSpotImages)
+
+  // making avg
+  let sum = 0;
+  let count = 0;
+  for (let review of thisSpotReviews) {       // for each of this spot's reviews obj's
+    sum += review.stars;
+    count++;
+  }
+  let avg = sum / count;
+  // in case no reviews for avg calculation
+  if (!avg) {
+    avg = 'no reviews yet'   // tried to make this edge case message  :c
+  }
+
+
+// HAVING TROUBLE ATTACHING PREVIEWIMAGE TO SPOTSKELLY,
+// I TRIED DOING NON ASSOCIATION QUERY ON LINE 349.
+
+
+  // skelly
+  const spotSkelly = {
+    id: thisSpot.id,
+    ownerId: thisSpot.ownerId,
+    address: thisSpot.address,
+    city: thisSpot.city,
+    state: thisSpot.state,
+    country: thisSpot.country,
+    lat: thisSpot.lat,                                  
+    lng: thisSpot.lng,
+    name: thisSpot.name,
+    description: thisSpot.description,
+    price: thisSpot.price,
+    createdAt: thisSpot.createdAt,
+    updatedAt: thisSpot.updatedAt,
+    avgRating: avg,
+    // previewImage: thisSpotImages
+  };
+
+
+  if (!thisSpotImages) {
+    spotSkelly.previewImage = 'no preview image found'
+  }
+
+  for (let image of thisSpotImages) {
+    if (image.preview) {                        // if that image's preview = true,
+      spotSkelly.previewImage = image.url;         // add previewImage key to big spotObj, make value the image's url value.
+    } else {                        // if no preview image found, previewImage key not added,
+      spotSkelly.previewImage = 'no preview image found'   // add previewImage key, make value this msg.
+    }
+
+  }
+
+  return res.json(spotSkelly);
+})
+
+
+
+
+
+
+
+
+
 // GET SPOT BY ID **************************************************************************
 router.get('/:spotId', async (req, res, next) => {
   let spotById = await Spot.findByPk(req.params.spotId, {
@@ -452,7 +528,7 @@ router.get('/', async (req, res, next) => {
 
     payload.push(spotSkelly);
   }
-  res.json({Spots:payload})
+  return res.json({Spots:payload})
 })
 
 
