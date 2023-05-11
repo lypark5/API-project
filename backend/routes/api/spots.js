@@ -325,7 +325,8 @@ router.post('/:spotId/images', requireAuth, async (req, res, next) => {
   // create a new spotImg 
   let newSpotImg = await SpotImage.create({         // variable for new img created
     url,                                            // its attributes upon creation (only 1 word cuz same name)
-    preview                                         // url of newSpotImg: url from req.body
+    preview,                                         // url of newSpotImg: url from req.body
+    spotId: addPicSpot.id
   });                                               // preview of newSpotImg: preview from req.body
 
   // take out createdAt, updatedAt.
@@ -345,13 +346,20 @@ router.post('/:spotId/images', requireAuth, async (req, res, next) => {
 router.get('/:spotId', async (req, res, next) => {
   const thisSpot = await Spot.findByPk(req.params.spotId);    // get this spot first
   const thisSpotReviews = await thisSpot.getReviews();            // get all reviews on this spot
-  // const thisSpotImages = await thisSpot.getSpotImages();      // get all images for this spot
-  const thisSpotImages = await SpotImage.findAll({
-    where: {
-      spotId: req.params.spotId
-    }
-  })
-  console.log(thisSpotImages)
+  const thisSpotImages = await thisSpot.getSpotImages();      // get all images for this spot
+  // const thisSpotImages = await SpotImage.findAll({
+  //   where: {
+  //     spotId: req.params.spotId
+  //   }
+  // })
+  // console.log(thisSpotImages)
+
+  // catch error if spot doesn't exist  
+  if (!thisSpot) {                                  // if the target spot to be edited doesn't exist
+    let err = new Error("Spot couldn't be found");  // make a relevant error
+    err.status = 404;                               // make error status
+    next(err);                                      // pass along error if this doesn't hit.
+  };
 
   // making avg
   let sum = 0;
@@ -366,12 +374,28 @@ router.get('/:spotId', async (req, res, next) => {
     avg = 'no reviews yet'   // tried to make this edge case message  :c
   }
 
+  // 2nd attempt image
+  let img = '';
+
+  // if(!thisSpotImages) {
+  //   img = 'no preview image found';
+  // }
+
+  console.log('==============', thisSpotImages)
+
+  for (let image of thisSpotImages) {
+    if (image.preview) {
+      img = image.url;
+    } else {
+      img = 'no preview image found';
+    }
+  }
+
 
 // HAVING TROUBLE ATTACHING PREVIEWIMAGE TO SPOTSKELLY,
 // I TRIED DOING NON ASSOCIATION QUERY ON LINE 349.
 
-
-  // skelly
+    // skelly
   const spotSkelly = {
     id: thisSpot.id,
     ownerId: thisSpot.ownerId,
@@ -387,23 +411,23 @@ router.get('/:spotId', async (req, res, next) => {
     createdAt: thisSpot.createdAt,
     updatedAt: thisSpot.updatedAt,
     avgRating: avg,
-    // previewImage: thisSpotImages
+    previewImage: img
   };
 
 
-  if (!thisSpotImages) {
-    spotSkelly.previewImage = 'no preview image found'
-  }
 
-  for (let image of thisSpotImages) {
-    if (image.preview) {                        // if that image's preview = true,
-      spotSkelly.previewImage = image.url;         // add previewImage key to big spotObj, make value the image's url value.
-    } else {                        // if no preview image found, previewImage key not added,
-      spotSkelly.previewImage = 'no preview image found'   // add previewImage key, make value this msg.
-    }
 
-  }
 
+
+  // for (let image of thisSpotImages) {
+  //   console.log(image)
+  //   if (image.preview) {                        // if that image's preview = true,
+  //     spotSkelly.previewImage = image.url;         // add previewImage key to big spotObj, make value the image's url value.
+  //   } else {                        // if no preview image found, previewImage key not added,
+  //     spotSkelly.previewImage = 'no preview image found'   // add previewImage key, make value this msg.
+  //   }
+
+  // }
   return res.json(spotSkelly);
 })
 
