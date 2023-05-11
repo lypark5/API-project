@@ -10,6 +10,77 @@ const { requireAuth } = require('../../utils/auth');          // import the midd
 // first gotta import reviews in 1) api/index.js, then 2) app.js √√
 
 
+// GET ALL SPOTS OWNED BY CURRENT LOGGED IN USER v.2
+router.get('/current', requireAuth, async (req, res, next) => {
+  const { user } = req;                           // need user info 
+  const payload = [];                             // need to populate
+
+  // finding all the spots owned by current
+  const spotsOfOwner = await Spot.findAll({       // array of spot objects
+    where: {ownerId: user.id},                    // all spots whose ownerId matches logged-in id
+  });
+
+
+  for (let spot of spotsOfOwner) {                      // for each spot of this owner
+    const thisSpotReviews = await spot.getReviews();    // get all reviews of each spot
+    const thisSpotImages = await spot.getSpotImages();  // get all images of each spot
+
+    // making avg
+    let sum = 0;
+    let count = 0;
+    for (let review of thisSpotReviews) {       // for each of this spot's reviews obj's
+      sum += review.stars;
+      count++;
+    }
+    let avg = sum / count;
+
+    if (!avg) {
+      avg = 'no reviews yet'   // tried to make this edge case message  :c
+    }
+ 
+
+    // skelly
+    const spotSkelly = {
+      id: spot.id,
+      ownerId: spot.ownerId,
+      address: spot.address,
+      city: spot.city,
+      state: spot.state,
+      country: spot.country,
+      lat: spot.lat,
+      lng: spot.lng,
+      name: spot.name,
+      description: spot.description,
+      price: spot.price,
+      createdAt: spot.createdAt,
+      updatedAt: spot.updatedAt,
+      avgRating: avg
+    };
+
+    // adding previewImage key for each skelly creation
+    spotSkelly.previewImage = 'no preview image found';
+    for (let image of thisSpotImages) {              // for each spot, go thru each spotImage
+      if (image.preview) {                           // if that image's preview = true,
+        spotSkelly.previewImage = image.url;         // add previewImage key to big spotObj, make value the image's url value.
+        break;                                       // interrupts and breaks out of the for loop, more efficient.
+      } 
+    };
+
+    payload.push(spotSkelly);                        // push skelly for each spot
+  }
+  
+  return res.json({Spots:payload})
+})
+
+
+
+
+
+
+
+
+
+
 
 // GET ALL SPOTS OWNED BY CURRENT LOGGED IN USER************************************************
 router.get('/current', requireAuth, async (req, res, next) => {
@@ -319,13 +390,14 @@ router.post('/:spotId/images', requireAuth, async (req, res, next) => {
   if (user.id !== addPicSpot.ownerId) {             // if the currently logged-in user(user.id) is not the same as the target property's owner (addPicSpot.ownerId),
     let err = new Error('Forbidden');               // make a new error called forbidden.
     err.status = 403;                               // make error status
-    next(err);                                      // pass on error if this doesn't catch.
+    next(err);                                      // pass on error if this doesn't catch
   };
 
   // create a new spotImg 
   let newSpotImg = await SpotImage.create({         // variable for new img created
     url,                                            // its attributes upon creation (only 1 word cuz same name)
-    preview                                         // url of newSpotImg: url from req.body
+    preview,                                        // url of newSpotImg: url from req.body
+    spotId: addPicSpot.id                           // THIS IS NECESSARY to link this new img to this SPOT
   });                                               // preview of newSpotImg: preview from req.body
 
   // take out createdAt, updatedAt.
@@ -339,56 +411,127 @@ router.post('/:spotId/images', requireAuth, async (req, res, next) => {
 
 
 
-// GET SPOT BY ID **************************************************************************
+// GET SPOT BY ID v.2
 router.get('/:spotId', async (req, res, next) => {
-  let spotById = await Spot.findByPk(req.params.spotId, {
-    include: [ 
-      {
-        model: Review
-      }, 
-      {
-        model: SpotImage,
-        attributes: [ 'id', 'url', 'preview' ] 
-      }, 
-      {
-        model: User,
-        as: 'Owner',                // make sure to go to Spot model and add this alias to this foreign key. √√
-        attributes: [ 'id', 'firstName', 'lastName' ]
-      }
-    ]    
-  }); // up to here returns a regular spot, need to add numReviews, avgStarRating,SpotImages(id,url,preview),Owner(id,firstName,lastName)
+  const thisSpot = await Spot.findByPk(req.params.spotId);        // get this spot first
+  
+  // catch error if spot doesn't exist                            // needs to be up here or it won't catch.
+  if (!thisSpot) {                                                // if the target spot to be edited doesn't exist
+    let err = new Error("Spot couldn't be found");                // make a relevant error
+    err.status = 404;                                             // make error status
+    next(err);                                                    // pass along error if this doesn't hit.
+  };
+  
+  const thisSpotReviews = await thisSpot.getReviews();            // get all reviews on this spot
+  const thisSpotImages = await thisSpot.getSpotImages({           // get all images for this spot
+    attributes: ['id', 'url', 'preview']                          // only include these to use.
+  });
+  const ownerObj = await thisSpot.getOwner({
+    attributes: ['id', 'firstName', 'lastName']
+  });
+  
+  // console.log(Object.getOwnPropertyNames(Spot.prototype));     // this is COOL! lists all custom association methods of Spot model.
 
-  // catch error if spot doesn't exist  
-  if (!spotById) {                                  // if the target spot to be edited doesn't exist
-    let err = new Error("Spot couldn't be found");  // make a relevant error
-    err.status = 404;                               // make error status
-    next(err);                                      // pass along error if this doesn't hit.
-  }
-
-  // make spotById obj workable by making it json'ed.
-  let jsonedSpotById = spotById.toJSON();           // only need this when i eager load
-
-  // numReviews
-  jsonedSpotById.numReviews = jsonedSpotById.Reviews.length
- 
-  // avgRating
+  // making avg
   let sum = 0;
   let count = 0;
-  for (let review of jsonedSpotById.Reviews) {
+  for (let review of thisSpotReviews) {       // for each of this spot's reviews obj's
     sum += review.stars;
     count++;
   }
   let avg = sum / count;
-  jsonedSpotById.avgStarRating = avg;
-  if (!jsonedSpotById.avgStarRating) {
-    jsonedSpotById.avgStarRating = 'no reviews yet'
+  // in case no reviews for avg calculation
+  if (!avg) {
+    avg = 'no reviews yet'   // tried to make this edge case message  :c
   }
 
-  delete jsonedSpotById.Reviews;
+  
+  // skelly
+  const spotSkelly = {
+    id: thisSpot.id,
+    ownerId: thisSpot.ownerId,
+    address: thisSpot.address,
+    city: thisSpot.city,
+    state: thisSpot.state,
+    country: thisSpot.country,
+    lat: thisSpot.lat,                                  
+    lng: thisSpot.lng,
+    name: thisSpot.name,
+    description: thisSpot.description,
+    price: thisSpot.price,
+    createdAt: thisSpot.createdAt,
+    updatedAt: thisSpot.updatedAt,
+    numReviews: thisSpotReviews.length,
+    avgStarRating: avg,
+    SpotImages: thisSpotImages,
+    Owner: ownerObj
+  };
 
-  res.json(jsonedSpotById);
-});
 
+  return res.json(spotSkelly);
+})
+
+
+
+// GET ALL SPOTS v.2
+router.get('/', async (req, res, next) => {
+  const allSpots = await Spot.findAll();
+  const payload = [];
+
+  for (let spot of allSpots) {
+    const thisSpotReviews = await spot.getReviews();
+    const thisSpotImages = await spot.getSpotImages();
+
+    // making avg
+    let sum = 0;
+    let count = 0;
+    for (let review of thisSpotReviews) {       // for each of this spot's reviews obj's
+      sum += review.stars;
+      count++;
+    }
+    let avg = sum / count;
+
+    if (!avg) {
+      avg = 'no reviews yet'   // tried to make this edge case message  :c
+    }
+ 
+
+    // skelly
+    const spotSkelly = {
+      id: spot.id,
+      ownerId: spot.ownerId,
+      address: spot.address,
+      city: spot.city,
+      state: spot.state,
+      country: spot.country,
+      lat: spot.lat,
+      lng: spot.lng,
+      name: spot.name,
+      description: spot.description,
+      price: spot.price,
+      createdAt: spot.createdAt,
+      updatedAt: spot.updatedAt,
+      avgRating: avg
+    };
+
+    for (let image of thisSpotImages) {
+      if (image.preview) {                        // if that image's preview = true,
+        spotSkelly.previewImage = image.url;         // add previewImage key to big spotObj, make value the image's url value.
+      } else {                        // if no preview image found, previewImage key not added,
+        spotSkelly.previewImage = 'no preview image found'   // add previewImage key, make value this msg.
+      }
+    }
+
+    payload.push(spotSkelly);
+  }
+  return res.json({Spots:payload})
+})
+
+
+
+
+
+// !!!!!!FORMAT THE PAGINATION AND QUERIES
 
 
 // GET ALL SPOTS *********************************************************************************
@@ -647,3 +790,68 @@ router.put('/:spotId', requireAuth, async (req, res, next) => {                 
 
 
 module.exports = router;
+
+
+
+
+
+
+
+
+
+
+
+
+// DISCARDED TRASH BUT IT WORKED FOR LOCAL:
+// XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+/*
+// GET SPOT BY ID **************************************************************************
+router.get('/:spotId', async (req, res, next) => {
+  let spotById = await Spot.findByPk(req.params.spotId, {
+    include: [ 
+      {
+        model: Review
+      }, 
+      {
+        model: SpotImage,
+        attributes: [ 'id', 'url', 'preview' ] 
+      }, 
+      {
+        model: User,
+        as: 'Owner',                // make sure to go to Spot model and add this alias to this foreign key. √√
+        attributes: [ 'id', 'firstName', 'lastName' ]
+      }
+    ]    
+  }); // up to here returns a regular spot, need to add numReviews, avgStarRating,SpotImages(id,url,preview),Owner(id,firstName,lastName)
+
+  // catch error if spot doesn't exist  
+  if (!spotById) {                                  // if the target spot to be edited doesn't exist
+    let err = new Error("Spot couldn't be found");  // make a relevant error
+    err.status = 404;                               // make error status
+    next(err);                                      // pass along error if this doesn't hit.
+  }
+
+  // make spotById obj workable by making it json'ed.
+  let jsonedSpotById = spotById.toJSON();           // only need this when i eager load
+
+  // numReviews
+  jsonedSpotById.numReviews = jsonedSpotById.Reviews.length
+ 
+  // avgRating
+  let sum = 0;
+  let count = 0;
+  for (let review of jsonedSpotById.Reviews) {
+    sum += review.stars;
+    count++;
+  }
+  let avg = sum / count;
+  jsonedSpotById.avgStarRating = avg;
+  if (!jsonedSpotById.avgStarRating) {
+    jsonedSpotById.avgStarRating = 'no reviews yet'
+  }
+
+  delete jsonedSpotById.Reviews;
+
+  res.json(jsonedSpotById);
+});
+*/
