@@ -4,7 +4,6 @@ const router = express.Router();
 
 // Import model(s)
 const { Review, ReviewImage } = require('../../db/models');   // include the models we'll need.
-// const { Op } = require('sequelize');       // only need to use this if u gonna use like comparers like Op.lte later
 const { requireAuth } = require('../../utils/auth');          // import the middlewares.
 
 // first gotta import bookings in 1) api/index.js, then 2) app.js √√
@@ -25,7 +24,6 @@ router.delete('/:imageId', requireAuth, async (req, res, next) => {
     next(err);                                               // pass along error if this doesn't hit.
   }
 
-  // find this review
   const thisReview = await Review.findOne({
     where: {id: deletedImg.reviewId}
   });
