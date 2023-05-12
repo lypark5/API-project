@@ -4,7 +4,7 @@ const router = express.Router();
 
 // Import model(s)
 const { Review, Spot, User, ReviewImage, SpotImage } = require('../../db/models');      // include the models we'll need.
-const { requireAuth } = require('../../utils/auth');          // import the middlewares.
+const { requireAuth } = require('../../utils/auth');                                    // import the middlewares.
 
 // first gotta import reviews in 1) api/index.js, then 2) app.js √√
 
@@ -14,7 +14,6 @@ const { requireAuth } = require('../../utils/auth');          // import the midd
 router.get('/current', requireAuth, async (req, res, next) => {
   const { user } = req;                           // destructuring/extracting user key from req, and naming it.  req.user = there is a logged-in user.
   
-  // find all reviews of current
   const reviewsOfUser = await Review.findAll({    // for every findAll, you need to iterate thru each one to json it
     where: {userId: user.id},                     // all spots whose ownerId matches logged-in id
     include: [ 
@@ -28,16 +27,14 @@ router.get('/current', requireAuth, async (req, res, next) => {
       }, 
       {
         model: ReviewImage,
-        as: 'ReviewImages',      // need to change alias in Review model √√
+        as: 'ReviewImages',                       // need to change alias in Review model √√
         attributes: [ 'id', 'url' ]
       } 
     ]                
   });
-  // up to here returns a regular review with added User, Spot, ReviewImages, need to add more.
 
-  // for every findAll, you need to iterate thru each one to json it
   let reviewsList = [];
-  for (let review of reviewsOfUser) {
+  for (let review of reviewsOfUser) {                 // this make this a workable POJO.
     reviewsList.push(review.toJSON())                 // this makes each review object json'ed.  u only json stuff if eager.
   }
 
@@ -54,13 +51,13 @@ router.get('/current', requireAuth, async (req, res, next) => {
       spot.previewImage = 'no preview image found'    // add previewImage key, make value this msg.
     }
 
-  delete spot.description;                // get rid of anything u don't need        
-  delete spot.updatedAt;                  // remember spot is big review obj's Spot model key.
+  delete spot.description;                            // get rid of anything u don't need        
+  delete spot.updatedAt;                              // remember spot is big review obj's Spot model key.
   delete spot.createdAt; 
-  delete spot.SpotImages;                 // works plural or singular for some reason
+  delete spot.SpotImages;                             // works plural or singular for some reason
   }
-  res.json({Reviews:reviewsList});        // res.json(reviewsList) returns [{},{}],
-});                                       // this returns {"Reviews": [{}, {}]}
+  res.json({Reviews:reviewsList});                    // res.json(reviewsList) returns [{},{}],
+});                                                   // this returns {"Reviews": [{}, {}]}
 
 
 

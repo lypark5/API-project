@@ -4,22 +4,22 @@ const router = express.Router();
 
 // Import model(s)
 const { Spot, User, Review, SpotImage, ReviewImage, Booking } = require('../../db/models');      // include the models we'll need.
-const { Op } = require('sequelize');       // only need to use this if u gonna use like comparers like Op.lte later
-const { requireAuth } = require('../../utils/auth');          // import the middlewares.
+const { Op } = require('sequelize');                     // only need to use this if u gonna use like comparers like Op.lte later
+const { requireAuth } = require('../../utils/auth');     // import the middlewares.
 
 // first gotta import reviews in 1) api/index.js, then 2) app.js √√
 
 
-// GET ALL SPOTS OWNED BY CURRENT LOGGED IN USER v.2
+
+// GET ALL SPOTS OWNED BY CURRENT LOGGED IN USER v.2 *************************************************************************
 router.get('/current', requireAuth, async (req, res, next) => {
-  const { user } = req;                           // need user info 
-  const payload = [];                             // need to populate
+  const { user } = req;                                 // need user info 
+  const payload = [];                                   // need to populate
 
   // finding all the spots owned by current
-  const spotsOfOwner = await Spot.findAll({       // array of spot objects
-    where: { ownerId: user.id },                    // all spots whose ownerId matches logged-in id
+  const spotsOfOwner = await Spot.findAll({             // array of spot objects
+    where: { ownerId: user.id },                        // all spots whose ownerId matches logged-in id
   });
-
 
   for (let spot of spotsOfOwner) {                      // for each spot of this owner
     const thisSpotReviews = await spot.getReviews();    // get all reviews of each spot
@@ -28,7 +28,7 @@ router.get('/current', requireAuth, async (req, res, next) => {
     // making avg
     let sum = 0;
     let count = 0;
-    for (let review of thisSpotReviews) {       // for each of this spot's reviews obj's
+    for (let review of thisSpotReviews) {               // for each review of all reviews of this spot
       sum += review.stars;
       count++;
     }
@@ -37,7 +37,6 @@ router.get('/current', requireAuth, async (req, res, next) => {
     if (!avg) {
       avg = 'no reviews yet'   // tried to make this edge case message  :c
     }
- 
 
     // skelly
     const spotSkelly = {
@@ -58,49 +57,42 @@ router.get('/current', requireAuth, async (req, res, next) => {
     };
 
     // adding previewImage key for each skelly creation
-    spotSkelly.previewImage = 'no preview image found';
-    for (let image of thisSpotImages) {              // for each spot, go thru each spotImage
-      if (image.preview) {                           // if that image's preview = true,
-        spotSkelly.previewImage = image.url;         // add previewImage key to big spotObj, make value the image's url value.
-        break;                                       // interrupts and breaks out of the for loop, more efficient.
+    spotSkelly.previewImage = 'no preview image found';     // this needs to be default first, or it won't work in an else statement (shows no preview found because doesn't save result.)
+    for (let image of thisSpotImages) {                     // for each spot, go thru each spotImage
+      if (image.preview) {                                  // if that image's preview = true,
+        spotSkelly.previewImage = image.url;                // add previewImage key to big spotObj, make value the image's url value.
+        break;                                              // interrupts and breaks out of the for loop, more efficient.
       } 
     };
 
-    payload.push(spotSkelly);                        // push skelly for each spot
+    payload.push(spotSkelly);                               // push skelly for each spot
   }
   
-  return res.json({Spots:payload})
+  return res.json({Spots:payload})                          // return the big array of spots.
 })
-
-
-
-
-
-
-
-
 
 
 
 // GET ALL SPOTS OWNED BY CURRENT LOGGED IN USER************************************************
 router.get('/current', requireAuth, async (req, res, next) => {
-  const { user } = req;                   // destructuring/extracting user key from req, and naming it
+  const { user } = req;                                 // destructuring/extracting user key from req, and naming it
 
   // finding all the spots owned by current
-  const spots = await Spot.findAll({      // for every findAll, you need to iterate thru each one to json it
-    where: {ownerId: user.id},            // all spots whose ownerId matches logged-in id
-    include: [ Review, SpotImage ]        // can write the models in 1 array.
+  const spots = await Spot.findAll({                    // this is an array.
+    where: {ownerId: user.id},                          // all spots whose ownerId matches logged-in id
+    include: [ Review, SpotImage ]                      // can write the models in 1 array.
   });
+
   let spotsList = [];
-  for (let spot of spots) {
-    spotsList.push(spot.toJSON())                 // this makes each spot object json'ed.
+  for (let spot of spots) {                             // this makes each spot object json'ed.
+    spotsList.push(spot.toJSON())                       // use toJSON to make it behave like POJO to manipulate it.
   }
 
   // making previewImage key for the big spotObj
-  for (let spotObj of spotsList) {                // for each json'ed spotObj,
-    for (let image of spotObj.SpotImages) {       // go thru each spotObj's image one by one.
-      if (image.preview) {                        // if that image's preview = true,
-        spotObj.previewImage = image.url;         // add previewImage key to big spotObj, make value the image's url value.
+  for (let spotObj of spotsList) {                      // for each json'ed spotObj,
+    for (let image of spotObj.SpotImages) {             // go thru each spotObj's image one by one.
+      if (image.preview) {                              // if that image's preview = true,
+        spotObj.previewImage = image.url;               // add previewImage key to big spotObj, make value the image's url value.
       }
     }
     if (!spotObj.previewImage) {                        // if no preview image found, previewImage key not added,
@@ -120,19 +112,19 @@ router.get('/current', requireAuth, async (req, res, next) => {
       spotObj.avgRating = 'no reviews yet'
     }
 
-    delete spotObj.Reviews;           // delete big model objects which we don't need any more
-    delete spotObj.SpotImages;        // delete big model objects which we don't need any more
+    delete spotObj.Reviews;                             // delete big model objects which we don't need any more
+    delete spotObj.SpotImages;                          // delete big model objects which we don't need any more
   }
 
-  res.json({Spots:spotsList});        // res.json(spotsList) returns [{},{}],
-});                                   // this returns {"Spots": [{}, {}]}
+  res.json({Spots:spotsList});                          // res.json(spotsList) returns [{},{}],
+});                                                     // this returns {"Spots": [{}, {}]}
 
 
 
 // GET ALL REVIEWS BY SPOT ID **************************************************************************
 router.get('/:spotId/reviews', async (req, res, next) => {
   let reviewsById = await Review.findAll({
-    where: {spotId: req.params.spotId},
+    where: { spotId: req.params.spotId },
     include: [
       {
         model: User,
@@ -140,7 +132,7 @@ router.get('/:spotId/reviews', async (req, res, next) => {
       },
       {
         model: ReviewImage,
-        as: 'ReviewImages',                     // make sure to add alias in association under Review model √√
+        as: 'ReviewImages',                             // make sure to add alias in association under Review model √√
         attributes: [ 'id', 'url' ]
       }
     ]
@@ -148,23 +140,23 @@ router.get('/:spotId/reviews', async (req, res, next) => {
 
   // error for nonexistent spot
   let targetSpot = await Spot.findByPk(req.params.spotId);
-  if (!targetSpot) {                                  // if the target spot to pull reviews from doesn't exist
-    let err = new Error("Spot couldn't be found");   // make a relevant error
-    err.status = 404;                                  // make error status
-    next(err);                                         // pass along error if this doesn't hit.
+  if (!targetSpot) {                                    // if the target spot to pull reviews from doesn't exist
+    let err = new Error("Spot couldn't be found");      // make a relevant error
+    err.status = 404;                                   // make error status
+    next(err);                                          // pass along error if this doesn't hit.
   }
 
-  res.json({Reviews: reviewsById});
+  res.json({ Reviews: reviewsById });
 });
 
 
 
 // GET ALL BOOKINGS BY SPOT ID **************************************************************************
 router.get('/:spotId/bookings', requireAuth, async (req, res, next) => {
-  const { user } = req;                             // destructuring/extracting user key from req, and naming it
+  const { user } = req;                                 // destructuring/extracting user key from req, and naming it
 
   // find all bookings for spot 4
-  let bookings = await Booking.findAll({
+  let bookings = await Booking.findAll({                
     where: {
       spotId: req.params.spotId,    
     },
@@ -175,27 +167,26 @@ router.get('/:spotId/bookings', requireAuth, async (req, res, next) => {
       }
     ]
   });
-  // we got all the bookings of spot 4.
 
   // gotta json everything for eager
   let bookingsList = [];
   for (let booking of bookings) {
-    bookingsList.push(booking.toJSON())             // this makes each spot object json'ed.
+    bookingsList.push(booking.toJSON())                 // this makes each spot object json'ed.
   }
 
   // find Spot 4 obj
   let spotById = await Spot.findByPk(req.params.spotId);    
 
-  if (!spotById) {                                  // if the target spot to be edited doesn't exist
-    let err = new Error("Spot couldn't be found");  // make a relevant error
-    err.status = 404;                               // make error status
-    next(err);                                      // pass along error if this doesn't hit.
+  if (!spotById) {                                      // if the target spot to be edited doesn't exist
+    let err = new Error("Spot couldn't be found");      // make a relevant error
+    err.status = 404;                                   // make error status
+    next(err);                                          // pass along error if this doesn't hit.
   }
 
   // for loop for every booking obj
   for (let currentBooking of bookingsList) {
-    if (spotById.ownerId !== user.id) {             // if owner of Spot 4 is not current user,
-      delete currentBooking.User;                   // delete all this stuff
+    if (spotById.ownerId !== user.id) {                 // if owner of Spot 4 is not current user,
+      delete currentBooking.User;                       // delete all this stuff
       delete currentBooking.id;
       delete currentBooking.userId;
       delete currentBooking.createdAt;
@@ -203,23 +194,23 @@ router.get('/:spotId/bookings', requireAuth, async (req, res, next) => {
     }
   }
 
-  return res.json({Bookings: bookingsList});        // finally return the manipulated or unmanipulated bookings list.
+  return res.json({Bookings: bookingsList});            // finally return the manipulated or unmanipulated bookings list.
 });
 
 
 
 // CREATE A REVIEW FOR A SPOT BY SPOT ID **************************************************************************
 router.post('/:spotId/reviews', requireAuth, async (req, res, next) => {
-  const { user } = req;                               // destructuring/extracting u
-  const { review, stars } = req.body;                 // pull variables i need from req.body
+  const { user } = req;                                 // destructuring/extracting user
+  const { review, stars } = req.body;                   // pull variables i need from req.body
 
-  if (user) {                                         // if user is logged in
+  if (user) {                                           // if user is logged in
     // check if this spot id spot exists
     const targetSpot = await Spot.findByPk(req.params.spotId);      // this is the targeted spot by spotId
-    if (!targetSpot) {                                // if the target spot to be deleted doesn't exist
-      let err = new Error("Spot couldn't be found");  // make a relevant error
-      err.status = 404;                               // make error status
-      next(err);                                      // pass along error if this doesn't hit.
+    if (!targetSpot) {                                  // if the target spot to be deleted doesn't exist
+      let err = new Error("Spot couldn't be found");    // make a relevant error
+      err.status = 404;                                 // make error status
+      next(err);                                        // pass along error if this doesn't hit.
     };
 
     // checking for errors and collecting them
@@ -260,25 +251,25 @@ router.post('/:spotId/reviews', requireAuth, async (req, res, next) => {
       stars
     });
 
-    return res.status(201).json(newReview);
+    return res.status(201).json(newReview);             
   }
-});
+});                                                     
 
 
 
 // CREATE A BOOKING FOR A SPOT BY SPOT ID **************************************************************************
 router.post('/:spotId/bookings', requireAuth, async (req, res, next) => {
-  const { user } = req;                               // destructuring/extracting u
-  const { startDate, endDate } = req.body;                 // pull variables i need from req.body
+  const { user } = req;                                // destructuring/extracting u
+  const { startDate, endDate } = req.body;             // pull variables i need from req.body
 
   // grab house 4
   let spotById = await Spot.findByPk(req.params.spotId);  // get the specific spot from id.
 
   // check if this spot id spot exists
-  if (!spotById) {                                  // if the target spot to be deleted doesn't exist
-    let err = new Error("Spot couldn't be found");  // make a relevant error
-    err.status = 404;                               // make error status
-    next(err);                                      // pass along error if this doesn't hit.
+  if (!spotById) {                                     // if the target spot to be deleted doesn't exist
+    let err = new Error("Spot couldn't be found");     // make a relevant error
+    err.status = 404;                                  // make error status
+    next(err);                                         // pass along error if this doesn't hit.
   };
 
   // find all bookings of this property
@@ -289,69 +280,57 @@ router.post('/:spotId/bookings', requireAuth, async (req, res, next) => {
   // now json the findAll bookings array:
   let bookingsList = [];
   for (let booking of currentBookings) {
-    bookingsList.push(booking.toJSON())               // this makes each booking object json'ed.
+    bookingsList.push(booking.toJSON())                // this makes each booking object json'ed.
   };
 
-  // if (user) {                                         // if someone is logged in,
-    // error for if you own this spot, can't book it
-    if (user.id === spotById.ownerId) {               // if the currently logged-in user(user.id) is not the same as the target property's owner (addPicSpot.ownerId),
-      let err = new Error('Forbidden');               // make a new error called forbidden.
-      err.status = 403;                               // make error status
-      next(err);                                      // pass on error if this doesn't catch.
-    };
+  if (user.id === spotById.ownerId) {                  // if the currently logged-in user(user.id) is not the same as the target property's owner (addPicSpot.ownerId),
+    let err = new Error('Forbidden');                  // make a new error called forbidden.
+    err.status = 403;                                  // make error status
+    next(err);                                         // pass on error if this doesn't catch.
+  };
 
-    // checking for errors and collecting them
-    let errorObj = {};                                                              // this where all the real errors will be held and returned
-    if (Date.parse(startDate) >= Date.parse(endDate)) {                             // if stars is not a num, not between 1 n 5,
-      errorObj.endDate = 'endDate cannot be on or before startDate';                // add stars key to error obj w/ msg value
+  // checking for errors and collecting them
+  let errorObj = {};                                                              // this where all the real errors will be held and returned
+  if (Date.parse(startDate) >= Date.parse(endDate)) {                             // if stars is not a num, not between 1 n 5,
+    errorObj.endDate = 'endDate cannot be on or before startDate';                // add stars key to error obj w/ msg value
+  }
+
+
+  if (Object.keys(errorObj).length) {                                             // if the array of all the keys inside errorObj has length > 0
+    return res.status(400).json({message: 'Bad Request', errors: errorObj})       // status code 400, plus "message: Bad Request", plus "errors:" plus the errorObj.
+  }
+
+  ///////////////////////
+  // overlapping dates error, HARDDDDDD
+  // refer to my drawing to understand
+  // attempted startDates compared to each existing booking dates
+  for (let currentBooking of bookingsList) {
+    if (Date.parse(startDate) < Date.parse(currentBooking.endDate)
+      && Date.parse(startDate) > Date.parse(currentBooking.startDate)) {          // if created startDate starts before an existing booking is over
+        errorObj.startDate = 'Start date conflicts with an existing booking';     // add startDate key to error obj w/ msg value
     }
-  
-
-    if (Object.keys(errorObj).length) {                                             // if the array of all the keys inside errorObj has length > 0
-      return res.status(400).json({message: 'Bad Request', errors: errorObj})       // status code 400, plus "message: Bad Request", plus "errors:" plus the errorObj.
+    if (Date.parse(endDate) > Date.parse(currentBooking.startDate)
+      && Date.parse(endDate) < Date.parse(currentBooking.endDate)) {              // if created endDate is too long, stepping over existing booking start
+        errorObj.endDate = 'End Date conflicts with an existing booking';         // add endDate key to error obj w/ msg value
     }
-
-    ///////////////////////
-    // overlapping dates error, HARDDDDDD
-    // refer to my drawing to understand
-    for (let currentBooking of bookingsList) {
-      // for each current booking, check:
-      // attempted startDates compared to each existing booking dates
-      if (Date.parse(startDate) < Date.parse(currentBooking.endDate)
-        && Date.parse(startDate) > Date.parse(currentBooking.startDate)) {          // if created startDate starts before an existing booking is over
-          errorObj.startDate = 'Start date conflicts with an existing booking';     // add startDate key to error obj w/ msg value
-      }
-      if (Date.parse(endDate) > Date.parse(currentBooking.startDate)
-        && Date.parse(endDate) < Date.parse(currentBooking.endDate)) {              // if created endDate is too long, stepping over existing booking start
-          errorObj.endDate = 'End Date conflicts with an existing booking';         // add endDate key to error obj w/ msg value
-      }
-      if (Date.parse(startDate) === Date.parse(currentBooking.startDate)
-        && Date.parse(endDate) ===  Date.parse(currentBooking.endDate)) {           // duplicate dates
-          errorObj.startDate = 'Start date conflicts with an existing booking';
-          errorObj.endDate = 'End Date conflicts with an existing booking';
-      }      
-        
-      if (Date.parse(startDate) === Date.parse(currentBooking.startDate) 
-        || Date.parse(startDate) === Date.parse(currentBooking.endDate)) {          // if new start date is the same as existing start date or existing end date
-          errorObj.startDate = 'Start date conflicts with an existing booking';          
-      }
-
-      if (Date.parse(endDate) === Date.parse(currentBooking.startDate)              // if new end date is the same as existing start date or existing end date.
-        || Date.parse(endDate) === Date.parse(currentBooking.endDate)) {
-          errorObj.endDate = 'End Date conflicts with an existing booking';
-      }
-    };
-     ///////////////////////
-    if (Object.keys(errorObj).length) {                                             // if the array of all the keys inside errorObj has length > 0
-      return res.status(403).json({message: 'Sorry, this spot is already booked for the specified dates', errors: errorObj})  // status code 400, plus "message: Bad Request", plus "errors:" plus the errorObj.
-    // }
-    };
-    
+    if (Date.parse(startDate) === Date.parse(currentBooking.startDate) 
+      || Date.parse(startDate) === Date.parse(currentBooking.endDate)) {          // if new start date is the same as existing start date or existing end date
+        errorObj.startDate = 'Start date conflicts with an existing booking';          
+    }
+    if (Date.parse(endDate) === Date.parse(currentBooking.startDate)              // if new end date is the same as existing start date or existing end date.
+      || Date.parse(endDate) === Date.parse(currentBooking.endDate)) {
+        errorObj.endDate = 'End Date conflicts with an existing booking';
+    }
+  };
+  ///////////////////////
+  if (Object.keys(errorObj).length) {                                             // if the array of all the keys inside errorObj has length > 0
+    return res.status(403).json({message: 'Sorry, this spot is already booked for the specified dates', errors: errorObj})  // status code 400, plus "message: Bad Request", plus "errors:" plus the errorObj.
+  };    
 
   // create a new booking 
   let newBooking = await Booking.create({         // variable for new img created
     spotId: spotById.id,
-    userId: user.id,
+    userId: user.id,                              // this needs to be the logged in user's id, not the ownerId.
     startDate,
     endDate
   });  
@@ -377,7 +356,6 @@ router.delete('/:spotId', requireAuth, async (req, res, next) => {
   // match up logged-in user id to owner id in target spot
   if (user.id === deletedSpot.ownerId) {            // if the currently logged-in user's id (user.id) === the target property's owner's id,
     await deletedSpot.destroy();                    // destroy the targeted property.
-      // console.log('-------- entered if block')                   // (testing if it enters this if block)
     return res.json({                               // return the json'ed response:
       message: 'Successfully deleted'               // success msg.
     });
@@ -451,16 +429,15 @@ router.get('/:spotId', async (req, res, next) => {
   // making avg
   let sum = 0;
   let count = 0;
-  for (let review of thisSpotReviews) {       // for each of this spot's reviews obj's
+  for (let review of thisSpotReviews) {                           // for each of this spot's reviews obj's
     sum += review.stars;
     count++;
   }
   let avg = sum / count;
   // in case no reviews for avg calculation
   if (!avg) {
-    avg = 'no reviews yet'   // tried to make this edge case message  :c
+    avg = 'no reviews yet'                                        // i made this edge case message
   }
-
   
   // skelly
   const spotSkelly = {
@@ -483,23 +460,13 @@ router.get('/:spotId', async (req, res, next) => {
     Owner: ownerObj
   };
 
-
   return res.json(spotSkelly);
 })
 
 
 
-
-
-
-
-
-
 // GET ALL SPOTS v.3
 router.get('/', async (req, res, next) => {
-
-
-
   let { minLat, maxLat, minLng, maxLng, minPrice, maxPrice, page, size} = req.query     // whichever query user might put in url ?___=___
   const where = {};                                      // to catch conditionals of where for all the GET Spots, such as where minPrice = 2
   const errorObj = {};                                   // to catch all errors before sending the whole basket at the end
@@ -568,8 +535,7 @@ router.get('/', async (req, res, next) => {
     }
   };
 
-
-  // PAGINATION~~~~
+  // PAGINATION~~~~////////////////
   let pagination = {};
 
   //errors
@@ -590,32 +556,30 @@ router.get('/', async (req, res, next) => {
   // limit n offset
   pagination.limit = size;
   pagination.offset = size * (page - 1);
-
-
-
+  ///////////////////
 
   const allSpots = await Spot.findAll({
-    where,
+    where,                                                          // the where and pagination spread must be in the findAll Spots query.
     ...pagination
   });
-  const payload = [];
+  const payload = [];                                               // empty basket to show everything later.
 
-  for (let spot of allSpots) {
-    const thisSpotReviews = await spot.getReviews();
-    const thisSpotImages = await spot.getSpotImages();
+  for (let spot of allSpots) {                                      // for each spot
+    const thisSpotReviews = await spot.getReviews();                // get all reviews
+    const thisSpotImages = await spot.getSpotImages();              // get all spot images
 
     // making avg
     let sum = 0;
     let count = 0;
-    for (let review of thisSpotReviews) {       // for each of this spot's reviews obj's
+    for (let review of thisSpotReviews) {                           // for each review of this spot
       sum += review.stars;
       count++;
     }
     let avg = sum / count;
 
     if (!avg) {
-      avg = 'no reviews yet'   // tried to make this edge case message  :c
-    }
+      avg = 'no reviews yet'                                        // i made this edge case message
+    };
 
     // skelly
     const spotSkelly = {
@@ -623,7 +587,7 @@ router.get('/', async (req, res, next) => {
       ownerId: spot.ownerId,
       address: spot.address,
       city: spot.city,
-      state: spot.state,
+      state: spot.state,                                            
       country: spot.country,
       lat: spot.lat,
       lng: spot.lng,
@@ -632,260 +596,33 @@ router.get('/', async (req, res, next) => {
       price: spot.price,
       createdAt: spot.createdAt,
       updatedAt: spot.updatedAt,
-      avgRating: avg
+      avgRating: avg                                               // used the avg variable i made above
     };
 
-    spotSkelly.previewImage = 'no preview image found'
-    for (let image of thisSpotImages) {
-      if (image.preview) {                        // if that image's preview = true,
-        spotSkelly.previewImage = image.url;         // add previewImage key to big spotObj, make value the image's url value.
-        break;
+    spotSkelly.previewImage = 'no preview image found'             // add previewImage key to skelly, this default msg value.
+    for (let image of thisSpotImages) {                            // only works this way, if i put it in else statement below, it will override the true one, cuz no saves in if statement.
+      if (image.preview) {                                         // if that image's preview = true,
+        spotSkelly.previewImage = image.url;                       // change previewImage key of big spotObj, make value the image's url value instead of default not found msg.
+        break;                                                     // once find true one, break out of for loop to make it more efficient.
       }
     }
 
-    payload.push(spotSkelly);
+    payload.push(spotSkelly);                                      // push each filled out skelly to payload, then iterate again.
   }
-  return res.json({
+
+  return res.json({                                                // we send back
     Spots:payload,
-    page,
+    page,                                                          // don't forget to add these 2 cuz of the API doc.
     size
   })
-})
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// GET ALL SPOTS v.2
-router.get('/', async (req, res, next) => {
-  const allSpots = await Spot.findAll();
-  const payload = [];
-
-  for (let spot of allSpots) {
-    const thisSpotReviews = await spot.getReviews();
-    const thisSpotImages = await spot.getSpotImages();
-
-    // making avg
-    let sum = 0;
-    let count = 0;
-    for (let review of thisSpotReviews) {       // for each of this spot's reviews obj's
-      sum += review.stars;
-      count++;
-    }
-    let avg = sum / count;
-
-    if (!avg) {
-      avg = 'no reviews yet'   // tried to make this edge case message  :c
-    }
- 
-
-    // skelly
-    const spotSkelly = {
-      id: spot.id,
-      ownerId: spot.ownerId,
-      address: spot.address,
-      city: spot.city,
-      state: spot.state,
-      country: spot.country,
-      lat: spot.lat,
-      lng: spot.lng,
-      name: spot.name,
-      description: spot.description,
-      price: spot.price,
-      createdAt: spot.createdAt,
-      updatedAt: spot.updatedAt,
-      avgRating: avg
-    };
-
-    spotSkelly.previewImage = 'no preview image found'
-    for (let image of thisSpotImages) {
-      if (image.preview) {                        // if that image's preview = true,
-        spotSkelly.previewImage = image.url;         // add previewImage key to big spotObj, make value the image's url value.
-        break;
-      }
-    }
-
-    payload.push(spotSkelly);
-  }
-  return res.json({Spots:payload})
-})
-
-
-
-
-
-// !!!!!!FORMAT THE PAGINATION AND QUERIES
-
-
-// GET ALL SPOTS *********************************************************************************
-router.get('/', async (req, res, next) => {
-  let { minLat, maxLat, minLng, maxLng, minPrice, maxPrice, page, size} = req.query     // whichever query user might put in url ?___=___
-  const where = {};                                      // to catch conditionals of where for all the GET Spots, such as where minPrice = 2
-  const errorObj = {};                                   // to catch all errors before sending the whole basket at the end
-
-  // need to parse all query stuff before using as normal, cuz i think they are all strings at first
-  minLat = parseFloat(minLat);
-  maxLat = parseFloat(maxLat);
-  minLng = parseFloat(minLng);
-  maxLng = parseFloat(maxLng);
-  minPrice = parseFloat(minPrice);
-  maxPrice = parseFloat(maxPrice);
-  page = parseInt(page);
-  size = parseInt(size);
-
-  //minLat
-  if (minLat || minLat === 0) {
-    if (typeof minLat === 'number' && (minLat >= -90 && minLat <= 90)) {
-      where.lat = {[Op.gte]: minLat};
-    } else {
-      errorObj.minLat = 'Minimum latitude is invalid';
-    }
-  };
-
-  //maxLat
-  if (maxLat || maxLat === 0) {
-    if (typeof maxLat === 'number' && (maxLat >= -90 && maxLat <= 90)) {
-      where.lat = {[Op.lte]: maxLat};
-    } else {
-      errorObj.maxLat = 'Maximum latitude is invalid';
-    }
-  };
-
-  //minLng
-  if (minLng || minLng === 0) {
-    if (typeof minLng === 'number' && (minLng >= -180 && minLng <= 180)) {
-      where.lng = {[Op.gte]: minLng};
-    } else {
-      errorObj.minLng = 'Minimum longitude is invalid';
-    }
-  };
-
-  //maxLng
-  if (maxLng || maxLng === 0) {
-    if (typeof maxLng === 'number' && (maxLng >= -180 && maxLng <= 180)) {
-      where.lng = {[Op.lte]: maxLng};
-    } else {
-      errorObj.maxLng = 'Maximum longitude is invalid';
-    }
-  };
-
-  //minPrice
-  if (minPrice || minPrice === 0) {
-    if (typeof minPrice === 'number' && minPrice >= 0) {
-      where.price = {[Op.gte]: minPrice};
-    } else {
-      errorObj.minPrice = 'Minimum price must be greater than or equal to 0';
-    }
-  };
-
-  //maxPrice
-  if (maxPrice || maxPrice === 0) {
-    if (typeof maxPrice === 'number' && maxPrice >= 0) {
-      where.price = {[Op.lte]: maxPrice};
-    } else {
-      errorObj.maxPrice = 'Maximum price must be greater than or equal to 0';
-    }
-  };
-
-
-  // PAGINATION~~~~
-  let pagination = {};
-
-  //errors
-  if (page < 1) errorObj.page = 'Page must be greater than or equal to 1';
-  if (size < 1) errorObj.size = 'Size must be greater than or equal to 1';  
-  // collecting all the errors
-  if (Object.keys(errorObj).length) {                                              // if the array of all the keys inside errorObj has length > 0
-    return res.status(400).json({message: 'Bad Request', errors: errorObj})        // status code 400, plus "message: Bad Request", plus "errors:" plus the errorObj.
-  };                                                                               // BE MINDFUL OF PLACEMENT, this needs to include all the top filters plus pagination errors.
-
-  // default 
-  if (isNaN(page) || !page) page = 1;      
-  if (isNaN(size) || !size ) size = 20;    
-  //max
-  if (page > 10) page = 10;
-  if (size > 20) size = 20;    
-
-  // limit n offset
-  pagination.limit = size;
-  pagination.offset = size * (page - 1);
-                                                              
-
-
-  // **********************************
-  // the real GET ALL SPOTS!!~~~
-  const spots = await Spot.findAll({              // for every findAll, you need to iterate thru each one to json it
-    where,                                        // *** i added this for the query filter step
-    ...pagination,                                // *** i added this for the pagination step
-
-    include: [ Review, SpotImage ]                // can write the models in 1 array.
-  });
-
-  // json'ed array
-  let spotsList = [];                             // this shows the correct array response of all the big objects.
-  for (let spot of spots) {
-    spotsList.push(spot.toJSON())                 // this makes each spot object json'ed.
-  }
-           
-  // making previewImage key for the big spotObj
-  for (let spotObj of spotsList) {                // for each json'ed spotObj,
-    for (let image of spotObj.SpotImages) {       // go thru each spotObj's image one by one.
-      if (image.preview) {                        // if that image's preview = true,
-        spotObj.previewImage = image.url;         // add previewImage key to big spotObj, make value the image's url value.
-      }
-    }
-    if (!spotObj.previewImage) {                        // if no preview image found, previewImage key not added,
-      spotObj.previewImage = 'no preview image found'   // add previewImage key, make value this msg.
-    }
-
-    // making avgRating key for big spotObj
-    let sum = 0;
-    let count = 0;
-    for (let review of spotObj.Reviews) {
-      sum += review.stars;
-      count++;
-    }
-    let avg = sum / count;
-    spotObj.avgRating = avg;
-    if (!spotObj.avgRating) {
-      spotObj.avgRating = 'no reviews yet'
-    }
-
-    delete spotObj.Reviews;           // delete big model objects which we don't need any more
-    delete spotObj.SpotImages;        // delete big model objects which we don't need any more
-  }
-
-  
-  // FINALLY!! return as usual except tack on page, size
-  return res.json({                   // res.json(spotsList) returns [{},{}],
-    Spots:spotsList,                  // this returns {"Spots": [{}, {}]}
-    page,                             // ***added this during pagination phase
-    size                              // ***added this during pagination phase
-  })
-});       
+});
 
 
 
 // CREATE A SPOT **************************************************************************
 router.post('/', requireAuth, async (req, res, next) => {
-  const { user } = req;               // destructuring/extracting user key from req, and naming it
-  if (user) {                         // if user is logged in
+  const { user } = req;                                                  // destructuring/extracting user key from req, and naming it
+  if (user) {                                                            // if user is logged in
     const { address, city, state, country, lat, lng, name, description, price } = req.body;   // take out these variables from req.body
 
     // checking for errors and collecting them
@@ -935,16 +672,16 @@ router.put('/:spotId', requireAuth, async (req, res, next) => {                 
   let editSpot = await Spot.findByPk(req.params.spotId);                                        // get the specific spot from id.
 
   // error for nonexistent spot
-  if (!editSpot) {                                  // if the target spot to be edited doesn't exist
-    let err = new Error("Spot couldn't be found");  // make a relevant error
-    err.status = 404;                               // make error status
-    next(err);                                      // pass along error if this doesn't hit.
+  if (!editSpot) {                                                     // if the target spot to be edited doesn't exist
+    let err = new Error("Spot couldn't be found");                     // make a relevant error
+    err.status = 404;                                                  // make error status
+    next(err);                                                         // pass along error if this doesn't hit.
   }
   // error for if this user is unauthorized to edit this spot
-  if (user.id !== editSpot.ownerId) {               // if the currently logged-in user's id (user.id) !== the target property's owner's id,
-    let err = new Error('Forbidden');               // make a new error called forbidden.
-    err.status = 403;                               // make error status
-    next(err);                                      // pass on error if this doesn't catch.
+  if (user.id !== editSpot.ownerId) {                                  // if the currently logged-in user's id (user.id) !== the target property's owner's id,
+    let err = new Error('Forbidden');                                  // make a new error called forbidden.
+    err.status = 403;                                                  // make error status
+    next(err);                                                         // pass on error if this doesn't catch.
   };
 
   // checking for errors and collecting them
@@ -989,68 +726,3 @@ router.put('/:spotId', requireAuth, async (req, res, next) => {                 
 
 
 module.exports = router;
-
-
-
-
-
-
-
-
-
-
-
-
-// DISCARDED TRASH BUT IT WORKED FOR LOCAL:
-// XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-/*
-// GET SPOT BY ID **************************************************************************
-router.get('/:spotId', async (req, res, next) => {
-  let spotById = await Spot.findByPk(req.params.spotId, {
-    include: [ 
-      {
-        model: Review
-      }, 
-      {
-        model: SpotImage,
-        attributes: [ 'id', 'url', 'preview' ] 
-      }, 
-      {
-        model: User,
-        as: 'Owner',                // make sure to go to Spot model and add this alias to this foreign key. √√
-        attributes: [ 'id', 'firstName', 'lastName' ]
-      }
-    ]    
-  }); // up to here returns a regular spot, need to add numReviews, avgStarRating,SpotImages(id,url,preview),Owner(id,firstName,lastName)
-
-  // catch error if spot doesn't exist  
-  if (!spotById) {                                  // if the target spot to be edited doesn't exist
-    let err = new Error("Spot couldn't be found");  // make a relevant error
-    err.status = 404;                               // make error status
-    next(err);                                      // pass along error if this doesn't hit.
-  }
-
-  // make spotById obj workable by making it json'ed.
-  let jsonedSpotById = spotById.toJSON();           // only need this when i eager load
-
-  // numReviews
-  jsonedSpotById.numReviews = jsonedSpotById.Reviews.length
- 
-  // avgRating
-  let sum = 0;
-  let count = 0;
-  for (let review of jsonedSpotById.Reviews) {
-    sum += review.stars;
-    count++;
-  }
-  let avg = sum / count;
-  jsonedSpotById.avgStarRating = avg;
-  if (!jsonedSpotById.avgStarRating) {
-    jsonedSpotById.avgStarRating = 'no reviews yet'
-  }
-
-  delete jsonedSpotById.Reviews;
-
-  res.json(jsonedSpotById);
-});
-*/
