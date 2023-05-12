@@ -351,7 +351,7 @@ router.post('/:spotId/bookings', requireAuth, async (req, res, next) => {
   // create a new booking 
   let newBooking = await Booking.create({         // variable for new img created
     spotId: spotById.id,
-    userId: spotById.ownerId,
+    userId: user.id,
     startDate,
     endDate
   });  
