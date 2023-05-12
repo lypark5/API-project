@@ -10,6 +10,78 @@ const { requireAuth } = require('../../utils/auth');          // import the midd
 
 
 
+
+// GET ALL BOOKINGS BY CURRENT USER v.2
+router.get('/current', requireAuth, async (req, res, next) => {
+  const { user } = req;                                 // destructuring/extracting user key from req, and naming it
+  const payload = [];                                   // 1 user can have more than 1 booking.  This is a basket.
+
+  // finding all the bookings made by current
+  const bookingsOfUser = await Booking.findAll({        // for every findAll, you need to iterate thru each one to json it
+    where: { userId: user.id }
+  })
+    console.log(bookingsOfUser)
+  // console.log(Object.getOwnPropertyNames(Spot.prototype));
+
+  // json'ed array
+  // let bookingsList = [];                             // this shows the correct array response of all the big objects.
+  // for (let booking of bookingsOfUser) {
+  //   bookingsList.push(booking.toJSON())                 // this makes each spot object json'ed.
+  // }
+  for (let booking of bookingsOfUser) {
+    const thisSpot = await Spot.findOne({       // this specific spot for this booking
+      where: { id: booking.spotId },
+      attributes: [
+        'id', 
+        'ownerId', 
+        'address', 
+        'city', 
+        'state', 
+        'country', 
+        'lat', 
+        'lng', 
+        'name', 
+        'price'
+      ]
+    });
+
+
+    // console.log(thisSpot)
+    let jsonedSpot = thisSpot.toJSON();     // only need to json the nested object, not the whole for loop objects.
+    const thisSpotImages = await thisSpot.getSpotImages();    // all images
+
+    // skelly
+    const bookingSkelly = {
+      id: booking.id,
+      spotId: booking.spotId,
+      userId: user.id,
+      startDate: booking.startDate,
+      endDate: booking.endDate,
+      createdAt: booking.createdAt,
+      updatedAt: booking.updatedAt,
+      Spot: jsonedSpot
+    };
+
+    jsonedSpot.previewImage = 'no preview image found';
+    for (let image of thisSpotImages) {
+      if (image.preview) {                        // if that image's preview = true,
+        jsonedSpot.previewImage = image.url;         // add previewImage key to big spotObj, make value the image's url value.
+        break;
+      }
+    }
+
+
+    payload.push(bookingSkelly);
+  } 
+  // console.log(payload)
+
+  return res.json({Bookings:payload})
+});
+
+
+
+
+
 // GET ALL BOOKINGS BY CURRENT USER************************************************
 router.get('/current', requireAuth, async (req, res, next) => {
   const { user } = req;                                 // destructuring/extracting user key from req, and naming it
@@ -25,6 +97,7 @@ router.get('/current', requireAuth, async (req, res, next) => {
     ]
   });
   // up to here returns big objects of bookings, now gotta tweak
+  console.log(Object.getOwnPropertyNames(Spot.prototype));
 
   // for every findAll, you need to iterate thru each one to json it
   let bookingsList = [];
