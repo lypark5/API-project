@@ -62,11 +62,11 @@ router.get('/current', requireAuth, async (req, res, next) => {
       Spot: jsonedSpot
     };
 
+    jsonedSpot.previewImage = 'no preview image found';
     for (let image of thisSpotImages) {
       if (image.preview) {                        // if that image's preview = true,
         jsonedSpot.previewImage = image.url;         // add previewImage key to big spotObj, make value the image's url value.
-      } else {                        // if no preview image found, previewImage key not added,
-        jsonedSpot.previewImage = 'no preview image found'   // add previewImage key, make value this msg.
+        break;
       }
     }
 

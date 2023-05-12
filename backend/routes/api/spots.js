@@ -530,11 +530,11 @@ router.get('/', async (req, res, next) => {
       avgRating: avg
     };
 
+    spotSkelly.previewImage = 'no preview image found'
     for (let image of thisSpotImages) {
       if (image.preview) {                        // if that image's preview = true,
         spotSkelly.previewImage = image.url;         // add previewImage key to big spotObj, make value the image's url value.
-      } else {                        // if no preview image found, previewImage key not added,
-        spotSkelly.previewImage = 'no preview image found'   // add previewImage key, make value this msg.
+        break;
       }
     }
 
