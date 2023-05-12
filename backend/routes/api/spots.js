@@ -17,7 +17,7 @@ router.get('/current', requireAuth, async (req, res, next) => {
 
   // finding all the spots owned by current
   const spotsOfOwner = await Spot.findAll({       // array of spot objects
-    where: {ownerId: user.id},                    // all spots whose ownerId matches logged-in id
+    where: { ownerId: user.id },                    // all spots whose ownerId matches logged-in id
   });
 
 

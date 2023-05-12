@@ -10,6 +10,25 @@ const { requireAuth } = require('../../utils/auth');          // import the midd
 
 
 
+
+// GET ALL BOOKINGS BY CURRENT USER v.2
+router.get('/current', requireAuth, async (req, res, next) => {
+  const { user } = req;                                 // destructuring/extracting user key from req, and naming it
+  const payload = [];                                   // 1 user can have more than 1 booking.  This is a basket.
+
+  // finding all the bookings made by current
+  const bookingsOfUser = await Booking.findAll({        // for every findAll, you need to iterate thru each one to json it
+    where: { userId: user.id }
+  })
+
+  for (let booking of bookingsOfUser)
+
+
+
+
+
+
+
 // GET ALL BOOKINGS BY CURRENT USER************************************************
 router.get('/current', requireAuth, async (req, res, next) => {
   const { user } = req;                                 // destructuring/extracting user key from req, and naming it
