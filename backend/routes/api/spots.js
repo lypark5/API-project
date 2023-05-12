@@ -305,6 +305,7 @@ router.post('/:spotId/bookings', requireAuth, async (req, res, next) => {
     if (Date.parse(startDate) >= Date.parse(endDate)) {                             // if stars is not a num, not between 1 n 5,
       errorObj.endDate = 'endDate cannot be on or before startDate';                // add stars key to error obj w/ msg value
     }
+  
 
     if (Object.keys(errorObj).length) {                                             // if the array of all the keys inside errorObj has length > 0
       return res.status(400).json({message: 'Bad Request', errors: errorObj})       // status code 400, plus "message: Bad Request", plus "errors:" plus the errorObj.
@@ -317,13 +318,28 @@ router.post('/:spotId/bookings', requireAuth, async (req, res, next) => {
       // for each current booking, check:
       // attempted startDates compared to each existing booking dates
       if (Date.parse(startDate) < Date.parse(currentBooking.endDate)
-        && Date.parse(startDate) > Date.parse(currentBooking.startDate)) {             // if created startDate starts before an existing booking is over
+        && Date.parse(startDate) > Date.parse(currentBooking.startDate)) {          // if created startDate starts before an existing booking is over
           errorObj.startDate = 'Start date conflicts with an existing booking';     // add startDate key to error obj w/ msg value
       }
       if (Date.parse(endDate) > Date.parse(currentBooking.startDate)
-        && Date.parse(endDate) < Date.parse(currentBooking.endDate)) {             // if created endDate is too long, stepping over existing booking start
+        && Date.parse(endDate) < Date.parse(currentBooking.endDate)) {              // if created endDate is too long, stepping over existing booking start
           errorObj.endDate = 'End Date conflicts with an existing booking';         // add endDate key to error obj w/ msg value
-      }                                      
+      }
+      if (Date.parse(startDate) === Date.parse(currentBooking.startDate)
+        && Date.parse(endDate) ===  Date.parse(currentBooking.endDate)) {           // duplicate dates
+          errorObj.startDate = 'Start date conflicts with an existing booking';
+          errorObj.endDate = 'End Date conflicts with an existing booking';
+      }      
+        
+      if (Date.parse(startDate) === Date.parse(currentBooking.startDate) 
+        || Date.parse(startDate) === Date.parse(currentBooking.endDate)) {          // if new start date is the same as existing start date or existing end date
+          errorObj.startDate = 'Start date conflicts with an existing booking';          
+      }
+
+      if (Date.parse(endDate) === Date.parse(currentBooking.startDate)              // if new end date is the same as existing start date or existing end date.
+        || Date.parse(endDate) === Date.parse(currentBooking.endDate)) {
+          errorObj.endDate = 'End Date conflicts with an existing booking';
+      }
     };
      ///////////////////////
     if (Object.keys(errorObj).length) {                                             // if the array of all the keys inside errorObj has length > 0
