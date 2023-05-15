@@ -205,7 +205,9 @@ router.put('/:bookingId', requireAuth, async (req, res, next) => {         // ne
 
   // i gotta a find all bookings of this house
   let currentBookings = await Booking.findAll({
-    where: {spotId: editBooking.spotId}                          // all bookings with spotId the same as the specific editBooking's spotId.
+    where: {
+      spotId: editBooking.spotId                                // all bookings with spotId the same as the specific editBooking's spotId.
+    }                          
   });
 
   // now json the findAll bookings array:
@@ -214,26 +216,37 @@ router.put('/:bookingId', requireAuth, async (req, res, next) => {         // ne
     bookingsList.push(booking.toJSON())                          // this makes each booking object json'ed and usable.
   };
 
+
+
+
+
+
+
   ///////////////////////
   // overlapping dates error, HARDDDDDD
   // refer to my drawing to understand
   // attempted startDates compared to each existing booking dates
   for (let currentBooking of bookingsList) {                                      // iterate thru every booking for this house from bookingsList array
-    if (Date.parse(startDate) < Date.parse(currentBooking.endDate)                // if attempted startDate starts before an existing booking's end
-      && Date.parse(startDate) > Date.parse(currentBooking.startDate)) {            // while also after the existing booking's start 
-        errorObj.startDate = 'Start date conflicts with an existing booking';     // VIOLATION!  add startDate key to error obj w/ msg value
-    }
-    if (Date.parse(endDate) > Date.parse(currentBooking.startDate)                // if attempted endDate starts after an existing booking's start
-      && Date.parse(endDate) < Date.parse(currentBooking.endDate)) {                // while also before the existing booking's end
-        errorObj.endDate = 'End Date conflicts with an existing booking';         // VIOLATION!  add endDate key to error obj w/ msg value
-    }     
-    if (Date.parse(startDate) === Date.parse(currentBooking.startDate) 
-      || Date.parse(startDate) === Date.parse(currentBooking.endDate)) {          // if new start date is the same as existing start date or existing end date
-        errorObj.startDate = 'Start date conflicts with an existing booking';          
-    }
-    if (Date.parse(endDate) === Date.parse(currentBooking.startDate)              // if new end date is the same as existing start date or existing end date.
-      || Date.parse(endDate) === Date.parse(currentBooking.endDate)) {
-        errorObj.endDate = 'End Date conflicts with an existing booking';
+
+
+    // NEED TO CHECK IF THIS BOOKING IS MY BOOKING.
+    if (currentBooking.userId !== user.id) {
+      if (Date.parse(startDate) < Date.parse(currentBooking.endDate)                // if attempted startDate starts before an existing booking's end
+        && Date.parse(startDate) > Date.parse(currentBooking.startDate)) {            // while also after the existing booking's start 
+          errorObj.startDate = 'Start date conflicts with an existing booking';     // VIOLATION!  add startDate key to error obj w/ msg value
+      }
+      if (Date.parse(endDate) > Date.parse(currentBooking.startDate)                // if attempted endDate starts after an existing booking's start
+        && Date.parse(endDate) < Date.parse(currentBooking.endDate)) {                // while also before the existing booking's end
+          errorObj.endDate = 'End Date conflicts with an existing booking';         // VIOLATION!  add endDate key to error obj w/ msg value
+      }     
+      if (Date.parse(startDate) === Date.parse(currentBooking.startDate) 
+        || Date.parse(startDate) === Date.parse(currentBooking.endDate)) {          // if new start date is the same as existing start date or existing end date
+          errorObj.startDate = 'Start date conflicts with an existing booking';          
+      }
+      if (Date.parse(endDate) === Date.parse(currentBooking.startDate)              // if new end date is the same as existing start date or existing end date.
+        || Date.parse(endDate) === Date.parse(currentBooking.endDate)) {
+          errorObj.endDate = 'End Date conflicts with an existing booking';
+      }
     }
   };
   ///////////////////////                                
