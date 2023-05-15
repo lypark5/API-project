@@ -161,6 +161,7 @@ router.put('/:bookingId', requireAuth, async (req, res, next) => {         // ne
   const { user } = req;                                                    // get user from req (the logged in user's info)
   const { startDate, endDate } = req.body;                                 // all the variables we want to use from req body
   let editBooking = await Booking.findByPk(req.params.bookingId);          // get the specific booking from id.
+  console.log(editBooking)
 
   // error for nonexistent booking
   if (!editBooking) {                                           // if the target booking to be edited doesn't exist
@@ -175,6 +176,24 @@ router.put('/:bookingId', requireAuth, async (req, res, next) => {         // ne
     next(err);                                                  // pass on error if this doesn't catch.
   };
 
+  // error for past dates (the existing booking's end date)
+  console.log(Date.parse(endDate), Date.now())                  // attempted endDate is before today's date (already passed)
+  if ((Date.parse(editBooking.endDate) < Date.now())) {         // editBooking.endDate = the end date of the existing booking u want to edit.          
+    console.log('entered if block')
+    let err = new Error("Past bookings can't be modified");     // make a relevant error
+    err.status = 403;                                           // make error status
+    next(err);                                                  // pass along error if this doesn't hit.
+  };  
+
+  // error for past dates (forbid u from entering past date as a newly requested date)
+  console.log(Date.parse(endDate), Date.now())
+  if ((Date.parse(endDate) < Date.now())) {                     // endDate = new end date from req body
+    console.log('entered if block')
+    let err = new Error("Past bookings can't be modified");     // make a relevant error
+    err.status = 403;                                           // make error status
+    next(err);                                                  // pass along error if this doesn't hit.
+  };  
+
   // checking for errors and collecting them
   let errorObj = {};                                                        // this where all the errors will be held and returned
   if (Date.parse(startDate) >= Date.parse(endDate)) {                       // if attempted startDate is after attempted endDate (reversed),
@@ -183,13 +202,6 @@ router.put('/:bookingId', requireAuth, async (req, res, next) => {         // ne
   if (Object.keys(errorObj).length) {                                             // if the array of all the keys inside errorObj has length > 0
     return res.status(400).json({message: 'Bad Request', errors: errorObj})       // status code 400, plus "message: Bad Request", plus "errors:" plus the errorObj.
   }
-
-  // error for past dates
-  if ((Date.parse(endDate) < Date.now())) {                      // attempted endDate is before today's date (already passed)
-    let err = new Error("Past bookings can't be modified");      // make a relevant error
-    err.status = 403;                                            // make error status
-    next(err);                                                   // pass along error if this doesn't hit.
-  };  
 
   // i gotta a find all bookings of this house
   let currentBookings = await Booking.findAll({
