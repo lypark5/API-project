@@ -200,6 +200,10 @@ router.get('/:spotId/bookings', requireAuth, async (req, res, next) => {
 
 
 // CREATE A REVIEW FOR A SPOT BY SPOT ID **************************************************************************
+/* 
+for after grading, make this project better by verifying that user has booking in this spot before letting u post review.
+*/
+
 router.post('/:spotId/reviews', requireAuth, async (req, res, next) => {
   const { user } = req;                                 // destructuring/extracting user
   const { review, stars } = req.body;                   // pull variables i need from req.body
