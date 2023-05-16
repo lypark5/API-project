@@ -216,21 +216,12 @@ router.put('/:bookingId', requireAuth, async (req, res, next) => {         // ne
     bookingsList.push(booking.toJSON())                          // this makes each booking object json'ed and usable.
   };
 
-
-
-
-
-
-
   ///////////////////////
   // overlapping dates error, HARDDDDDD
   // refer to my drawing to understand
   // attempted startDates compared to each existing booking dates
-  for (let currentBooking of bookingsList) {                                      // iterate thru every booking for this house from bookingsList array
-
-
-    // NEED TO CHECK IF THIS BOOKING IS MY BOOKING.
-    if (currentBooking.userId !== user.id) {
+  for (let currentBooking of bookingsList) {                                        // iterate thru every booking for this house from bookingsList array
+    if (currentBooking.userId !== user.id) {                                        // NEED TO CHECK IF THIS BOOKING IS MY BOOKING.  IF NOT MINE,
       if (Date.parse(startDate) < Date.parse(currentBooking.endDate)                // if attempted startDate starts before an existing booking's end
         && Date.parse(startDate) > Date.parse(currentBooking.startDate)) {            // while also after the existing booking's start 
           errorObj.startDate = 'Start date conflicts with an existing booking';     // VIOLATION!  add startDate key to error obj w/ msg value
