@@ -23,8 +23,8 @@ router.use('/bookings', bookings);            // tell ur app.js to use bookings 
 router.use('/spot-images', spotimages);       // tell ur app.js to use spotimages router
 router.use('/review-images', reviewimages);   // tell ur app.js to use reviewimages router
 
-router.post('/test', (req, res) => {
-  res.json({ requestBody: req.body });
-});
+// router.post('/test', (req, res) => {
+//   res.json({ requestBody: req.body });
+// });
 
 module.exports = router;
