@@ -1,35 +1,36 @@
 import { csrfFetch } from './csrf'      // special fetch for validating authorized.
 
-const GET_ALL_SPOTS = 'getAllSpots'  // action name
-const GET_ALL_SPOTS_ACTION = (spots) => {
-  return {
-    type: GET_ALL_SPOTS,
-    spots
-  }
-}
+// Action Type Constants
+export const GET_ALL_SPOTS = 'spots/GET_ALL_SPOTS'  // action name
+export const GET_SPOT_DETAILS = 'spots/GET_SPOT_DETAILS'
 
-const GET_SPOT_DETAILS = 'getSpotDetails'
-const GET_SPOT_DETAILS_ACTION = (spot) => {
-  return {
-    type: GET_SPOT_DETAILS,
-    spot
-  }
-}
+// Action Creators
+export const getAllSpotsAction = (spots) => ({
+  type: GET_ALL_SPOTS,
+  spots
+});
 
+export const getSpotDetailsAction = (spot) => ({
+  type: GET_SPOT_DETAILS,
+  spot
+});
+
+// Thunk Action Creators
 // create thunk: request info from backend, sends it to front, thunks should be async
-export const GetAllSpotsThunk = () => async (dispatch) => {
-  let res = await fetch('/api/spots')             // this is the backend home page for /spots
+export const getAllSpotsThunk = () => async (dispatch) => {
+  const res = await fetch('/api/spots')             // this is the backend home page for /spots
   if (res.ok) {
-    let newRes = await res.json()
-    await dispatch(GET_ALL_SPOTS_ACTION(newRes))    // invoking the action.  newRes = spots on line 2
+    const newRes = await res.json();
+    dispatch(getAllSpotsAction(newRes)) ;  // invoking the action.  newRes = spots on line 2
+    return newRes;   
   }
 }
 
-export const GetSpotDetailThunk = (spotId) => async (dispatch) => {
+export const getSpotDetailsThunk = (spotId) => async (dispatch) => {
   let res = await fetch(`/api/spots/${spotId}`)
   if (res.ok) {
     let newRes = await res.json()
-    await dispatch(GET_SPOT_DETAILS_ACTION(newRes))
+    await dispatch(getSpotDetailsAction(newRes))
   }
 }
 

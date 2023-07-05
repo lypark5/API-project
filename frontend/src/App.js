@@ -3,8 +3,8 @@ import { useDispatch } from "react-redux";
 import { Switch, Route } from "react-router-dom";
 import * as sessionActions from "./store/session";
 import Navigation from "./components/Navigation";
-import GetAllSpots from "./components/Spots/GetAllSpots";
-import GetSpotDetail from "./components/Spots/GetSpotDetails";
+import GetAllSpotsFunction from "./components/Spots/GetAllSpots";
+import GetSpotDetailsFunction from "./components/Spots/GetSpotDetails";
 
 
 // i load all my shit here, where i write switch and route
@@ -13,6 +13,7 @@ import GetSpotDetail from "./components/Spots/GetSpotDetails";
 function App() {
   const dispatch = useDispatch();
   const [isLoaded, setIsLoaded] = useState(false);
+  
   useEffect(() => {
     dispatch(sessionActions.restoreUser()).then(() => setIsLoaded(true));
   }, [dispatch]);
@@ -23,10 +24,10 @@ function App() {
       {isLoaded && 
         <Switch>
           <Route exact path='/'>
-            <GetAllSpots />
+            <GetAllSpotsFunction />
           </Route>
           <Route path='/spots/:spotId'>
-            <GetSpotDetail />
+            <GetSpotDetailsFunction />
           </Route>
         </Switch>}
     </>
