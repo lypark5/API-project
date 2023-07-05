@@ -4,6 +4,7 @@ import { Switch, Route } from "react-router-dom";
 import * as sessionActions from "./store/session";
 import Navigation from "./components/Navigation";
 import GetAllSpots from "./components/Spots/GetAllSpots";
+import GetSpotDetail from "./components/Spots/GetSpotDetails";
 
 
 // i load all my shit here, where i write switch and route
@@ -23,6 +24,9 @@ function App() {
         <Switch>
           <Route exact path='/'>
             <GetAllSpots />
+          </Route>
+          <Route path='/spots/:spotId'>
+            <GetSpotDetail />
           </Route>
         </Switch>}
     </>
