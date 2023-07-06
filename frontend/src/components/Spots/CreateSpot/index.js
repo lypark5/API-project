@@ -44,18 +44,16 @@ function CreateSpotFunction () {
   return (
     <>
       <h1>Create a New Spot</h1>
-      {Object.values(errors).length > 0 ? Object.values(errors).map(error => 
+      {/* {Object.values(errors).length > 0 ? Object.values(errors).map(error => 
         <p className='errors'>{error}</p>
-        ): null}
-      {/* {errors.address && <p>{errors.address}</p>}   
-      {errors.country && <p>{errors.country}</p>}       */}
+        ): null} */}    
       <h6>Where is your place located?</h6>
       <p>Guests will only get your exact address once they booked a
 reservation.
 </p>
       <form onSubmit={handleSubmit}>
         <label>
-          Country
+          Country {errors.country && <p className='errors'>{errors.country}</p>}   
           <input 
             type="text"
             value={country}
@@ -63,7 +61,7 @@ reservation.
           />
         </label>
         <label>
-          Street Address
+          Street Address {errors.address && <p className='errors'>{errors.address}</p>}
           <input 
             type="text"
             value={address}
@@ -87,86 +85,85 @@ reservation.
           />
         </label>
         <label>
-          State
+          Latitude
           <input 
             type="text"
-            value={state}
-            onChange={(e) => setState(e.target.value)}
+            value={lat}
+            onChange={(e) => setLat(e.target.value)}
           />
         </label>
         <label>
-          State
+          Longitude
           <input 
             type="text"
-            value={state}
-            onChange={(e) => setState(e.target.value)}
+            value={lng}
+            onChange={(e) => setLng(e.target.value)}
           />
         </label>
         <label>
-          State
+          <h3>Describe your place to guests</h3>
+          <p>Mention the best features of your space, any special amentities like
+fast wifi or parking, and what you love about the neighborhood.
+</p>
           <input 
-            type="text"
-            value={state}
-            onChange={(e) => setState(e.target.value)}
+            type="textarea"
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
           />
         </label>
         <label>
-          State
+          <h3>Create a title for your spot</h3>
+          <p>Catch guests' attention with a spot title that highlights what makes
+your place special.</p>
           <input 
             type="text"
-            value={state}
-            onChange={(e) => setState(e.target.value)}
+            value={name}
+            onChange={(e) => setName(e.target.value)}
           />
         </label>
         <label>
-          State
+          <h3>Set a base price for your spot</h3>
+          <p>Competitive pricing can help your listing stand out and rank higher
+in search results.</p>
+          <span>$</span>
           <input 
-            type="text"
-            value={state}
-            onChange={(e) => setState(e.target.value)}
+            type="number"
+            value={price}
+            onChange={(e) => setPrice(e.target.value)}
           />
         </label>
         <label>
-          State
-          <input 
-            type="text"
-            value={state}
-            onChange={(e) => setState(e.target.value)}
-          />
+          <h3>Liven up your spot with photos</h3>
+          <p>Submit a link to at least one photo to publish your spot.</p>
         </label>
-        <label>
-          State
+        <div>
           <input 
-            type="text"
-            value={state}
-            onChange={(e) => setState(e.target.value)}
+            type="url"
+            value={previewImg}
+            onChange={(e) => setPreviewImg(e.target.value)}
           />
-        </label>
-        <label>
-          State
           <input 
-            type="text"
-            value={state}
-            onChange={(e) => setState(e.target.value)}
+            type="url"
+            value={img2}
+            onChange={(e) => setImg2(e.target.value)}
           />
-        </label>
-        <label>
-          State
           <input 
-            type="text"
-            value={state}
-            onChange={(e) => setState(e.target.value)}
+            type="url"
+            value={img3}
+            onChange={(e) => setImg3(e.target.value)}
           />
-        </label>
-        <label>
-          State
           <input 
-            type="text"
-            value={state}
-            onChange={(e) => setState(e.target.value)}
+            type="url"
+            value={img4}
+            onChange={(e) => setImg4(e.target.value)}
           />
-        </label>
-        <button type="submit">Create</button>
+          <input 
+            type="url"
+            value={img5}
+            onChange={(e) => setImg5(e.target.value)}
+          />
+        </div>
+        <button type="submit">Create Spot</button>
       </form>
     </>
   )
