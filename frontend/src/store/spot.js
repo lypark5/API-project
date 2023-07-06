@@ -62,11 +62,11 @@ export const createSpotThunk = (spot) => async (dispatch) => {
 // reducer
 const initialState = {allSpots: {}, singleSpot: {}};  // look at wiki
 const spotReducer = (state = initialState, action) => {
-  let newState;
   switch(action.type) {
     case GET_ALL_SPOTS: {
-      newState = {allSpots: {...state.allSpots}, singleSpot: {}}
-      // console.log('action.spots.Spots = ', action.spots.Spots)       // vs. action.spots
+      const newState = {allSpots: {...state.allSpots}, singleSpot: {}}    // ...state.allSpots is old stuff spreading to new stuff, this is declaring without deep copying
+      console.log('action.spots.Spots = ', action.spots.Spots)       // [7 array]
+      console.log('action.spots = ', action.spots)    // {Spots: [7 array]}
       action.spots.Spots.forEach(spot => {
         newState.allSpots[spot.id] = spot
       })
@@ -74,14 +74,14 @@ const spotReducer = (state = initialState, action) => {
       return newState;
     }
     case GET_SPOT_DETAILS: {
-      newState = {allSpots: {}, singleSpot: {...state.singleSpot}}
+      const newState = {allSpots: {}, singleSpot: {...state.singleSpot}}
       console.log('action.spot = ', action.spot)
       const spot = action.spot
       newState.singleSpot = spot
       return newState;
     }
     case CREATE_SPOT: {
-      newState = {allSpots: {...state.allSpots}, singleSpot: {}}
+      const newState = {allSpots: {...state.allSpots}, singleSpot: {}}
       const spots = action.spots
       newState.allSpots = spots
       return newState;
