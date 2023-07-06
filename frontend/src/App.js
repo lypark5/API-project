@@ -5,7 +5,7 @@ import * as sessionActions from "./store/session";
 import Navigation from "./components/Navigation";
 import GetAllSpotsFunction from "./components/Spots/GetAllSpots";
 import GetSpotDetailsFunction from "./components/Spots/GetSpotDetails";
-import Create
+import CreateSpotFunction from "./components/Spots/CreateSpot";
 
 
 // i load all my shit here, where i write switch and route

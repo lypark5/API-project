@@ -4,7 +4,7 @@ import { csrfFetch } from './csrf'      // special fetch for validating authoriz
 // Action Type Constants
 export const GET_ALL_SPOTS = 'spots/GET_ALL_SPOTS';  // action name
 export const GET_SPOT_DETAILS = 'spots/GET_SPOT_DETAILS';
-export const EDIT_SPOT = 'spots/EDIT_SPOT';
+export const CREATE_SPOT = 'spots/CREATE_SPOT';
 
 
 // Action Creators
@@ -18,8 +18,8 @@ export const getSpotDetailsAction = (spot) => ({
   spot
 });
 
-export const editSpotAction = (spot) => ({
-  type: EDIT_SPOT,
+export const createSpotAction = (spot) => ({
+  type: CREATE_SPOT,
   spot
 })
 
@@ -44,16 +44,17 @@ export const getSpotDetailsThunk = (spotId) => async (dispatch) => {
 }
 
 export const createSpotThunk = (spot) => async (dispatch) => {
-  const res = await fetch('/api/spots', {
+  const res = await csrfFetch('/api/spots', {
     method: 'POST',
     headers: {'Content-Type': 'application/json'},
     body: JSON.stringify(spot)
   });
-  const newRes = await res.json();
+  const newSpot = await res.json();  // PASS NEWSPOT IN TO THE OTHER THUNK?
+    // NEED NEW IMG FETCH HERE
   if (res.ok) {
-    dispatch(editSpotAction(newRes));
-    return newRes;
-  } else return newRes;
+    dispatch(createSpotAction(newSpot));
+    return newSpot;
+  } else return newSpot;
 }
 
 
@@ -79,7 +80,7 @@ const spotReducer = (state = initialState, action) => {
       newState.singleSpot = spot
       return newState;
     }
-    case EDIT_SPOT: {
+    case CREATE_SPOT: {
       newState = {allSpots: {...state.allSpots}, singleSpot: {}}
       const spots = action.spots
       newState.allSpots = spots
