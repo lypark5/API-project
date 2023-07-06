@@ -2,6 +2,8 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { getSpotDetailsThunk } from '../../../store/spot';
+import { getAllReviewsBySpotIdThunk } from '../../../store/reviews';
+import GetAllReviewsBySpotIdFunction from '../../Reviews/GetAllReviewsBySpotId';
 
 function GetSpotDetailsFunction () {
   const dispatch = useDispatch();
@@ -10,6 +12,7 @@ function GetSpotDetailsFunction () {
 
   useEffect(() => {
     dispatch(getSpotDetailsThunk(spotId));
+    dispatch(getAllReviewsBySpotIdThunk(spotId));
   }, [dispatch]);
 
   if (!spot.SpotImages) {                                     // if SpotImages key doesn't exist in spot
@@ -46,7 +49,7 @@ function GetSpotDetailsFunction () {
         <span>
           <h3>Hosted by {spot.Owner.firstName} {spot.Owner.lastName}</h3>
           <p>
-
+            <GetAllReviewsBySpotIdFunction />
           </p>
         </span>
         <span>

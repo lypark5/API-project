@@ -5,6 +5,7 @@ import * as sessionActions from "./store/session";
 import Navigation from "./components/Navigation";
 import GetAllSpotsFunction from "./components/Spots/GetAllSpots";
 import GetSpotDetailsFunction from "./components/Spots/GetSpotDetails";
+import GetAllReviewsBySpotIdFunction from "./components/Reviews/GetAllReviewsBySpotId";
 
 
 // i load all my shit here, where i write switch and route
@@ -28,6 +29,9 @@ function App() {
           </Route>
           <Route path='/spots/:spotId'>
             <GetSpotDetailsFunction />
+          </Route>
+          <Route path='/api/spots/:spotId/reviews'>
+            <GetAllReviewsBySpotIdFunction />
           </Route>
         </Switch>}
     </>

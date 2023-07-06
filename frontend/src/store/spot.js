@@ -27,13 +27,15 @@ export const getAllSpotsThunk = () => async (dispatch) => {
 }
 
 export const getSpotDetailsThunk = (spotId) => async (dispatch) => {
-  let res = await fetch(`/api/spots/${spotId}`)
+  const res = await fetch(`/api/spots/${spotId}`)
   if (res.ok) {
-    let newRes = await res.json()
+    const newRes = await res.json()
     await dispatch(getSpotDetailsAction(newRes))
   }
 }
 
+
+// reducer
 const initialState = {allSpots: {}, singleSpot: {}};  // look at wiki
 const spotReducer = (state = initialState, action) => {
   let newState;
