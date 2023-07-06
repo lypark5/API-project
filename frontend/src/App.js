@@ -5,7 +5,7 @@ import * as sessionActions from "./store/session";
 import Navigation from "./components/Navigation";
 import GetAllSpotsFunction from "./components/Spots/GetAllSpots";
 import GetSpotDetailsFunction from "./components/Spots/GetSpotDetails";
-import GetAllReviewsBySpotIdFunction from "./components/Reviews/GetAllReviewsBySpotId";
+import Create
 
 
 // i load all my shit here, where i write switch and route
@@ -19,6 +19,8 @@ function App() {
     dispatch(sessionActions.restoreUser()).then(() => setIsLoaded(true));
   }, [dispatch]);
 
+  // the route paths should be the paths the user inputs, not the backend paths that have api in it.
+  // also we don't need GetAllReviewsBySpotIdFunction cuz it is not used on this page but the spot detail page.  see GetSpotDetails > index.js.
   return (
     <>
       <Navigation isLoaded={isLoaded} />
@@ -30,8 +32,8 @@ function App() {
           <Route path='/spots/:spotId'>
             <GetSpotDetailsFunction />
           </Route>
-          <Route path='/api/spots/:spotId/reviews'>
-            <GetAllReviewsBySpotIdFunction />
+          <Route path='/spots'>
+            <CreateSpotFunction />
           </Route>
         </Switch>}
     </>

@@ -1,8 +1,11 @@
 import { csrfFetch } from './csrf'      // special fetch for validating authorized.
 
+
 // Action Type Constants
-export const GET_ALL_SPOTS = 'spots/GET_ALL_SPOTS'  // action name
-export const GET_SPOT_DETAILS = 'spots/GET_SPOT_DETAILS'
+export const GET_ALL_SPOTS = 'spots/GET_ALL_SPOTS';  // action name
+export const GET_SPOT_DETAILS = 'spots/GET_SPOT_DETAILS';
+export const EDIT_SPOT = 'spots/EDIT_SPOT';
+
 
 // Action Creators
 export const getAllSpotsAction = (spots) => ({
@@ -14,6 +17,12 @@ export const getSpotDetailsAction = (spot) => ({
   type: GET_SPOT_DETAILS,
   spot
 });
+
+export const editSpotAction = (spot) => ({
+  type: EDIT_SPOT,
+  spot
+})
+
 
 // Thunk Action Creators
 // create thunk: request info from backend, sends it to front, thunks should be async
@@ -33,6 +42,20 @@ export const getSpotDetailsThunk = (spotId) => async (dispatch) => {
     await dispatch(getSpotDetailsAction(newRes))
   }
 }
+
+export const createSpotThunk = (spot) => async (dispatch) => {
+  const res = await fetch('/api/spots', {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify(spot)
+  });
+  const newRes = await res.json();
+  if (res.ok) {
+    dispatch(editSpotAction(newRes));
+    return newRes;
+  } else return newRes;
+}
+
 
 
 // reducer
@@ -54,6 +77,12 @@ const spotReducer = (state = initialState, action) => {
       console.log('action.spot = ', action.spot)
       const spot = action.spot
       newState.singleSpot = spot
+      return newState;
+    }
+    case EDIT_SPOT: {
+      newState = {allSpots: {...state.allSpots}, singleSpot: {}}
+      const spots = action.spots
+      newState.allSpots = spots
       return newState;
     }
 
