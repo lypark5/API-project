@@ -41,7 +41,7 @@ function EditSpotFunction() {
   // line 42: if errors.address exists then display the address error in ptag
   return (
     <>
-      <h1>Create a New Spot</h1>
+      <h1>Edit Spot</h1>
       {Object.values(errors).length > 0 ? Object.values(errors).map(error => 
         <p className='errors'>{error}</p>
         ): null}     
