@@ -26,17 +26,45 @@ function CreateSpotFunction () {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const errorsObj = {};                             // we need the basket to accumulate every error possible
+    const urlArr = [];
+
     if (!address.length) {
       errorsObj.address = "address cannot be empty!"
     }
     if (!country.length) {
       errorsObj.country = "country cannot be empty!"
     }
-    setErrors(errorsObj);
-    if (Object.values(errors).length) {
-      return;
+    if (!previewImg.length) {
+      errorsObj.previewImg = "prev img required"
     }
+    setErrors(errorsObj);                               // this behaves in an async manner, or else it breaks the page.
+    if (Object.values(errorsObj).length === 0) {
+  
+
+    if (previewImg) {                                     // only mandatory one
+      let previewImgObj = {url: previewImg, preview: true}  // these keys come from add img to spot backend variables
+      urlArr.push(previewImgObj)
+    }
+    if (img2) {
+      let previewImgObj = {url: img2, preview: false}  // these keys come from add img to spot backend variables
+      urlArr.push(previewImgObj)
+    }
+    if (img3) {
+      let previewImgObj = {url: img3, preview: false}  // these keys come from add img to spot backend variables
+      urlArr.push(previewImgObj)
+    }
+    if (img4) {
+      let previewImgObj = {url: img4, preview: false}  // these keys come from add img to spot backend variables
+      urlArr.push(previewImgObj)
+    }
+    if (img5) {
+      let previewImgObj = {url: img5, preview: false}  // these keys come from add img to spot backend variables
+      urlArr.push(previewImgObj)
+    }
+    const spot = await dispatch (createSpotThunk({country, address, city, state, lat: +lat, lng: +lng, description, name, price}, urlArr))
+    history.push(`/spots/${spot.id}`);
   }
+}
   
 
 
@@ -44,9 +72,9 @@ function CreateSpotFunction () {
   return (
     <>
       <h1>Create a New Spot</h1>
-      {/* {Object.values(errors).length > 0 ? Object.values(errors).map(error => 
+      {Object.values(errors).length > 0 ? Object.values(errors).map(error => 
         <p className='errors'>{error}</p>
-        ): null} */}    
+        ): null}     
       <h6>Where is your place located?</h6>
       <p>Guests will only get your exact address once they booked a
 reservation.
@@ -87,7 +115,7 @@ reservation.
         <label>
           Latitude
           <input 
-            type="text"
+            type="number"
             value={lat}
             onChange={(e) => setLat(e.target.value)}
           />
@@ -95,14 +123,14 @@ reservation.
         <label>
           Longitude
           <input 
-            type="text"
+            type="number"
             value={lng}
             onChange={(e) => setLng(e.target.value)}
           />
         </label>
         <label>
           <h3>Describe your place to guests</h3>
-          <p>Mention the best features of your space, any special amentities like
+          <p>Mention the best features of your space, any special amenities like
 fast wifi or parking, and what you love about the neighborhood.
 </p>
           <input 
@@ -137,8 +165,9 @@ in search results.</p>
           <p>Submit a link to at least one photo to publish your spot.</p>
         </label>
         <div>
+          <p className='errors'>{errors.previewImg}</p>
           <input 
-            type="url"
+            type="text"
             value={previewImg}
             onChange={(e) => setPreviewImg(e.target.value)}
           />

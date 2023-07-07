@@ -5,6 +5,7 @@ import { csrfFetch } from './csrf'      // special fetch for validating authoriz
 export const GET_ALL_SPOTS = 'spots/GET_ALL_SPOTS';  // action name
 export const GET_SPOT_DETAILS = 'spots/GET_SPOT_DETAILS';
 export const CREATE_SPOT = 'spots/CREATE_SPOT';
+export const EDIT_SPOT = 'spots/EDIT_SPOT';
 
 
 // Action Creators
@@ -20,6 +21,11 @@ export const getSpotDetailsAction = (spot) => ({
 
 export const createSpotAction = (spot) => ({
   type: CREATE_SPOT,
+  spot
+});
+
+export const editSpotAction = (spot) => ({
+  type: EDIT_SPOT,
   spot
 })
 
@@ -43,19 +49,34 @@ export const getSpotDetailsThunk = (spotId) => async (dispatch) => {
   }
 }
 
-export const createSpotThunk = (spot) => async (dispatch) => {
+export const createSpotThunk = (spot, urls) => async (dispatch) => {      // spots is the create spot data the user put in, urls is the urlArr 
   const res = await csrfFetch('/api/spots', {
     method: 'POST',
     headers: {'Content-Type': 'application/json'},
     body: JSON.stringify(spot)
   });
+
   const newSpot = await res.json();  // PASS NEWSPOT IN TO THE OTHER THUNK?
-    // NEED NEW IMG FETCH HERE
   if (res.ok) {
-    dispatch(createSpotAction(newSpot));
+    for (let url of urls) {                                               // iterating thru each url
+      await csrfFetch(`/api/spots/${newSpot.id}/images`, {
+        method: 'POST',                                                   // post req for each url
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify(url)
+      }); 
+    }
     return newSpot;
-  } else return newSpot;
+  } else return newSpot.errors;
 }
+
+// export const editSpotThunk = (spotId) => async (dispatch) => {
+//   const res = await fetch(`/api/spots/${spotId}`, {
+//     method: 'PUT',
+//     headers: {'Content-Type': 'application/json'},
+//     body: JSON.stringify(spot)
+//   });
+//   if (res.ok)
+// }
 
 
 
