@@ -16,6 +16,10 @@ import { useParams } from 'react-router-dom';
   // inside, gonna have type = CLEAR_STATE
   // in the reducer, just make the state an empty object
   // we gonna dispatch it in the cleanup function of UseEffect, see example in chat
+    // which is :
+    // useEffect(() => {
+      // return () => dispatch(clearSpotsActionCreator())
+      // }, [])
 
 function EditSpotFunction() {
   // const spot = dispatch(getSpotDetailsThunk({country, address, city, state, lat: +lat, lng: +lng, description, name, price}, spotId))
