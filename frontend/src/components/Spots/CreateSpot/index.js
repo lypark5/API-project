@@ -86,6 +86,7 @@ reservation.
             type="text"
             value={country}
             onChange={(e) => setCountry(e.target.value)}
+            placeholder='Country'
           />
         </label>
         <label>
@@ -94,6 +95,7 @@ reservation.
             type="text"
             value={address}
             onChange={(e) => setAddress(e.target.value)}
+            placeholder='Address'
           />
         </label>
         <label>
@@ -102,6 +104,7 @@ reservation.
             type="text"
             value={city}
             onChange={(e) => setCity(e.target.value)}
+            placeholder='City'
           />
         </label>
         <label>
@@ -110,6 +113,7 @@ reservation.
             type="text"
             value={state}
             onChange={(e) => setState(e.target.value)}
+            placeholder='STATE'
           />
         </label>
         <label>
@@ -118,6 +122,7 @@ reservation.
             type="number"
             value={lat}
             onChange={(e) => setLat(e.target.value)}
+            placeholder='Latitude'
           />
         </label>
         <label>
@@ -126,6 +131,7 @@ reservation.
             type="number"
             value={lng}
             onChange={(e) => setLng(e.target.value)}
+            placeholder='Longitude'
           />
         </label>
         <label>
@@ -137,6 +143,7 @@ fast wifi or parking, and what you love about the neighborhood.
             type="textarea"
             value={description}
             onChange={(e) => setDescription(e.target.value)}
+            placeholder='Please write at least 30 characters'
           />
         </label>
         <label>
@@ -147,6 +154,7 @@ your place special.</p>
             type="text"
             value={name}
             onChange={(e) => setName(e.target.value)}
+            placeholder='Name of your spot'
           />
         </label>
         <label>
@@ -158,6 +166,7 @@ in search results.</p>
             type="number"
             value={price}
             onChange={(e) => setPrice(e.target.value)}
+            placeholder='Price per night (USD)'
           />
         </label>
         <label>
@@ -170,26 +179,31 @@ in search results.</p>
             type="text"
             value={previewImg}
             onChange={(e) => setPreviewImg(e.target.value)}
+            placeholder='Preview Image URL'
           />
           <input 
             type="url"
             value={img2}
             onChange={(e) => setImg2(e.target.value)}
+            placeholder='Image URL'
           />
           <input 
             type="url"
             value={img3}
             onChange={(e) => setImg3(e.target.value)}
+            placeholder='Image URL'
           />
           <input 
             type="url"
             value={img4}
             onChange={(e) => setImg4(e.target.value)}
+            placeholder='Image URL'
           />
           <input 
             type="url"
             value={img5}
             onChange={(e) => setImg5(e.target.value)}
+            placeholder='Image URL'
           />
         </div>
         <button type="submit">Create Spot</button>

@@ -45,7 +45,7 @@ function EditSpotFunction() {
       {Object.values(errors).length > 0 ? Object.values(errors).map(error => 
         <p className='errors'>{error}</p>
         ): null}     
-      <h6>Where is your place located?</h6>
+      <h3>Where is your place located?</h3>
       <p>Guests will only get your exact address once they booked a
 reservation.
 </p>
@@ -56,7 +56,7 @@ reservation.
             type="text"
             value={country}
             onChange={(e) => setCountry(e.target.value)}
-          />
+            placeholder='Country'/>
         </label>
         <label>
           Street Address {errors.address && <p className='errors'>{errors.address}</p>}
@@ -64,6 +64,7 @@ reservation.
             type="text"
             value={address}
             onChange={(e) => setAddress(e.target.value)}
+            placeholder='Address'
           />
         </label>
         <label>
@@ -72,6 +73,7 @@ reservation.
             type="text"
             value={city}
             onChange={(e) => setCity(e.target.value)}
+            placeholder='City'
           />
         </label>
         <label>
@@ -80,6 +82,7 @@ reservation.
             type="text"
             value={state}
             onChange={(e) => setState(e.target.value)}
+            placeholder='STATE'
           />
         </label>
         <label>
@@ -88,6 +91,7 @@ reservation.
             type="number"
             value={lat}
             onChange={(e) => setLat(e.target.value)}
+            placeholder='Latitude'
           />
         </label>
         <label>
@@ -96,6 +100,7 @@ reservation.
             type="number"
             value={lng}
             onChange={(e) => setLng(e.target.value)}
+            placeholder='Longitude'
           />
         </label>
         <label>
@@ -107,6 +112,7 @@ fast wifi or parking, and what you love about the neighborhood.
             type="textarea"
             value={description}
             onChange={(e) => setDescription(e.target.value)}
+            placeholder='Please write at least 30 characters'
           />
         </label>
         <label>
@@ -117,6 +123,7 @@ your place special.</p>
             type="text"
             value={name}
             onChange={(e) => setName(e.target.value)}
+            placeholder='Name of your spot'
           />
         </label>
         <label>
@@ -128,6 +135,7 @@ in search results.</p>
             type="number"
             value={price}
             onChange={(e) => setPrice(e.target.value)}
+            placeholder='Price per night (USD)'
           />
         </label>
         <button type="submit">Edit Spot</button>
