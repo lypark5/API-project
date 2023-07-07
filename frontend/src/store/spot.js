@@ -5,6 +5,7 @@ import { csrfFetch } from './csrf'      // special fetch for validating authoriz
 export const GET_ALL_SPOTS = 'spots/GET_ALL_SPOTS';  // action name
 export const GET_SPOT_DETAILS = 'spots/GET_SPOT_DETAILS';
 export const CREATE_SPOT = 'spots/CREATE_SPOT';
+export const DELETE_SPOT = 'spots/DELETE_SPOT';
 export const EDIT_SPOT = 'spots/EDIT_SPOT';
 
 
@@ -24,10 +25,15 @@ export const createSpotAction = (spot) => ({
   spot
 });
 
+export const deleteSpotAction = (spotId) => ({
+  type: DELETE_SPOT,
+  spotId
+});
+
 export const editSpotAction = (spot) => ({
   type: EDIT_SPOT,
   spot
-})
+});
 
 
 // Thunk Action Creators
@@ -69,18 +75,27 @@ export const createSpotThunk = (spot, urls) => async (dispatch) => {      // spo
   } else return newSpot.errors;
 }
 
-// export const editSpotThunk = (spotId) => async (dispatch) => {
-//   const res = await fetch(`/api/spots/${spotId}`, {
-//     method: 'PUT',
-//     headers: {'Content-Type': 'application/json'},
-//     body: JSON.stringify(spot)
-//   });
-//   if (res.ok)
-// }
+export const deleteSpotThunk = (spotId) => async (dispatch) => {
+  const res = await csrfFetch(`/api/spots/${spotId}`, {
+    method: 'DELETE'
+  })
+  if (res.ok) {
+    await dispatch(deleteSpotAction(spotId))
+  }
+}
+
+export const editSpotThunk = (spot, spotId) => async (dispatch) => {    //getSpotDetailsThunk is called in a dispatch in get spot detail page
+  const res = await csrfFetch(`/api/spots/${spotId}`, {
+    method: 'PUT',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify(spot)        // body comes from component, not action
+  });                                                                 // don't need res.ok shit, cuz it's getting redirected to details page.
+}
 
 
 
 // reducer
+// reducer basically changes the state, and also decides the structure of the state
 const initialState = {allSpots: {}, singleSpot: {}};  // look at wiki
 const spotReducer = (state = initialState, action) => {
   switch(action.type) {
@@ -107,8 +122,12 @@ const spotReducer = (state = initialState, action) => {
       newState.allSpots = spots
       return newState;
     }
+    case DELETE_SPOT: {
+      const newState = {allSpots: {...state.allSpots}, singleSpot: {}}
+      delete newState.allSpots[action.spotId]
+      return newState;
+    }
 
-    
     default: return state;
   }
 };

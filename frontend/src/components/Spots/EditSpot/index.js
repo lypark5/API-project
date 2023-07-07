@@ -1,9 +1,10 @@
 import { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { createSpotThunk } from '../../../store/spot';
+import { editSpotThunk } from '../../../store/spot';
+import { useParams } from 'react-router-dom';
 
-function CreateSpotFunction () {
+function EditSpotFunction() {
   const history = useHistory();
   const dispatch = useDispatch();
   const [country, setCountry] = useState("");
@@ -15,18 +16,12 @@ function CreateSpotFunction () {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [price, setPrice] = useState(0);
-  const [previewImg, setPreviewImg] = useState("");
-  const [img2, setImg2] = useState("");
-  const [img3, setImg3] = useState("");
-  const [img4, setImg4] = useState("");
-  const [img5, setImg5] = useState("");
   const [errors, setErrors] = useState({});
-
+  const { spotId } = useParams();                 // i pull this spotId from url 
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     const errorsObj = {};                             // we need the basket to accumulate every error possible
-    const urlArr = [];
 
     if (!address.length) {
       errorsObj.address = "address cannot be empty!"
@@ -34,35 +29,10 @@ function CreateSpotFunction () {
     if (!country.length) {
       errorsObj.country = "country cannot be empty!"
     }
-    if (!previewImg.length) {
-      errorsObj.previewImg = "prev img required"
-    }
     setErrors(errorsObj);                               // this behaves in an async manner, or else it breaks the page.
     if (Object.values(errorsObj).length === 0) {
-  
-
-    if (previewImg) {                                     // only mandatory one
-      let previewImgObj = {url: previewImg, preview: true}  // these keys come from add img to spot backend variables
-      urlArr.push(previewImgObj)
-    }
-    if (img2) {
-      let previewImgObj = {url: img2, preview: false}  // these keys come from add img to spot backend variables
-      urlArr.push(previewImgObj)
-    }
-    if (img3) {
-      let previewImgObj = {url: img3, preview: false}  // these keys come from add img to spot backend variables
-      urlArr.push(previewImgObj)
-    }
-    if (img4) {
-      let previewImgObj = {url: img4, preview: false}  // these keys come from add img to spot backend variables
-      urlArr.push(previewImgObj)
-    }
-    if (img5) {
-      let previewImgObj = {url: img5, preview: false}  // these keys come from add img to spot backend variables
-      urlArr.push(previewImgObj)
-    }
-    const spot = await dispatch (createSpotThunk({country, address, city, state, lat: +lat, lng: +lng, description, name, price}, urlArr))  // we await this so it is processed before redirecting to next page
-    history.push(`/spots/${spot.id}`);      // we needed to make line 64 a variable so we can use it as a param
+      const spot = await dispatch (editSpotThunk({country, address, city, state, lat: +lat, lng: +lng, description, name, price}, spotId))  // we await this so it is processed before redirecting to next page
+    history.push(`/spots/${spotId}`);      // we needed to make line 64 a variable so we can use it as a param                             // this is editSpotThunk args (spot, spotId) need to match in thunk code same order
   }
 }
   
@@ -160,42 +130,12 @@ in search results.</p>
             onChange={(e) => setPrice(e.target.value)}
           />
         </label>
-        <label>
-          <h3>Liven up your spot with photos</h3>
-          <p>Submit a link to at least one photo to publish your spot.</p>
-        </label>
-        <div>
-          <p className='errors'>{errors.previewImg}</p>
-          <input 
-            type="text"
-            value={previewImg}
-            onChange={(e) => setPreviewImg(e.target.value)}
-          />
-          <input 
-            type="url"
-            value={img2}
-            onChange={(e) => setImg2(e.target.value)}
-          />
-          <input 
-            type="url"
-            value={img3}
-            onChange={(e) => setImg3(e.target.value)}
-          />
-          <input 
-            type="url"
-            value={img4}
-            onChange={(e) => setImg4(e.target.value)}
-          />
-          <input 
-            type="url"
-            value={img5}
-            onChange={(e) => setImg5(e.target.value)}
-          />
-        </div>
-        <button type="submit">Create Spot</button>
+        <button type="submit">Edit Spot</button>
       </form>
     </>
   )
 }
+  
 
-export default CreateSpotFunction;
+
+export default EditSpotFunction;

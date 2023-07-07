@@ -19,7 +19,7 @@ function GetSpotDetailsFunction () {
     console.log('in the if statement', spot.SpotImages)
     return null;
   }
-  console.log("spot =", spot)
+  // console.log("spot =", spot)
   console.log("spot.SpotImages= ", spot.SpotImages)
   let prevImg;
   let nonPrevImg = spot.SpotImages.filter(img => !img.preview);
