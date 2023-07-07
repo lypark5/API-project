@@ -1,10 +1,24 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { editSpotThunk } from '../../../store/spot';
 import { useParams } from 'react-router-dom';
+// import {}
+
+// first get spot info from store (i have details for this spot there)
+// need to dispatch a thunk to show spot details
+// need useEffect to track when this spot from the store changes (in the dependency array)
+// if useEffect is undefined spot?.country
+
+// setCountry(spot?.country), for all of them
+//edge cases: if spot 1 is showing up in spot 5 after editing 1 
+  // first create an action creator, and export it.
+  // inside, gonna have type = CLEAR_STATE
+  // in the reducer, just make the state an empty object
+  // we gonna dispatch it in the cleanup function of UseEffect, see example in chat
 
 function EditSpotFunction() {
+  // const spot = dispatch(getSpotDetailsThunk({country, address, city, state, lat: +lat, lng: +lng, description, name, price}, spotId))
   const history = useHistory();
   const dispatch = useDispatch();
   const [country, setCountry] = useState("");
@@ -18,6 +32,11 @@ function EditSpotFunction() {
   const [price, setPrice] = useState(0);
   const [errors, setErrors] = useState({});
   const { spotId } = useParams();                 // i pull this spotId from url 
+
+  // useEffect(() => {
+  //   dispatch(getSpotDetailsThunk(spotId));
+  //   dispatch(getAllReviewsBySpotIdThunk(spotId));
+  // }, [dispatch]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -33,8 +52,8 @@ function EditSpotFunction() {
     if (Object.values(errorsObj).length === 0) {
       const spot = await dispatch (editSpotThunk({country, address, city, state, lat: +lat, lng: +lng, description, name, price}, spotId))  // we await this so it is processed before redirecting to next page
     history.push(`/spots/${spotId}`);      // we needed to make line 64 a variable so we can use it as a param                             // this is editSpotThunk args (spot, spotId) need to match in thunk code same order
+    }
   }
-}
   
 
 
@@ -56,7 +75,9 @@ reservation.
             type="text"
             value={country}
             onChange={(e) => setCountry(e.target.value)}
-            placeholder='Country'/>
+            placeholder='Country'>
+            
+            </input>
         </label>
         <label>
           Street Address {errors.address && <p className='errors'>{errors.address}</p>}
