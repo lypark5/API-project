@@ -58,42 +58,52 @@ function CreateSpotFunction () {
     if (!previewImg) {
       errorsObj.previewImg = "Preview image is required"
     }
-    if (!img2.endsWith('.png', '.jpg', 'jpeg'))       //need slice?
-      errorsObj.previewImg = "Preview image is required"
+    // if (!img2.endsWith('.png', '.jpg', 'jpeg')) {   
+    //   errorsObj.img2 = "Image URL must end in .png, .jpg, or .jpeg"
+    // }
+    if (!(img2.endsWith('.png') || img2.endsWith('.jpg') || img2.endsWith('jpeg'))) {    // this works.  above listing commas does not work.
+      errorsObj.img2 = "Image URL must end in .png, .jpg, or .jpeg"
     }
+    if (!(img3.endsWith('.png') || img3.endsWith('.jpg') || img3.endsWith('jpeg'))) {   
+      errorsObj.img3 = "Image URL must end in .png, .jpg, or .jpeg"
+    }
+    if (!(img4.endsWith('.png') || img4.endsWith('.jpg') || img4.endsWith('jpeg'))) {   
+      errorsObj.img4 = "Image URL must end in .png, .jpg, or .jpeg"
+    }
+    if (!(img5.endsWith('.png') || img5.endsWith('.jpg') || img5.endsWith('jpeg'))) {   
+      errorsObj.img5 = "Image URL must end in .png, .jpg, or .jpeg"
+    }
+
 
     setErrors(errorsObj);                               // this behaves in an async manner, or else it breaks the page.
-    if (Object.values(errorsObj).length === 0) {
-  
-
-    if (previewImg) {                                     // only mandatory one
-      let previewImgObj = {url: previewImg, preview: true}  // these keys come from add img to spot backend variables
-      urlArr.push(previewImgObj)
+    if (!Object.values(errorsObj).length) {
+      if (previewImg) {                                     // only mandatory one
+        let previewImgObj = {url: previewImg, preview: true}  // these keys come from add img to spot backend variables
+        urlArr.push(previewImgObj)
+      }
+      if (img2) {
+        let previewImgObj = {url: img2, preview: false}  // these keys come from add img to spot backend variables
+        urlArr.push(previewImgObj)
+      }
+      if (img3) {
+        let previewImgObj = {url: img3, preview: false}  // these keys come from add img to spot backend variables
+        urlArr.push(previewImgObj)
+      }
+      if (img4) {
+        let previewImgObj = {url: img4, preview: false}  // these keys come from add img to spot backend variables
+        urlArr.push(previewImgObj)
+      }
+      if (img5) {
+        let previewImgObj = {url: img5, preview: false}  // these keys come from add img to spot backend variables
+        urlArr.push(previewImgObj)
+      }
+      const spot = await dispatch (createSpotThunk({country, address, city, state, lat: +lat, lng: +lng, description, name, price}, urlArr))  // we await this so it is processed before redirecting to next page
+      history.push(`/spots/${spot.id}`);      // we needed to make line 64 a variable so we can use it as a param
     }
-    if (img2) {
-      let previewImgObj = {url: img2, preview: false}  // these keys come from add img to spot backend variables
-      urlArr.push(previewImgObj)
-    }
-    if (img3) {
-      let previewImgObj = {url: img3, preview: false}  // these keys come from add img to spot backend variables
-      urlArr.push(previewImgObj)
-    }
-    if (img4) {
-      let previewImgObj = {url: img4, preview: false}  // these keys come from add img to spot backend variables
-      urlArr.push(previewImgObj)
-    }
-    if (img5) {
-      let previewImgObj = {url: img5, preview: false}  // these keys come from add img to spot backend variables
-      urlArr.push(previewImgObj)
-    }
-    const spot = await dispatch (createSpotThunk({country, address, city, state, lat: +lat, lng: +lng, description, name, price}, urlArr))  // we await this so it is processed before redirecting to next page
-    history.push(`/spots/${spot.id}`);      // we needed to make line 64 a variable so we can use it as a param
   }
-}
   
-
-
-  // line 42: if errors.address exists then display the address error in ptag
+  // line 117: if errors.country exists then display the country error in ptag
+  // line 110-112 is a way to just display the basket o errors at top of form, but we need to disperse each one so ptag it is.
   return (
     <>
       <h1>Create a New Spot</h1>
@@ -101,9 +111,7 @@ function CreateSpotFunction () {
         <p className='errors'>{error}</p>
         ): null}      */}
       <h3>Where is your place located?</h3>
-      <p>Guests will only get your exact address once they booked a
-reservation.
-</p>
+      <p>Guests will only get your exact address once they booked a reservation.</p>
       <form onSubmit={handleSubmit}>
         <label>
           Country {errors.country && <p className='errors'>{errors.country}</p>}   
@@ -161,9 +169,7 @@ reservation.
         </label>
         <label>
           <h3>Describe your place to guests</h3>
-          <p>Mention the best features of your space, any special amenities like
-fast wifi or parking, and what you love about the neighborhood.
-</p>
+          <p>Mention the best features of your space, any special amenities like fast wifi or parking, and what you love about the neighborhood.</p>
           <input 
             type="textarea"
             value={description}
@@ -174,8 +180,7 @@ fast wifi or parking, and what you love about the neighborhood.
         </label>
         <label>
           <h3>Create a title for your spot</h3>
-          <p>Catch guests' attention with a spot title that highlights what makes
-your place special.</p>
+          <p>Catch guests' attention with a spot title that highlights what makes your place special.</p>
           <input 
             type="text"
             value={name}
@@ -186,8 +191,7 @@ your place special.</p>
         </label>
         <label>
           <h3>Set a base price for your spot</h3>
-          <p>Competitive pricing can help your listing stand out and rank higher
-in search results.</p>
+          <p>Competitive pricing can help your listing stand out and rank higher in search results.</p>
           <p>$</p>
           <input 
             type="number"
@@ -210,35 +214,39 @@ in search results.</p>
           />
           {errors.previewImg && <p className='errors'>{errors.previewImg}</p>}
           <input 
-            type="url"
+            type="text"
             value={img2}
             onChange={(e) => setImg2(e.target.value)}
             placeholder='Image URL'
           />
           {errors.img2 && <p className='errors'>{errors.img2}</p>}
           <input 
-            type="url"
+            type="text"
             value={img3}
             onChange={(e) => setImg3(e.target.value)}
             placeholder='Image URL'
           />
+          {errors.img3 && <p className='errors'>{errors.img3}</p>}
           <input 
-            type="url"
+            type="text"
             value={img4}
             onChange={(e) => setImg4(e.target.value)}
             placeholder='Image URL'
           />
+          {errors.img4 && <p className='errors'>{errors.img4}</p>}
           <input 
-            type="url"
+            type="text"
             value={img5}
             onChange={(e) => setImg5(e.target.value)}
             placeholder='Image URL'
           />
+          {errors.img5 && <p className='errors'>{errors.img5}</p>}
         </div>
         <button type="submit">Create Spot</button>
       </form>
     </>
   )
 }
+
 
 export default CreateSpotFunction;
