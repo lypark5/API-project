@@ -28,15 +28,40 @@ function CreateSpotFunction () {
     const errorsObj = {};                             // we need the basket to accumulate every error possible
     const urlArr = [];
 
-    if (!address.length) {
-      errorsObj.address = "address cannot be empty!"
+    if (!country) {
+      errorsObj.country = "Country is required"
     }
-    if (!country.length) {
-      errorsObj.country = "country cannot be empty!"
+    if (!address) {
+      errorsObj.address = "Address is required"
     }
-    if (!previewImg.length) {
-      errorsObj.previewImg = "prev img required"
+    if (!city) {
+      errorsObj.city = "City is required"
     }
+    if (!state) {
+      errorsObj.state = "State is required"
+    }
+    if (!lat) {
+      errorsObj.lat = "Latitude is required"
+    }
+    if (!lng) {
+      errorsObj.lng = "Longitude is required"
+    }
+    if (description.length < 30) {
+      errorsObj.description = "Description needs a minimum of 30 characters"
+    }
+    if (!name) {
+      errorsObj.name = "Name is required"
+    }
+    if (!price) {
+      errorsObj.price = "Price is required"
+    }
+    if (!previewImg) {
+      errorsObj.previewImg = "Preview image is required"
+    }
+    if (!img2.endsWith('.png', '.jpg', 'jpeg'))       //need slice?
+      errorsObj.previewImg = "Preview image is required"
+    }
+
     setErrors(errorsObj);                               // this behaves in an async manner, or else it breaks the page.
     if (Object.values(errorsObj).length === 0) {
   
@@ -72,10 +97,10 @@ function CreateSpotFunction () {
   return (
     <>
       <h1>Create a New Spot</h1>
-      {Object.values(errors).length > 0 ? Object.values(errors).map(error => 
+      {/* {Object.values(errors).length > 0 ? Object.values(errors).map(error => 
         <p className='errors'>{error}</p>
-        ): null}     
-      <h6>Where is your place located?</h6>
+        ): null}      */}
+      <h3>Where is your place located?</h3>
       <p>Guests will only get your exact address once they booked a
 reservation.
 </p>
@@ -99,7 +124,7 @@ reservation.
           />
         </label>
         <label>
-          City
+          City {errors.city && <p className='errors'>{errors.city}</p>}
           <input 
             type="text"
             value={city}
@@ -108,7 +133,7 @@ reservation.
           />
         </label>
         <label>
-          State
+          State {errors.state && <p className='errors'>{errors.state}</p>}
           <input 
             type="text"
             value={state}
@@ -117,7 +142,7 @@ reservation.
           />
         </label>
         <label>
-          Latitude
+          Latitude {errors.lat && <p className='errors'>{errors.lat}</p>}
           <input 
             type="number"
             value={lat}
@@ -126,7 +151,7 @@ reservation.
           />
         </label>
         <label>
-          Longitude
+          Longitude {errors.lng && <p className='errors'>{errors.lng}</p>}
           <input 
             type="number"
             value={lng}
@@ -145,6 +170,7 @@ fast wifi or parking, and what you love about the neighborhood.
             onChange={(e) => setDescription(e.target.value)}
             placeholder='Please write at least 30 characters'
           />
+          {errors.description && <p className='errors'>{errors.description}</p>}
         </label>
         <label>
           <h3>Create a title for your spot</h3>
@@ -156,37 +182,40 @@ your place special.</p>
             onChange={(e) => setName(e.target.value)}
             placeholder='Name of your spot'
           />
+          {errors.name && <p className='errors'>{errors.name}</p>}
         </label>
         <label>
           <h3>Set a base price for your spot</h3>
           <p>Competitive pricing can help your listing stand out and rank higher
 in search results.</p>
-          <span>$</span>
+          <p>$</p>
           <input 
             type="number"
             value={price}
             onChange={(e) => setPrice(e.target.value)}
             placeholder='Price per night (USD)'
           />
+          {errors.price && <p className='errors'>{errors.price}</p>}
         </label>
         <label>
           <h3>Liven up your spot with photos</h3>
           <p>Submit a link to at least one photo to publish your spot.</p>
         </label>
         <div>
-          <p className='errors'>{errors.previewImg}</p>
           <input 
             type="text"
             value={previewImg}
             onChange={(e) => setPreviewImg(e.target.value)}
             placeholder='Preview Image URL'
           />
+          {errors.previewImg && <p className='errors'>{errors.previewImg}</p>}
           <input 
             type="url"
             value={img2}
             onChange={(e) => setImg2(e.target.value)}
             placeholder='Image URL'
           />
+          {errors.img2 && <p className='errors'>{errors.img2}</p>}
           <input 
             type="url"
             value={img3}
