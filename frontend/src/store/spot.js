@@ -110,7 +110,7 @@ const spotReducer = (state = initialState, action) => {
       return newState;
     }
     case GET_SPOT_DETAILS: {
-      const newState = {allSpots: {}, singleSpot: {...state.singleSpot}}
+      const newState = {allSpots: {...state.allSpots}, singleSpot: {...state.singleSpot}}
       console.log('action.spot = ', action.spot)
       const spot = action.spot
       newState.singleSpot = spot

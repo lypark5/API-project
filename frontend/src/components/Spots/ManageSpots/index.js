@@ -21,14 +21,14 @@ function GetAllSpotsOfCurrentFunction () {
   }, [dispatch]);
 
   function editButtonFunction (spotId) {
-    history.push(`/spots/${spotId}/edit`)
+      history.push(`/spots/${spotId}/edit`)
   }
 
-  console.log('allSpots =', allSpots)
-  console.log('allSpotsArr =', allSpotsArr)
-  console.log('userSpots =', userSpots)
-  console.log('user =', user)
-  console.log('userId =', userId)
+  // console.log('allSpots =', allSpots)
+  // console.log('allSpotsArr =', allSpotsArr)
+  // console.log('userSpots =', userSpots)
+  // console.log('user =', user)
+  // console.log('userId =', userId)
   // modal component line, spotId is prop name variable we gave, to spot.id of each spot from array
   return (
     <>
