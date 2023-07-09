@@ -21,7 +21,7 @@ function GetAllSpotsFunction() {
       <h1>home~~</h1>
       <div>
         {spotsArray.map(spot => 
-          <Link to={`/spots/${spot.id}`}>
+          <Link to={`/spots/${spot.id}`} title={spot.name}>
             <img src={spot.previewImage} />
             <p>{spot.city}, {spot.state}</p>
             <p>${spot.price} night</p>
