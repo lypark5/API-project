@@ -12,7 +12,6 @@ function GetSpotDetailsFunction () {
 
   useEffect(() => {
     dispatch(getSpotDetailsThunk(spotId));
-    dispatch(getAllReviewsBySpotIdThunk(spotId));
   }, [dispatch]);
 
   if (!spot.SpotImages) {                                     // if SpotImages key doesn't exist in spot

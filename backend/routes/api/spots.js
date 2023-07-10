@@ -146,7 +146,7 @@ router.get('/:spotId/reviews', async (req, res, next) => {
     next(err);                                          // pass along error if this doesn't hit.
   }
 
-  res.json({ Reviews: reviewsById });
+  res.json({ Reviews: reviewsById });                   // Reviews is what we give the key name big ass folder.  reviewsById is an array of small folders =  [{}, {}].  Each {} is a review of this spot.
 });
 
 
