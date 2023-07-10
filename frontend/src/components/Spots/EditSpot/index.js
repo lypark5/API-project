@@ -87,7 +87,7 @@ function EditSpotFunction() {
     }
 
     setErrors(errorsObj);                               // this behaves in an async manner, or else it breaks the page.
-    if (Object.values(errorsObj).length === 0) {
+    if (!Object.values(errorsObj).length) {
       const spot = await dispatch (editSpotThunk({country, address, city, state, lat: +lat, lng: +lng, description, name, price}, spotId))  // we await this so it is processed before redirecting to next page
     history.push(`/spots/${spotId}`);      // we needed to make line 64 a variable so we can use it as a param                             // this is editSpotThunk args (spot, spotId) need to match in thunk code same order
     }
