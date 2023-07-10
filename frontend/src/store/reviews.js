@@ -2,12 +2,20 @@ import { csrfFetch } from './csrf';
 
 // Action Type Constants
 export const GET_ALL_REVIEWS_BY_SPOTID = 'reviews/GET_ALL_REVIEWS_BY_SPOTID'
+export const DELETE_REVIEW = 'reviews/DELETE_REVIEW';
+
 
 // Action Creators
 export const getAllReviewsBySpotIdAction = (reviewsOfThisSpot) => ({
   type: GET_ALL_REVIEWS_BY_SPOTID,
   reviewsOfThisSpot
 });
+
+// export const deleteReviewAction = () => ({
+//   type: DELETE_REVIEW,
+//   r
+// })
+
 
 // Thunk Action Creators
 export const getAllReviewsBySpotIdThunk = (spotId) => async (dispatch) => {

@@ -30,6 +30,10 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useEffect } from 'react';
 import { getAllReviewsBySpotIdThunk } from '../../../store/reviews';
 import { useParams } from 'react-router-dom';
+import DeleteReviewModalFunction from '../DeleteReviewModal';
+import OpenModalButton from '../../OpenModalButton';
+import EditReviewModalFunction from '../EditReviewModal';
+import CreateReviewModalFunction from '../CreateReviewModal';
 
 function GetAllReviewsBySpotIdFunction() {
   const dispatch = useDispatch();
@@ -49,14 +53,23 @@ function GetAllReviewsBySpotIdFunction() {
     <div>
       <h1>all reviewsss</h1>
       {!reviewsOfThisSpotFilteredByCurrentUser.length && 
-        <button>Write a Review</button>}
+        <OpenModalButton
+          buttonText='Write a Review'
+          modalComponent={<CreateReviewModalFunction spotId={spotId}/>}
+        />}
       {reviewsOfThisSpotArr.map(review => 
         <div>
           <p>{review.review}</p>
           {currentUser.id === review.userId && 
             <div>
-              <button>Update</button>
-              <button>Delete</button>
+              <OpenModalButton
+                buttonText='Edit'
+                modalComponent={<EditReviewModalFunction reviewId={review.id}/>}
+              />
+              <OpenModalButton
+                buttonText='Delete'
+                modalComponent={<DeleteReviewModalFunction reviewId={review.id}/>}
+              />
             </div>}
         </div>
       )}
