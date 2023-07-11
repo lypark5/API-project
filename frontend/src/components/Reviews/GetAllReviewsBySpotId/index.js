@@ -49,6 +49,7 @@ function GetAllReviewsBySpotIdFunction() {
 
   // bro, u can't use forEach in jsx AT ALL, MUST USE .map
   // line 53, if current user's id matches the review's userId, show the buttons, but if not, don't show.
+  // this is where the create review button lives, and this is where we made a prop called spotId, we pass it into the Create reviews component.
   return  (
     <div>
       <h1>all reviewsss</h1>

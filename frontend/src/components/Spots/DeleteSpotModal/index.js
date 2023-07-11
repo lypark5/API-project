@@ -11,15 +11,11 @@ function DeleteSpotModalFunction({spotId}) {
     closeModal();                   // this part closes the modal window after clicking delete button
   }
 
-  function noDeleteFunction() {
-    closeModal();
-  }
-
   return (
     <>
       <h3>Confirm Delete</h3>
       <button onClick={() => yesDeleteFunction()}>Yes (Delete Spot)</button>
-      <button onClick={() => noDeleteFunction()}>No (Keep Spot)</button>
+      <button onClick={() => closeModal()}>No (Keep Spot)</button>
     </>
   )
 }
