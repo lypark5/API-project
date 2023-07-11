@@ -2,28 +2,38 @@ import { useDispatch } from "react-redux";
 import { useState } from "react";
 import { useModal } from "../../../context/Modal";
 import RatingFunction from "../Rating";
+import { createReviewThunk } from "../../../store/reviews";
 
-
-function CreateReviewModalFunction({spotId}) {
+// component sends shit to the thunk, which sends shit to backend, then sends a complete shit to the thunk, then complete shit to action.
+function CreateReviewModalFunction({spotId}) {    // spotId prop we got from GetAllReviewsBySpotId component page, inside CreateReviewModal component.
   const dispatch = useDispatch();
   const { closeModal } = useModal();
+  const [review, setReview] = useState("");
   const [rating, setRating] = useState(0);
-  console.log("spotId =", spotId)
+  
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const newReviewObj = {review, stars: rating};     // later change this to rating, this is the user input stuff saved in an obj
+    await dispatch(createReviewThunk(spotId, newReviewObj));
+    closeModal();                                     // do this last cuz gotta wait for the thunk to dispatch so it can register the data to ur store
   }
 
   const onChange = (number) => {
     setRating(parseInt(number));
   };
 
+  // inside a jsx, inside a component tag, u can pass a prop, such as rating={rating}
+  // so lines 36-38 are all props, sent to RatingFunction in Rating component page.
   return (
     <>
       <h3>Write a Review</h3>
-      <form>
+      <form onSubmit={handleSubmit}>
         <input
           type="textarea"
           placeholder="Leave your review here..."
+          value={review}
+          onChange={(e) => setReview(e.target.value)}
         />
         <RatingFunction
           disabled={false}
