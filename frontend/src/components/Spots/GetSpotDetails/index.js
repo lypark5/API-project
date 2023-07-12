@@ -22,6 +22,7 @@ function GetSpotDetailsFunction () {
   console.log("spot.SpotImages= ", spot.SpotImages)
   let prevImg;
   let nonPrevImg = spot.SpotImages.filter(img => !img.preview);
+  
   for (let spotImg of spot.SpotImages) {
     console.log('spotImg =', spotImg)
     if (spotImg.preview) {
