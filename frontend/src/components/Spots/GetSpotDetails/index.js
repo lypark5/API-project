@@ -49,6 +49,10 @@ function GetSpotDetailsFunction () {
     }
   }
 
+  function alertFunction () {
+    return alert ('Feature Coming Soon...');
+  }
+
   // line 53 ternary to make the review word singular if 1.
   return (
     <>
@@ -68,10 +72,12 @@ function GetSpotDetailsFunction () {
         <h3>Hosted by {spot.Owner.firstName} {spot.Owner.lastName}</h3>
         <GetAllReviewsBySpotIdFunction />
         <div>
-          <span><p>${spot.price} night</p></span>
-          {/* <span>{typeof spot.avgStarRating === 'number' ? <p>⭐ {spot.avgStarRating.toFixed(1)} : {spot.avgStarRating}</p> {spot.numReviews? <p>·  spot.numReviews : null} {spot.numReviews === 1 ? 'review' : spot.numReviews > 1 ? 'reviews' : null}</p></span> */}
           <span>
-            <p>{yesAvgStarRatingFunction() ? yesAvgStarRatingFunction() : spot.avgStarRating}{numReviewsStringFunction()}</p>
+            <span><p>${spot.price} night</p></span>
+            <span>
+              <p>{yesAvgStarRatingFunction() ? yesAvgStarRatingFunction() : spot.avgStarRating}{numReviewsStringFunction()}</p>
+            </span>
+            <button onClick={() => alertFunction()}>Reserve</button>
           </span>
         </div>
       </div>
