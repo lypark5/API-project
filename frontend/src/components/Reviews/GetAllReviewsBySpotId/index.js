@@ -45,6 +45,7 @@ function GetAllReviewsBySpotIdFunction() {
 
   useEffect(() => {
     dispatch(getAllReviewsBySpotIdThunk(spotId))
+    console.log('it is hereereee')
   }, [dispatch]);
 
   // bro, u can't use forEach in jsx AT ALL, MUST USE .map

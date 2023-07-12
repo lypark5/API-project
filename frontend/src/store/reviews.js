@@ -28,6 +28,11 @@ export const createReviewAction = (newReview) => ({
   newReview
 })
 
+export const editReviewAction = (editedReview) => ({
+  type: EDIT_REVIEW,
+  editedReview
+})
+
 export const deleteReviewAction = (reviewId) => ({
   type: DELETE_REVIEW,
   reviewId
@@ -52,6 +57,20 @@ export const createReviewThunk = (spotId, newReviewObj) => async (dispatch) => {
   if (res.ok) {
     const newReview = await res.json()       // look at api doc to see the good result of res for structure idea, it's the completed fetched from backend response jsoned.
     await dispatch(createReviewAction(newReview))
+  }
+}
+
+export const editReviewThunk = (reviewId, editedReviewObj) => async (dispatch) => {
+  const res = await csrfFetch(`/api/reviews/${reviewId}`, {
+    method: 'PUT',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify(editedReviewObj)
+  });
+  if (res.ok) {
+    const editedReview = await res.json();
+    console.log('reviewId', reviewId)
+    console.log('editedReviewObj', editedReviewObj)
+    await dispatch(editReviewAction(editedReview))
   }
 }
 
@@ -83,6 +102,11 @@ const reviewReducer = (state = initialState, action) => {
     case CREATE_REVIEW: {                                           // since we adding onto the old data, we gotta spread in the old data first
       newState = {...state, spot: {...state.spot}}                  // we use the word spot cuz of the img structure picture.  
       newState.spot[action.newReview.id] = action.newReview;            // U NEEEDDDD TO SPREAD STATE.SPOT ON LINE 75 OR ELSE IT'LL REPLACE ALL EXISTING REVIEWS ON SPOT PAGE WITH UR NEW REVIEW, UNTIL REFRESH.  PREV STATE IS NOT ALWAYS EMPTY.
+      return newState;
+    }
+    case EDIT_REVIEW: {
+      newState = {...state, spot: {...state.spot}}
+      newState.spot[action.editedReview.id] = action.editedReview;
       return newState;
     }
     case DELETE_REVIEW: {
