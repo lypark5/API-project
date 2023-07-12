@@ -30,6 +30,26 @@ function GetSpotDetailsFunction () {
   }
   console.log('prevImg =', prevImg)
 
+  function yesAvgStarRatingFunction () {
+    if (typeof spot.avgStarRating === 'number') {
+      return `⭐ ${spot.avgStarRating.toFixed(1)}`
+    }
+  }
+
+  function numReviewsStringFunction () {
+    if (spot.numReviews) {
+      if (spot.numReviews === 1) {
+        return ' · 1 review'
+      }
+      if (spot.numReviews > 1) {
+        return ` · ${spot.numReviews} reviews`
+      }
+    } else {
+      return null
+    }
+  }
+
+  // line 53 ternary to make the review word singular if 1.
   return (
     <>
       <h1>{spot.name}</h1>
@@ -45,19 +65,15 @@ function GetSpotDetailsFunction () {
         </span>
       </div>
       <div>
-        <span>
-          <h3>Hosted by {spot.Owner.firstName} {spot.Owner.lastName}</h3>
-          <p>
-            <GetAllReviewsBySpotIdFunction />
-          </p>
-        </span>
-        <span>
-          <div>
-            <span><p>${spot.price}</p><p>night</p></span>
-            <span><p>⭐{spot.avgRating}</p></span>
-          </div>
-          <div></div>
-        </span>
+        <h3>Hosted by {spot.Owner.firstName} {spot.Owner.lastName}</h3>
+        <GetAllReviewsBySpotIdFunction />
+        <div>
+          <span><p>${spot.price} night</p></span>
+          {/* <span>{typeof spot.avgStarRating === 'number' ? <p>⭐ {spot.avgStarRating.toFixed(1)} : {spot.avgStarRating}</p> {spot.numReviews? <p>·  spot.numReviews : null} {spot.numReviews === 1 ? 'review' : spot.numReviews > 1 ? 'reviews' : null}</p></span> */}
+          <span>
+            <p>{yesAvgStarRatingFunction() ? yesAvgStarRatingFunction() : spot.avgStarRating}{numReviewsStringFunction()}</p>
+          </span>
+        </div>
       </div>
     </>
   )

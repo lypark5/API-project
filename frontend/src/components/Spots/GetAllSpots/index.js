@@ -25,7 +25,8 @@ function GetAllSpotsFunction() {
             <img src={spot.previewImage} />
             <p>{spot.city}, {spot.state}</p>
             <p>${spot.price} night</p>
-            <p>{spot.avgRating} ⭐</p>
+            {typeof spot.avgRating === 'number' ? <p>{spot.avgRating.toFixed(1)} ⭐</p> : <p>{spot.avgRating}</p>}
+            {console.log((typeof spot.avgRating), spot.avgRating)}
           </Link>
           )}
       </div>
