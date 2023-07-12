@@ -1,8 +1,8 @@
 
-.rating-input .filled {
+.stars-input .filled {
   color: rgb(249, 213, 82);
 }
 
-.rating-input .empty {
+.stars-input .empty {
   color: rgb(140, 140, 140);
 }
