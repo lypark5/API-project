@@ -28,7 +28,12 @@ function GetSpotDetailsFunction () {
       prevImg = spotImg.url
     }
   }
-  console.log('prevImg =', prevImg)
+
+  while (nonPrevImg.length < 4) {
+    nonPrevImg.push({url: 'https://www.beauflor.us/en/products/luxury-vinyl-roll/metro--p--/-/media/sites/ideal/general/nophoto.ashx?as=1&rev=d7c55585b143492bb40a105c8a3554f2&hash=E3318B97D01C0BC7F91476129330E4C4', preview: false})
+  }
+
+  console.log('nonPrevImg =', nonPrevImg)
 
   function yesAvgStarRatingFunction () {
     if (typeof spot.avgStarRating === 'number') {
@@ -53,6 +58,8 @@ function GetSpotDetailsFunction () {
     return alert ('Feature Coming Soon...');
   }
 
+
+
   // line 53 ternary to make the review word singular if 1.
   return (
     <>
@@ -62,7 +69,7 @@ function GetSpotDetailsFunction () {
         <span>
           <img src={prevImg}></img>
         </span>
-        <span>
+        <span>          
           {nonPrevImg.map(img =>
             <img src={img.url} />
           )}
