@@ -78,6 +78,7 @@ function GetSpotDetailsFunction () {
       </div>
       <div>
         <h3>Hosted by {spot.Owner.firstName} {spot.Owner.lastName}</h3>
+        <p>{spot.description}</p>
         <GetAllReviewsBySpotIdFunction />
         <div>
           <span>
