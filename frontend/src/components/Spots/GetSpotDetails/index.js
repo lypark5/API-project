@@ -77,18 +77,21 @@ function GetSpotDetailsFunction () {
         </span>
       </div>
       <div>
-        <h3>Hosted by {spot.Owner.firstName} {spot.Owner.lastName}</h3>
-        <p>{spot.description}</p>
-        <GetAllReviewsBySpotIdFunction />
-        <div>
+        <span>
+          <h3>Hosted by {spot.Owner.firstName} {spot.Owner.lastName}</h3>
+          <p>{spot.description}</p>
+        </span>
+        <span>
+          <span><p>${spot.price} night</p></span>
           <span>
-            <span><p>${spot.price} night</p></span>
-            <span>
-              <p>{yesAvgStarRatingFunction()}{numReviewsStringFunction()}</p>
-            </span>
-            <button onClick={() => alertFunction()}>Reserve</button>
+            <p>{yesAvgStarRatingFunction()}{numReviewsStringFunction()}</p>
           </span>
-        </div>
+          <button onClick={() => alertFunction()}>Reserve</button>
+        </span>
+      </div>
+      <div>
+            
+        <GetAllReviewsBySpotIdFunction /> 
       </div>
     </>
   )
