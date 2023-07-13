@@ -14,11 +14,18 @@ function GetAllReviewsBySpotIdFunction() {
   const reviewsOfThisSpotArr = Object.values(reviewsOfThisSpot);      // this converted above var into an array.
   const currentUser = useSelector(state => state.session.user);
   const reviewsOfThisSpotFilteredByCurrentUser = reviewsOfThisSpotArr.filter(review => review.userId === currentUser.id)    // we want:  if this arr is empty, this stuff doesn't exist, we want to give the user the button to create a review for this spot.
+  const thisSpot = useSelector(state => state.spots.singleSpot);
 
   useEffect(() => {
     dispatch(getAllReviewsBySpotIdThunk(spotId))
     console.log('it is hereereee')
   }, [dispatch]);
+
+  function checkIfUserOwnsSpotFunction() {
+    if (currentUser.id === thisSpot.ownerId || reviewsOfThisSpotFilteredByCurrentUser.length) {
+      return false;
+    } return true;
+  }
 
   // bro, u can't use forEach in jsx AT ALL, MUST USE .map
   // line 53, if current user's id matches the review's userId, show the buttons, but if not, don't show.
@@ -26,9 +33,9 @@ function GetAllReviewsBySpotIdFunction() {
   return  (
     <div>
       <h1>all reviewsss</h1>
-      {!reviewsOfThisSpotFilteredByCurrentUser.length && 
+      {checkIfUserOwnsSpotFunction() && 
         <OpenModalButton
-          buttonText='Write a Review'
+          buttonText='Post Your Review'
           modalComponent={<CreateReviewModalFunction spotId={spotId}/>}
         />}
       {reviewsOfThisSpotArr.map(review => 

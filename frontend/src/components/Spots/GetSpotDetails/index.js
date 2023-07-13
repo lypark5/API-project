@@ -39,7 +39,7 @@ function GetSpotDetailsFunction () {
   function yesAvgStarRatingFunction () {
     if (typeof spot.avgStarRating === 'number') {
       return `⭐ ${spot.avgStarRating.toFixed(1)}`
-    }
+    } else return null;
   }
 
   function numReviewsStringFunction () {
@@ -51,7 +51,7 @@ function GetSpotDetailsFunction () {
         return ` · ${spot.numReviews} reviews`
       }
     } else {
-      return null
+      return '⭐ New'
     }
   }
 
@@ -83,7 +83,7 @@ function GetSpotDetailsFunction () {
           <span>
             <span><p>${spot.price} night</p></span>
             <span>
-              <p>{yesAvgStarRatingFunction() ? yesAvgStarRatingFunction() : spot.avgStarRating}{numReviewsStringFunction()}</p>
+              <p>{yesAvgStarRatingFunction()}{numReviewsStringFunction()}</p>
             </span>
             <button onClick={() => alertFunction()}>Reserve</button>
           </span>
