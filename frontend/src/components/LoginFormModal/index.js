@@ -37,6 +37,7 @@ function LoginFormModal() {
       });
   }
 
+  // line 66 made disabled true if those things are less than the stuff, but when they are met, don't disable the button (make avail the button)
   return (
     <>
       <h1>Log In</h1>
@@ -62,7 +63,7 @@ function LoginFormModal() {
         {errors.credential && (
           <p>{errors.credential}</p>
         )}
-        <button type="submit">Log In</button>
+        <button type="submit" disabled={credential.length < 4 || password.length < 6 ? true : false}>Log In</button>
       </form>
       <button onClick={() => LoginTheDemoUserFunction()}>Demo User</button>
     </>
