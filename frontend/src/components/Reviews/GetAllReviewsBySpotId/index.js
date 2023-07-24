@@ -13,7 +13,7 @@ function GetAllReviewsBySpotIdFunction() {
   const reviewsOfThisSpot = useSelector(state => state.reviews.spot); // = {1: {spotId: 2, review: 'was nice', ...}, 4: {spotId2:, review: 'was bad', ...}}.  these are all reviews of this spot owned by this user.  notice it's {1:{}, 4:{}}.  the key is the reviewId number.  the value is the review object.
   const reviewsOfThisSpotArr = Object.values(reviewsOfThisSpot);      // this converted above var into an array.
   const currentUser = useSelector(state => state.session.user);
-  const reviewsOfThisSpotFilteredByCurrentUser = reviewsOfThisSpotArr.filter(review => review.userId === currentUser.id)    // we want:  if this arr is empty, this stuff doesn't exist, we want to give the user the button to create a review for this spot.
+  const reviewsOfThisSpotFilteredByCurrentUser = reviewsOfThisSpotArr.filter(review => review.userId === currentUser?.id)    // we want:  if this arr is empty, this stuff doesn't exist, we want to give the user the button to create a review for this spot.
   const thisSpot = useSelector(state => state.spots.singleSpot);
 
   useEffect(() => {
@@ -22,7 +22,7 @@ function GetAllReviewsBySpotIdFunction() {
   }, [dispatch]);
 
   function checkIfUserOwnsSpotFunction() {
-    if (currentUser.id === thisSpot.ownerId || reviewsOfThisSpotFilteredByCurrentUser.length) {
+    if (currentUser?.id === thisSpot.ownerId || reviewsOfThisSpotFilteredByCurrentUser.length) {
       return false;
     } return true;
   }
@@ -41,7 +41,7 @@ function GetAllReviewsBySpotIdFunction() {
       {reviewsOfThisSpotArr.map(review => 
         <div>
           <p>{review.review}</p>
-          {currentUser.id === review.userId && 
+          {currentUser?.id === review.userId && 
             <div>
               <OpenModalButton
                 buttonText='Edit'
