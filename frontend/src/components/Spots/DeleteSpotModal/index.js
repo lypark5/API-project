@@ -14,6 +14,7 @@ function DeleteSpotModalFunction({spotId}) {
   return (
     <>
       <h3>Confirm Delete</h3>
+      <p>Are you sure you want to remove this spot?</p>
       <button onClick={() => yesDeleteFunction()}>Yes (Delete Spot)</button>
       <button onClick={() => closeModal()}>No (Keep Spot)</button>
     </>

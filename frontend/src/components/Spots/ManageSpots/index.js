@@ -1,7 +1,7 @@
 import { getAllSpotsThunk } from "../../../store/spot";
 import { useSelector, useDispatch } from "react-redux";
 import { useEffect } from "react";
-import { useHistory } from "react-router-dom";
+import { useHistory, NavLink } from "react-router-dom";
 import DeleteSpotModalFunction from "../DeleteSpotModal";
 import OpenModalButton from "../../OpenModalButton";
 
@@ -32,8 +32,8 @@ function GetAllSpotsOfCurrentFunction () {
   // modal component line, spotId is prop name variable we gave, to spot.id of each spot from array
   return (
     <>
-    <h1>get all spots of current user page</h1>
-    {userSpots.map(spot => 
+    <h1>Manage Spots</h1>
+    {userSpots.length ? userSpots.map(spot => 
       <div>
         <img src={spot.previewImage} />
         <p>{spot.city}, {spot.state}</p>
@@ -45,7 +45,7 @@ function GetAllSpotsOfCurrentFunction () {
           modalComponent={<DeleteSpotModalFunction spotId={spot.id} />}
         />
       </div>
-    )}
+    ): <NavLink to="/spots">Create a New Spot</NavLink>}
     </>
   )
 }
