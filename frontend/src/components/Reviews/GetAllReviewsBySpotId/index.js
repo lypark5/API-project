@@ -27,10 +27,8 @@ function GetAllReviewsBySpotIdFunction() {
     } return true;
   }
 
-  // 2023-05-15T23:41:11.000Z
   function convertDate(date) {
     const cleanDate = date.split('T')[0].split('-')
-    // .join('').split('-');
     console.log('cleanDate =', cleanDate)
     const year = cleanDate[0];
     const monthNum = cleanDate[1];
@@ -54,7 +52,19 @@ function GetAllReviewsBySpotIdFunction() {
   // bro, u can't use forEach in jsx AT ALL, MUST USE .map
   // line 53, if current user's id matches the review's userId, show the buttons, but if not, don't show.
   // this is where the create review button lives, and this is where we made a prop called spotId, we pass it into the Create reviews component.
-  return  (
+  if (!reviewsOfThisSpotArr.length) {
+    return (
+    <div>
+      <p>Be the first to post a review!</p>
+      {checkIfUserOwnsSpotFunction() && 
+        <OpenModalButton
+          buttonText='Post Your Review'
+          modalComponent={<CreateReviewModalFunction spotId={spotId}/>}
+        />}
+    </div>
+    )
+  } else {
+    return (
     <div>
       {checkIfUserOwnsSpotFunction() && 
         <OpenModalButton
@@ -81,7 +91,7 @@ function GetAllReviewsBySpotIdFunction() {
       )}
     </div>
   
-  )
+  )};
 }
 
 export default GetAllReviewsBySpotIdFunction;
