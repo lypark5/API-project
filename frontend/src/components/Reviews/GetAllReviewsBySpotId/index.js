@@ -22,7 +22,7 @@ function GetAllReviewsBySpotIdFunction() {
   }, [dispatch]);
 
   function checkIfUserOwnsSpotFunction() {
-    if (currentUser?.id === thisSpot.ownerId || reviewsOfThisSpotFilteredByCurrentUser.length) {
+    if (!currentUser || currentUser.id === thisSpot.ownerId || reviewsOfThisSpotFilteredByCurrentUser.length) {
       return false;
     } return true;
   }
@@ -38,7 +38,7 @@ function GetAllReviewsBySpotIdFunction() {
           buttonText='Post Your Review'
           modalComponent={<CreateReviewModalFunction spotId={spotId}/>}
         />}
-      {reviewsOfThisSpotArr.map(review => 
+      {reviewsOfThisSpotArr.toReversed().map(review => 
         <div>
           <p>{review.review}</p>
           {currentUser?.id === review.userId && 
