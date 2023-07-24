@@ -18,8 +18,7 @@ function GetAllReviewsBySpotIdFunction() {
 
   useEffect(() => {
     dispatch(getAllReviewsBySpotIdThunk(spotId))
-    console.log('it is hereereee')
-  }, [dispatch]);
+  }, [dispatch, reviewsOfThisSpotArr.length]);
 
   function checkIfUserOwnsSpotFunction() {
     if (!currentUser || currentUser.id === thisSpot.ownerId || reviewsOfThisSpotFilteredByCurrentUser.length) {
@@ -73,7 +72,7 @@ function GetAllReviewsBySpotIdFunction() {
         />}
       {reviewsOfThisSpotArr.toReversed().map(review => 
         <div>
-          <p>{review.User.firstName}</p>
+          <p>{review.User?.firstName}</p>
           {convertDate(review.createdAt)}
           <p>{review.review}</p>
           {currentUser?.id === review.userId && 
