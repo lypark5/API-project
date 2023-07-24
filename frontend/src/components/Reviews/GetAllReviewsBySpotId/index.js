@@ -32,7 +32,7 @@ function GetAllReviewsBySpotIdFunction() {
   // this is where the create review button lives, and this is where we made a prop called spotId, we pass it into the Create reviews component.
   return  (
     <div>
-      <h1>all reviewsss</h1>
+
       {checkIfUserOwnsSpotFunction() && 
         <OpenModalButton
           buttonText='Post Your Review'

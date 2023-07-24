@@ -90,7 +90,7 @@ function GetSpotDetailsFunction () {
         </span>
       </div>
       <div>
-            
+        <p>{yesAvgStarRatingFunction()}{numReviewsStringFunction()}</p>   
         <GetAllReviewsBySpotIdFunction /> 
       </div>
     </>
