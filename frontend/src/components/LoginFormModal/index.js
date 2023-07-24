@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import * as sessionActions from "../../store/session";
 import { useDispatch } from "react-redux";
 import { useModal } from "../../context/Modal";
@@ -10,6 +10,19 @@ function LoginFormModal() {
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState({});
   const { closeModal } = useModal();
+  const errorsObj = {};
+
+  
+  useEffect(() => {
+    if (credential && credential.length < 4) {
+      errorsObj.credential = 'Username must be at least 4 characters long'
+    };
+    if (password && password.length < 6) {
+      errorsObj.password = 'Password must be at least 6 characters long'
+    };
+    setErrors(errorsObj);
+  }, [credential.length, password.length]);
+
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -41,6 +54,12 @@ function LoginFormModal() {
   return (
     <>
       <h1>Log In</h1>
+      {errors.credential && (
+        <p className='errors'>{errors.credential}</p>
+      )}
+      {errors.password && (
+        <p className='errors'>{errors.password}</p>
+      )}
       <form onSubmit={handleSubmit}>
         <label>
           Username or Email
@@ -60,9 +79,6 @@ function LoginFormModal() {
             required
           />
         </label>
-        {errors.credential && (
-          <p>{errors.credential}</p>
-        )}
         <button type="submit" disabled={credential.length < 4 || password.length < 6 ? true : false}>Log In</button>
       </form>
       <button onClick={() => LoginTheDemoUserFunction()}>Demo User</button>
