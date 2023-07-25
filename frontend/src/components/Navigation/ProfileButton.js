@@ -51,14 +51,15 @@ function ProfileButton({ user }) {
       </button>
       <div className={ulClassName} ref={ulRef}>
         {user ? (
-          <>
+          <div>
             <p>Hello, {user.firstName}</p>
             <p>{user.email}</p>
             <NavLink to='/spots/manage'>Manage Spots</NavLink>
+            <NavLink to='/reviews/manage'>Manage Reviews</NavLink>
             <p>
               <button onClick={logout}>Log Out</button>
             </p>
-          </>
+          </div>
         ) : (
           <>
             <OpenModalMenuItem
