@@ -5,6 +5,7 @@ export const GET_ALL_REVIEWS_BY_SPOTID = 'reviews/GET_ALL_REVIEWS_BY_SPOTID';
 export const CREATE_REVIEW = 'reviews/CREATE_REVIEW';
 export const EDIT_REVIEW = 'reviews/EDIT_REVIEW';
 export const DELETE_REVIEW = 'reviews/DELETE_REVIEW';
+export const GET_ALL_REVIEWS_BY_USER = 'reviews/GET_ALL_REVIEWS_BY_USER';
 
 
 // Action Creators
@@ -38,8 +39,14 @@ export const deleteReviewAction = (reviewId) => ({
   reviewId
 })
 
+export const getAllReviewsByUserAction = (newRes) => ({     // this arg is the new json'ed res thing we made called newRes, it is now passed into the action from thunk, (vs. req arg for thunk)
+  type: GET_ALL_REVIEWS_BY_USER,
+  newRes
+})
+
 
 // Thunk Action Creators
+// ok sooooooo the argument that goes into a thunk: u look at the api doc.  1) does it have a req body?  name it.  2) also, does it have params?  name it.
 export const getAllReviewsBySpotIdThunk = (spotId) => async (dispatch) => {
   const res = await fetch(`/api/spots/${spotId}/reviews`)   // this is where frontend asks backend to get all the reviews of this spotId for us.
   if (res.ok) {                                             // this is called res cuz it's the response/result of this fetch.
@@ -83,6 +90,14 @@ export const deleteReviewThunk = (reviewId) => async (dispatch) => {
   }
 }
 
+export const getAllReviewsByUserThunk = () => async (dispatch) => {     // this thunk requires no info to do, according to api doc, no req body or params.
+  const res = await csrfFetch('/api/reviews/current');
+  if (res.ok) {
+    const newRes = await res.json();                                    // i jsoned the good res
+    await dispatch(getAllReviewsByUserAction(newRes));                  // i invoke action passing in the newRes, which is on the action top part arg.
+  }
+}
+
 
 
 // reducer
@@ -113,6 +128,13 @@ const reviewReducer = (state = initialState, action) => {
       newState = {...state, spot: {...state.spot}}
       delete newState.spot[action.reviewId];
       return newState;
+    }
+    case GET_ALL_REVIEWS_BY_USER: {
+      newState = {...state, user: {...state.user}};
+      action.newRes.Reviews.forEach(review => {               // action.newRes.Reviews = {'Reviews': [{},{},{}]}.   In backend, we made the response to be this format, with key of 'Reviews', value array of obj's.
+        newState.user[review.id] = review                     // for each of those obj's, we are giving it an id number by grabbing it from inside obj, then making its value the obj itself.
+      })                                                      
+      return newState;                                        // newState.reviews.user = {7:{}, 10:{}, 11:{}, 12:{}}
     }
 
     default: return state;

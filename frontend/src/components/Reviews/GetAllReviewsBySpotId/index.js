@@ -93,4 +93,5 @@ function GetAllReviewsBySpotIdFunction() {
   )};
 }
 
+
 export default GetAllReviewsBySpotIdFunction;
