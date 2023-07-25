@@ -8,6 +8,7 @@ import GetSpotDetailsFunction from "./components/Spots/GetSpotDetails";
 import CreateSpotFunction from "./components/Spots/CreateSpot";
 import GetAllSpotsOfCurrentFunction from "./components/Spots/ManageSpots";
 import EditSpotFunction from "./components/Spots/EditSpot";
+import ManageReviewsFunction from "./components/Reviews/ManageReviews";
 
 
 // i load all my shit here, where i write switch and route
@@ -43,6 +44,9 @@ function App() {
           </Route>
           <Route path='/spots'>
             <CreateSpotFunction />
+          </Route>
+          <Route path='/reviews/manage'>
+            <ManageReviewsFunction />
           </Route>
         </Switch>}
     </>

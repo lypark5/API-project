@@ -61,16 +61,19 @@ function CreateSpotFunction () {
     // if (!img2.endsWith('.png', '.jpg', 'jpeg')) {   
     //   errorsObj.img2 = "Image URL must end in .png, .jpg, or .jpeg"
     // }
-    if (!(img2.endsWith('.png') || img2.endsWith('.jpg') || img2.endsWith('jpeg'))) {    // this works.  above listing commas does not work.
+    
+    // because create didn't let me create without these 4 imgs:
+      // i added img2 && to check if it even exists to go thru with the checking of endings.
+    if (img2 && (!(img2.endsWith('.png') || img2.endsWith('.jpg') || img2.endsWith('jpeg')))) {    // this works.  above listing commas does not work.
       errorsObj.img2 = "Image URL must end in .png, .jpg, or .jpeg"
     }
-    if (!(img3.endsWith('.png') || img3.endsWith('.jpg') || img3.endsWith('jpeg'))) {   
+    if (img3 && (!(img3.endsWith('.png') || img3.endsWith('.jpg') || img3.endsWith('jpeg')))) {   
       errorsObj.img3 = "Image URL must end in .png, .jpg, or .jpeg"
     }
-    if (!(img4.endsWith('.png') || img4.endsWith('.jpg') || img4.endsWith('jpeg'))) {   
+    if (img4 && (!(img4.endsWith('.png') || img4.endsWith('.jpg') || img4.endsWith('jpeg')))) {   
       errorsObj.img4 = "Image URL must end in .png, .jpg, or .jpeg"
     }
-    if (!(img5.endsWith('.png') || img5.endsWith('.jpg') || img5.endsWith('jpeg'))) {   
+    if (img5 && (!(img5.endsWith('.png') || img5.endsWith('.jpg') || img5.endsWith('jpeg')))) {   
       errorsObj.img5 = "Image URL must end in .png, .jpg, or .jpeg"
     }
 

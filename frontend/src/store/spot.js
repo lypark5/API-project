@@ -103,7 +103,7 @@ const spotReducer = (state = initialState, action) => {
       const newState = {allSpots: {...state.allSpots}, singleSpot: {}}    // ...state.allSpots is old stuff spreading to new stuff, this is declaring without deep copying
       console.log('action.spots.Spots = ', action.spots.Spots)       // [7 array]
       console.log('action.spots = ', action.spots)    // {Spots: [7 array]}
-      action.spots.Spots.forEach(spot => {
+      action.spots.Spots.forEach(spot => {            // this and next line is normalization.
         newState.allSpots[spot.id] = spot
       })
 

@@ -5,14 +5,20 @@ import { getSpotDetailsThunk } from '../../../store/spot';
 import { getAllReviewsBySpotIdThunk } from '../../../store/reviews';
 import GetAllReviewsBySpotIdFunction from '../../Reviews/GetAllReviewsBySpotId';
 
+// the review avg and num wasn't updating, so, i needed to trigger a re-render by:
+// since getAllReviews and GetSpotDetails work hand in hand, gotta update code for both of em, 
+// so we added reviewsOfThisSpot useSelector, and made it an array (to use the length method)
+// and then we put it in dependency array with length
 function GetSpotDetailsFunction () {
   const dispatch = useDispatch();
   const { spotId } = useParams();
   const spot = useSelector(state => state.spots.singleSpot);
+  const reviewsOfThisSpot = useSelector(state => state.reviews.spot);   
+  const reviewsOfThisSpotArr = Object.values(reviewsOfThisSpot);
 
   useEffect(() => {
     dispatch(getSpotDetailsThunk(spotId));
-  }, [dispatch]);
+  }, [dispatch, reviewsOfThisSpotArr.length]);
 
   if (!spot.SpotImages) {                                     // if SpotImages key doesn't exist in spot
     console.log('in the if statement', spot.SpotImages)
@@ -77,17 +83,21 @@ function GetSpotDetailsFunction () {
         </span>
       </div>
       <div>
-        <h3>Hosted by {spot.Owner.firstName} {spot.Owner.lastName}</h3>
-        <GetAllReviewsBySpotIdFunction />
-        <div>
+        <span>
+          <h3>Hosted by {spot.Owner.firstName} {spot.Owner.lastName}</h3>
+          <p>{spot.description}</p>
+        </span>
+        <span>
+          <span><p>${spot.price} night</p></span>
           <span>
-            <span><p>${spot.price} night</p></span>
-            <span>
-              <p>{yesAvgStarRatingFunction()}{numReviewsStringFunction()}</p>
-            </span>
-            <button onClick={() => alertFunction()}>Reserve</button>
+            <p>{yesAvgStarRatingFunction()}{numReviewsStringFunction()}</p>
           </span>
-        </div>
+          <button onClick={() => alertFunction()}>Reserve</button>
+        </span>
+      </div>
+      <div>
+        <p>{yesAvgStarRatingFunction()}{numReviewsStringFunction()}</p>   
+        <GetAllReviewsBySpotIdFunction /> 
       </div>
     </>
   )

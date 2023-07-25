@@ -1,5 +1,5 @@
 import { useDispatch } from "react-redux";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useModal } from "../../../context/Modal";
 import StarsFunction from "../Stars";
 import { createReviewThunk } from "../../../store/reviews";
@@ -10,10 +10,22 @@ function CreateReviewModalFunction({spotId}) {    // spotId prop we got from Get
   const { closeModal } = useModal();
   const [review, setReview] = useState("");
   const [stars, setStars] = useState(0);
+  const [error, setError] = useState({});
+  
+  useEffect(()=> {
+    const errorsObj = {};
+    if (review && review.length < 10) {               // if review is being populated (exists) then check if it's less than 10
+      errorsObj.review = 'Review must be at least 10 characters long'
+    }
+    if (!stars) {
+      errorsObj.stars = 'You must select a rating'
+    }
+    setError(errorsObj);
+  }, [review.length, stars]);                         // u need stars in dep array as well so the msg can go away once u select a star.
   
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const newReviewObj = {review, stars};     // later change this to rating, this is the user input stuff saved in an obj
+    const newReviewObj = {review, stars};             // later change this to rating, this is the user input stuff saved in an obj
     await dispatch(createReviewThunk(spotId, newReviewObj));
     closeModal();                                     // do this last cuz gotta wait for the thunk to dispatch so it can register the data to ur store
   }
@@ -26,7 +38,10 @@ function CreateReviewModalFunction({spotId}) {    // spotId prop we got from Get
   // so lines 36-38 are all props, sent to RatingFunction in Rating component page.
   return (
     <>
-      <h3>Write a Review</h3>
+      <h3>How was your stay?</h3>
+      <p className='errors'>{error.review}</p>
+      <p className='errors'>{error.stars}</p>
+      
       <form onSubmit={handleSubmit}>
         <input
           type="textarea"
@@ -39,7 +54,7 @@ function CreateReviewModalFunction({spotId}) {    // spotId prop we got from Get
           onChange={onChange}
           stars={stars}
         />
-        <button type="submit">Create Review</button>
+        <button type="submit" disabled={review.length < 10 || stars === 0 ? true : false}>Submit Your Review</button>
       </form>
     </>
   )
