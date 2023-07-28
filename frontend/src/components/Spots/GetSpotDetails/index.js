@@ -16,6 +16,8 @@ function GetSpotDetailsFunction () {
   const reviewsOfThisSpot = useSelector(state => state.reviews.spot);   
   const reviewsOfThisSpotArr = Object.values(reviewsOfThisSpot);
 
+  console.log('this is "spot" detail', spot);           // this one shows full obj with rating and imgs and stuff
+
   useEffect(() => {
     dispatch(getSpotDetailsThunk(spotId));
   }, [dispatch, reviewsOfThisSpotArr.length]);

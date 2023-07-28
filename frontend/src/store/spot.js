@@ -20,10 +20,10 @@ export const getSpotDetailsAction = (spot) => ({
   spot
 });
 
-export const createSpotAction = (spot) => ({
-  type: CREATE_SPOT,
-  spot
-});
+// export const createSpotAction = (spot) => ({
+//   type: CREATE_SPOT,
+//   spot
+// });
 
 export const deleteSpotAction = (spotId) => ({
   type: DELETE_SPOT,
@@ -51,7 +51,7 @@ export const getSpotDetailsThunk = (spotId) => async (dispatch) => {
   const res = await fetch(`/api/spots/${spotId}`)
   if (res.ok) {
     const newRes = await res.json()
-    await dispatch(getSpotDetailsAction(newRes))
+    await dispatch(getSpotDetailsAction(newRes))            // 
   }
 }
 
@@ -62,8 +62,8 @@ export const createSpotThunk = (spot, urls) => async (dispatch) => {      // spo
     body: JSON.stringify(spot)
   });
 
-  const newSpot = await res.json();  // PASS NEWSPOT IN TO THE OTHER THUNK?
   if (res.ok) {
+    const newSpot = await res.json();  // PASS NEWSPOT IN TO THE OTHER THUNK?
     for (let url of urls) {                                               // iterating thru each url
       await csrfFetch(`/api/spots/${newSpot.id}/images`, {
         method: 'POST',                                                   // post req for each url
@@ -72,7 +72,7 @@ export const createSpotThunk = (spot, urls) => async (dispatch) => {      // spo
       }); 
     }
     return newSpot;
-  } else return newSpot.errors;
+  } else return res.errors;
 }
 
 export const deleteSpotThunk = (spotId) => async (dispatch) => {
@@ -116,12 +116,14 @@ const spotReducer = (state = initialState, action) => {
       newState.singleSpot = spot
       return newState;
     }
-    case CREATE_SPOT: {
-      const newState = {allSpots: {...state.allSpots}, singleSpot: {}}
-      const spots = action.spots
-      newState.allSpots = spots
-      return newState;
-    }
+
+    // case CREATE_SPOT: {                                                     // we don't need create action or create reducer cuz the res of get spot details has more info than create spot, it'll error out cuz don't match.
+    //   const newState = {allSpots: {...state.allSpots}, singleSpot: {}}
+    //   const spots = action.spots
+    //   newState.allSpots = spots
+    //   return newState;
+    // }
+
     case DELETE_SPOT: {
       const newState = {allSpots: {...state.allSpots}, singleSpot: {}}
       delete newState.allSpots[action.spotId]

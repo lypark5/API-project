@@ -22,7 +22,7 @@ function CreateSpotFunction () {
   const [img5, setImg5] = useState("");
   const [errors, setErrors] = useState({});
 
-
+  // data flow starts here, on the handleSubmit.  we declared spot to be the newly created stuff.
   const handleSubmit = async (e) => {
     e.preventDefault();
     const errorsObj = {};                             // we need the basket to accumulate every error possible
@@ -85,24 +85,25 @@ function CreateSpotFunction () {
         urlArr.push(previewImgObj)
       }
       if (img2) {
-        let previewImgObj = {url: img2, preview: false}  // these keys come from add img to spot backend variables
-        urlArr.push(previewImgObj)
+        let imgObj = {url: img2, preview: false}  // these keys come from add img to spot backend variables
+        urlArr.push(imgObj)
       }
       if (img3) {
-        let previewImgObj = {url: img3, preview: false}  // these keys come from add img to spot backend variables
-        urlArr.push(previewImgObj)
+        let imgObj = {url: img3, preview: false}  // these keys come from add img to spot backend variables
+        urlArr.push(imgObj)
       }
       if (img4) {
-        let previewImgObj = {url: img4, preview: false}  // these keys come from add img to spot backend variables
-        urlArr.push(previewImgObj)
+        let imgObj = {url: img4, preview: false}  // these keys come from add img to spot backend variables
+        urlArr.push(imgObj)
       }
       if (img5) {
-        let previewImgObj = {url: img5, preview: false}  // these keys come from add img to spot backend variables
-        urlArr.push(previewImgObj)
-      }
-      const spot = await dispatch (createSpotThunk({country, address, city, state, lat: +lat, lng: +lng, description, name, price}, urlArr))  // we await this so it is processed before redirecting to next page
+        let imgObj = {url: img5, preview: false}  // these keys come from add img to spot backend variables
+        urlArr.push(imgObj)
+      }                                                                                         // below: u need "lat: " to convert it.
+      const spot = await dispatch(createSpotThunk({country, address, city, state, lat: parseInt(lat), lng: parseInt(lng), description, name, price}, urlArr))  // we await this so it is processed before redirecting to next page
+      // console.log('create spot "spot" =', spot);        // history.push brings us to spot ID page, so we don't need a create ActionType or createReducer, if u look at dev tools, there is no create action after submitting. 
       history.push(`/spots/${spot.id}`);      // we needed to make line 64 a variable so we can use it as a param
-    }
+    }               // the create spot spot console log shows the regular spot obj, excluding imgs and stuff
   }
   
   // line 117: if errors.country exists then display the country error in ptag
