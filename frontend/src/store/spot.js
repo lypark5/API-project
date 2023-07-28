@@ -72,7 +72,7 @@ export const createSpotThunk = (spot, urls) => async (dispatch) => {      // spo
       }); 
     }
     return newSpot;
-  } else return res.errors;
+  } else return res.errors;                                       // this displays backend errors?  maybe
 }
 
 export const deleteSpotThunk = (spotId) => async (dispatch) => {
@@ -102,9 +102,9 @@ const spotReducer = (state = initialState, action) => {
     case GET_ALL_SPOTS: {
       const newState = {allSpots: {...state.allSpots}, singleSpot: {}}    // ...state.allSpots is old stuff spreading to new stuff, this is declaring without deep copying
       console.log('action.spots.Spots = ', action.spots.Spots)       // [7 array]
-      console.log('action.spots = ', action.spots)    // {Spots: [7 array]}
+      console.log('action.spots = ', action.spots)    // {Spots: [7 array]}.  u must look at successful res of api doc
       action.spots.Spots.forEach(spot => {            // this and next line is normalization.
-        newState.allSpots[spot.id] = spot
+        newState.allSpots[spot.id] = spot             // for each result =>     newState = {allSpots: {1:{}, 2:{}, 3:{}}}
       })
 
       return newState;

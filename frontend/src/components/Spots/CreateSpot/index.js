@@ -32,7 +32,7 @@ function CreateSpotFunction () {
       errorsObj.country = "Country is required"
     }
     if (!address) {
-      errorsObj.address = "Address is required"
+      errorsObj.address = "Street address is required"
     }
     if (!city) {
       errorsObj.city = "City is required"
@@ -43,21 +43,30 @@ function CreateSpotFunction () {
     if (!lat) {
       errorsObj.lat = "Latitude is required"
     }
+    if (lat && typeof lat !== 'number' || (lat < -90 || lat > 90)) {            // if latitude in req body is invalid, add lat key to errorObj with msg value
+      errorsObj.lat = 'Latitude is not valid';  
+    };  
     if (!lng) {
       errorsObj.lng = "Longitude is required"
     }
-    if (description.length < 30) {
+    if (lng && typeof lng !== 'number' || (lng < -180 || lng > 180)) {          // if longitude in req body is invalid, add lng key to errorObj with msg value
+      errorsObj.lng = 'Longitude is not valid';
+    };   
+    if (!description) errorsObj.description = 'Description is required';  // if description in req body is empty, add description key to errorObj with msg value
+    if (description && description.length < 30) {
       errorsObj.description = "Description needs a minimum of 30 characters"
     }
     if (!name) {
       errorsObj.name = "Name is required"
     }
+    if (name && name.length >= 50) errorsObj.name = 'Name must be less than 50 characters';   // if name in req body is too long, add name key to errorObj with msg value
     if (!price) {
       errorsObj.price = "Price is required"
     }
     if (!previewImg) {
       errorsObj.previewImg = "Preview image is required"
     }
+
     // if (!img2.endsWith('.png', '.jpg', 'jpeg')) {   
     //   errorsObj.img2 = "Image URL must end in .png, .jpg, or .jpeg"
     // }
@@ -102,6 +111,7 @@ function CreateSpotFunction () {
       }                                                                                         // below: u need "lat: " to convert it.
       const spot = await dispatch(createSpotThunk({country, address, city, state, lat: parseInt(lat), lng: parseInt(lng), description, name, price}, urlArr))  // we await this so it is processed before redirecting to next page
       // console.log('create spot "spot" =', spot);        // history.push brings us to spot ID page, so we don't need a create ActionType or createReducer, if u look at dev tools, there is no create action after submitting. 
+
       history.push(`/spots/${spot.id}`);      // we needed to make line 64 a variable so we can use it as a param
     }               // the create spot spot console log shows the regular spot obj, excluding imgs and stuff
   }
