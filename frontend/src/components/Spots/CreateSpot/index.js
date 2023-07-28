@@ -40,18 +40,14 @@ function CreateSpotFunction () {
     if (!state) {
       errorsObj.state = "State is required"
     }
-    if (!lat) {
-      errorsObj.lat = "Latitude is required"
-    }
-    if (lat && typeof lat !== 'number' || (lat < -90 || lat > 90)) {            // if latitude in req body is invalid, add lat key to errorObj with msg value
+    if (lat < -90 || lat > 90) {            // if latitude in req body is invalid, add lat key to errorObj with msg value
       errorsObj.lat = 'Latitude is not valid';  
-    };  
-    if (!lng) {
-      errorsObj.lng = "Longitude is required"
-    }
-    if (lng && typeof lng !== 'number' || (lng < -180 || lng > 180)) {          // if longitude in req body is invalid, add lng key to errorObj with msg value
+    };       
+
+    // don't need if lng exists validation cuz it auto goes to 0 when u backspace, always filled.  i converted the e.target to always be a number with +e.target.value, makes this possible.
+    if (lng < -180 || lng > 180) {          // if longitude in req body is invalid, add lng key to errorObj with msg value
       errorsObj.lng = 'Longitude is not valid';
-    };   
+    };    
     if (!description) errorsObj.description = 'Description is required';  // if description in req body is empty, add description key to errorObj with msg value
     if (description && description.length < 30) {
       errorsObj.description = "Description needs a minimum of 30 characters"
@@ -60,9 +56,11 @@ function CreateSpotFunction () {
       errorsObj.name = "Name is required"
     }
     if (name && name.length >= 50) errorsObj.name = 'Name must be less than 50 characters';   // if name in req body is too long, add name key to errorObj with msg value
-    if (!price) {
+    if (price < 1) {
       errorsObj.price = "Price is required"
     }
+
+    
     if (!previewImg) {
       errorsObj.previewImg = "Preview image is required"
     }
@@ -168,7 +166,7 @@ function CreateSpotFunction () {
           <input 
             type="number"
             value={lat}
-            onChange={(e) => setLat(e.target.value)}
+            onChange={(e) => setLat(+e.target.value)}
             placeholder='Latitude'
           />
         </label>
@@ -177,7 +175,7 @@ function CreateSpotFunction () {
           <input 
             type="number"
             value={lng}
-            onChange={(e) => setLng(e.target.value)}
+            onChange={(e) => setLng(+e.target.value)}
             placeholder='Longitude'
           />
         </label>

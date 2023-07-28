@@ -62,7 +62,7 @@ function EditSpotFunction() {
       errorsObj.country = "Country is required"
     }
     if (!address) {
-      errorsObj.address = "Address is required"
+      errorsObj.address = "Street address is required"
     }
     if (!city) {
       errorsObj.city = "City is required"
@@ -70,19 +70,25 @@ function EditSpotFunction() {
     if (!state) {
       errorsObj.state = "State is required"
     }
-    if (!lat) {
-      errorsObj.lat = "Latitude is required"
-    }
-    if (!lng) {
-      errorsObj.lng = "Longitude is required"
-    }
-    if (description.length < 30) {
+    if (lat < -90 || lat > 90) {            // if latitude in req body is invalid, add lat key to errorObj with msg value
+      errorsObj.lat = 'Latitude is not valid';  
+    };       
+
+    // don't need if lng exists validation cuz it auto goes to 0 when u backspace, always filled.  i converted the e.target to always be a number with +e.target.value, makes this possible.
+    if (lng < -180 || lng > 180) {          // if longitude in req body is invalid, add lng key to errorObj with msg value
+      console.log('spotBeingEdited.lng =', spotBeingEdited.lng)
+      console.log('type of spotBeingEdited.lng =', typeof spotBeingEdited.lng)
+      errorsObj.lng = 'Longitude is not valid';
+    };    
+    if (!description) errorsObj.description = 'Description is required';  // if description in req body is empty, add description key to errorObj with msg value
+    if (description && description.length < 30) {
       errorsObj.description = "Description needs a minimum of 30 characters"
     }
     if (!name) {
       errorsObj.name = "Name is required"
     }
-    if (!price) {
+    if (name && name.length >= 50) errorsObj.name = 'Name must be less than 50 characters';   // if name in req body is too long, add name key to errorObj with msg value
+    if (price < 1) {
       errorsObj.price = "Price is required"
     }
 
@@ -149,7 +155,7 @@ reservation.
           <input 
             type="number"
             value={lat}
-            onChange={(e) => setLat(e.target.value)}
+            onChange={(e) => setLat(+e.target.value)}
             placeholder='Latitude'
           />
         </label>
@@ -158,7 +164,7 @@ reservation.
           <input 
             type="number"
             value={lng}
-            onChange={(e) => setLng(e.target.value)}
+            onChange={(e) => setLng(+e.target.value)}
             placeholder='Longitude'
           />
         </label>
