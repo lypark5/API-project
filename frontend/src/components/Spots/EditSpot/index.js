@@ -46,9 +46,9 @@ function EditSpotFunction() {
       setName(spotBeingEdited.name);
       setDescription(spotBeingEdited.description);
       setPrice(spotBeingEdited.price);
-    }
-  }, [dispatch, spotBeingEdited.country]);  // spotBeingEdited.country  u need this for it to recognize a change in the item inside the basket, else only sees outside of basket.  u only need one cuz it's either gonna be an empty basket or a filled basket.
-  
+    }       // else, everything will be its useState default value.
+  }, [spotBeingEdited.country]);  // spotBeingEdited.country  u need this for it to recognize a change in the item inside the basket, else only sees outside of basket.  u only need one cuz it's either gonna be an empty basket or a filled basket.  if sans .country, it'll stack overflow.
+  // this one needs [spotBeingEdited.country] in dependency array cuz it is NOT a modal, but its own page.
   console.log('spotbeingedited.country =', spotBeingEdited.country)
   // useEffect(() => {
   // }, [])

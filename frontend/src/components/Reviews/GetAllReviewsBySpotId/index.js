@@ -79,7 +79,7 @@ function GetAllReviewsBySpotIdFunction() {
             <div>
               <OpenModalButton
                 buttonText='Edit'
-                modalComponent={<EditReviewModalFunction reviewId={review.id}/>}
+                modalComponent={<EditReviewModalFunction reviewId={review.id} random={'getAllReviewsBySpotId'}/>}
               />
               <OpenModalButton
                 buttonText='Delete'

@@ -1,7 +1,7 @@
 import { getAllSpotsThunk } from "../../../store/spot";
 import { useSelector, useDispatch } from "react-redux";
 import { useEffect } from "react";
-import { useHistory, NavLink } from "react-router-dom";
+import { useHistory, NavLink, Link } from "react-router-dom";
 import DeleteSpotModalFunction from "../DeleteSpotModal";
 import OpenModalButton from "../../OpenModalButton";
 
@@ -30,21 +30,26 @@ function GetAllSpotsOfCurrentFunction () {
   // console.log('user =', user)
   // console.log('userId =', userId)
   // modal component line, spotId is prop name variable we gave, to spot.id of each spot from array
+  // need to keep update and delete buttons outside of link so that it doesn't redirect to spot id page when modal pops up and then crashes with error cuz it doesn't exist.
+  // if keeping it bad, after clicking delete, the page is blank cuz this spot id page no longer exists.  
+  // good way, it doesn't redirect cuz it's no longer under Link path.
   return (
     <>
     <h1>Manage Spots</h1>
     {userSpots.length ? userSpots.map(spot => 
-      <div>
+    <>
+      <Link to={`/spots/${spot.id}`} title={spot.name}>
         <img src={spot.previewImage} />
         <p>{spot.city}, {spot.state}</p>
         <p>⭐{spot.avgRating}</p>
         <p>${spot.price} night</p>
-        <button onClick={() => editButtonFunction(spot.id)}>Update</button>
-        <OpenModalButton 
-          buttonText='Delete'
-          modalComponent={<DeleteSpotModalFunction spotId={spot.id} />}
-        />
-      </div>
+      </Link>
+      <button onClick={() => editButtonFunction(spot.id)}>Update</button>
+      <OpenModalButton 
+        buttonText='Delete'
+        modalComponent={<DeleteSpotModalFunction spotId={spot.id} />}
+      />
+    </>
     ): <NavLink to="/spots">Create a New Spot</NavLink>}
     </>
   )
