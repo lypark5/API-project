@@ -124,9 +124,18 @@ const reviewReducer = (state = initialState, action) => {
       newState.spot[action.editedReview.id] = action.editedReview;
       return newState;
     }
+
+    // this delete was my old version, which only updated the single spot slice from spot id page.  need new version for deleting and updating from manage reviews page.  "when on user's reviews, use user slice"
+    // case DELETE_REVIEW: {
+    //   newState = {...state, spot: {...state.spot}}   
+    //   delete newState.spot[action.reviewId];
+    //   return newState;
+    // }
+
     case DELETE_REVIEW: {
-      newState = {...state, spot: {...state.spot}}
+      newState = {...state, spot: {...state.spot}, user: {...state.user}}   
       delete newState.spot[action.reviewId];
+      delete newState.user[action.reviewId];
       return newState;
     }
     case GET_ALL_REVIEWS_BY_USER: {

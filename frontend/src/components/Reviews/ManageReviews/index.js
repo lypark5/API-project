@@ -1,6 +1,9 @@
 import { useSelector, useDispatch } from "react-redux";
 import { useEffect } from "react";
 import { getAllReviewsByUserThunk } from "../../../store/reviews";
+import OpenModalButton from "../../OpenModalButton";
+import EditReviewModalFunction from "../EditReviewModal";
+import DeleteReviewModalFunction from "../DeleteReviewModal";
 
 export default function ManageReviewsFunction () {
   const reviewsOfUser = useSelector(state => state.reviews.user)
@@ -35,6 +38,8 @@ export default function ManageReviewsFunction () {
     return (<p>{wordMonthObj[monthNum]} {year}</p>)
   }
 
+  // problem: we delete review, it is not reflected on this page, but is deleted from db.  rerendering issue.
+    // we know it's a rerender issue cuz when we refresh page, it is correctly reflected.
   return (
     <>
       <h1>manage reviews page connected</h1>
@@ -43,8 +48,16 @@ export default function ManageReviewsFunction () {
           <p>{review.Spot.name}</p>
           {convertDate(review.createdAt)}
           <p>{review.review}</p>
-          <button>update</button>
-          <button>delete</button>
+          <div>
+            <OpenModalButton
+              buttonText='Edit'
+              modalComponent={<EditReviewModalFunction reviewId={review.id} random={'manageReviews'}/>}
+            />
+            <OpenModalButton
+              buttonText='Delete'
+              modalComponent={<DeleteReviewModalFunction reviewId={review.id}/>}
+            />
+          </div>
         </div>
       )}
     </>
