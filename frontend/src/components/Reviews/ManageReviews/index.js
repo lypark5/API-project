@@ -2,8 +2,8 @@ import { useSelector, useDispatch } from "react-redux";
 import { useEffect } from "react";
 import { getAllReviewsByUserThunk } from "../../../store/reviews";
 import OpenModalButton from "../../OpenModalButton";
-import EditReviewModalFunction from "../EditReviewModal";
 import DeleteReviewModalFunction from "../DeleteReviewModal";
+import EditReviewModalFunction2 from "../EditReviewModalForManage";
 
 export default function ManageReviewsFunction () {
   const reviewsOfUser = useSelector(state => state.reviews.user)
@@ -51,7 +51,7 @@ export default function ManageReviewsFunction () {
           <div>
             <OpenModalButton
               buttonText='Edit'
-              modalComponent={<EditReviewModalFunction reviewId={review.id} random={'manageReviews'}/>}
+              modalComponent={<EditReviewModalFunction2 reviewId={review.id} random={'manageReviews'}/>}
             />
             <OpenModalButton
               buttonText='Delete'

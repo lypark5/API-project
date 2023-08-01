@@ -76,8 +76,10 @@ export const editReviewThunk = (reviewId, editedReviewObj) => async (dispatch) =
   if (res.ok) {
     const editedReview = await res.json();
     console.log('reviewId', reviewId)
-    console.log('editedReviewObj', editedReviewObj)
-    await dispatch(editReviewAction(editedReview))
+    console.log('editedReview', editedReview)
+    // await dispatch(editReviewAction(editedReview))     // this bad cuz it returns response body of edit from backend, which is incomplete body that we want, so  instead we dispatch getting the reviews stuff thunks to return full bodies.
+    await dispatch(getAllReviewsByUserThunk())
+    await dispatch(getAllReviewsBySpotIdThunk(editedReview.spotId))       // needed to add this one as well, so it can not only update manage reviews, but also spotid reviews thing.
   }
 }
 
@@ -119,11 +121,20 @@ const reviewReducer = (state = initialState, action) => {
       newState.spot[action.newReview.id] = action.newReview;            // U NEEEDDDD TO SPREAD STATE.SPOT ON LINE 75 OR ELSE IT'LL REPLACE ALL EXISTING REVIEWS ON SPOT PAGE WITH UR NEW REVIEW, UNTIL REFRESH.  PREV STATE IS NOT ALWAYS EMPTY.
       return newState;
     }
-    case EDIT_REVIEW: {
-      newState = {...state, spot: {...state.spot}}
-      newState.spot[action.editedReview.id] = action.editedReview;
-      return newState;
-    }
+    // case EDIT_REVIEW: {
+    //   newState = {...state, spot: {...state.spot}}                     // this old one made the manage reviews edit not update state
+    //   newState.spot[action.editedReview.id] = action.editedReview;
+    //   return newState;
+    // }
+
+    // case EDIT_REVIEW: {
+    //   newState = {...state, spot: {...state.spot}, user: {...state.user}}     // this good one updates state for edit from both spotId page (state.spot) and mange reviews page (state.user) slice
+    //   newState.spot[action.editedReview.id] = action.editedReview;
+    //   newState.user[action.editedReview.id] = action.editedReview;            // we also added this to rly update the info in the state after line 129.
+    //   return newState;
+    // }
+    // WE DON'T NEED EDIT REVIEW REDUCER CUZ we don't wanna add the incomplete stuff to the state and mess it up, so instead we use the reducers for get all reviews and stuff to get a nice full body.
+
 
     // this delete was my old version, which only updated the single spot slice from spot id page.  need new version for deleting and updating from manage reviews page.  "when on user's reviews, use user slice"
     // case DELETE_REVIEW: {

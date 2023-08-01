@@ -19,7 +19,7 @@ function GetSpotDetailsFunction () {
   console.log('this is "spot" detail', spot);           // this one shows full obj with rating and imgs and stuff
 
   useEffect(() => {
-    dispatch(getSpotDetailsThunk(spotId));
+    dispatch(getSpotDetailsThunk(spotId));              
   }, [dispatch, reviewsOfThisSpotArr.length]);
 
   if (!spot.SpotImages) {                                     // if SpotImages key doesn't exist in spot
@@ -44,26 +44,26 @@ function GetSpotDetailsFunction () {
 
   console.log('nonPrevImg =', nonPrevImg)
 
-  function yesAvgStarRatingFunction () {
+  function yesAvgStarRatingFunction () {            // callback function
     if (typeof spot.avgStarRating === 'number') {
       return `⭐ ${spot.avgStarRating.toFixed(1)}`
     } else return null;
   }
 
-  function numReviewsStringFunction () {
+  function numReviewsStringFunction () {            // callback function: formatting of how to show "# review/s"
     if (spot.numReviews) {
-      if (spot.numReviews === 1) {
+      if (spot.numReviews === 1) {                  // only 1 review exists
         return ' · 1 review'
       }
       if (spot.numReviews > 1) {
-        return ` · ${spot.numReviews} reviews`
+        return ` · ${spot.numReviews} reviews`      // normal many reviews
       }
     } else {
-      return '⭐ New'
+      return '⭐ New'                               // no reviews
     }
   }
 
-  function alertFunction () {
+  function alertFunction () {                       // callback function: this does the popup alert msg.
     return alert ('Feature Coming Soon...');
   }
 

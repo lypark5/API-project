@@ -11,7 +11,7 @@ import EditSpotFunction from "./components/Spots/EditSpot";
 import ManageReviewsFunction from "./components/Reviews/ManageReviews";
 
 
-// i load all my shit here, where i write switch and route
+// i load all my ish here, where i write switch and route
 // user only sees path in this file, not backend addresses
 // reducer will tell us what next state look like
 function App() {

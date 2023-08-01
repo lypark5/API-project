@@ -2,13 +2,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { useState, useEffect } from "react";
 import { useModal } from "../../../context/Modal";
 import StarsFunction from "../Stars";
-import { editReviewThunk } from "../../../store/reviews";
-import { getSpotDetailsThunk } from "../../../store/spot";
+import { editReviewThunk, getAllReviewsByUserThunk } from "../../../store/reviews";
 
-function EditReviewModalFunction({reviewId}) {          // we needed to pass in this prop from the main get spot details page in its component.
+
+function EditReviewModalFunction2({reviewId}) {          // we needed to pass in this prop from the main get spot details page in its component.
   const dispatch = useDispatch();
   const { closeModal } = useModal();
-  const reviewBeingEdited = useSelector(state => state.reviews.spot[reviewId]);  // this is crucial for pre-populating review and stars, we are grabbing it from prev state, it is NOT undefined.
+  const reviewBeingEdited = useSelector(state => state.reviews.user[reviewId]);  // this is crucial for pre-populating review and stars, we are grabbing it from prev state, it is NOT undefined.
   const [review, setReview] = useState("");
   const [stars, setStars] = useState(0);
   const [error, setError] = useState({});
@@ -36,8 +36,7 @@ function EditReviewModalFunction({reviewId}) {          // we needed to pass in 
   const handleSubmit = async (e) => {
     e.preventDefault();
     const editedReviewObj = {review, stars};
-    await dispatch(editReviewThunk(reviewId, editedReviewObj));
-    await dispatch (getSpotDetailsThunk(reviewBeingEdited.spotId));     // we need this line to rerender and update the specific review on the spot id page, cuz it's a cart that contains the specific cereal and u can't access it just thru details page, gotta go into cart page (get all reviews component)
+    await dispatch (editReviewThunk(reviewId, editedReviewObj));
     closeModal();
   }
 
@@ -67,4 +66,4 @@ function EditReviewModalFunction({reviewId}) {          // we needed to pass in 
   )
 }
 
-export default EditReviewModalFunction;
+export default EditReviewModalFunction2;

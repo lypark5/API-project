@@ -4,7 +4,7 @@ import { useModal } from "../../../context/Modal";
 import StarsFunction from "../Stars";
 import { createReviewThunk } from "../../../store/reviews";
 
-// component sends shit to the thunk, which sends shit to backend, then sends a complete shit to the thunk, then complete shit to action.
+// component sends ish to the thunk, which sends ish to backend, then sends a complete ish to the thunk, then complete ish to action.
 function CreateReviewModalFunction({spotId}) {    // spotId prop we got from GetAllReviewsBySpotId component page, inside CreateReviewModal component.
   const dispatch = useDispatch();
   const { closeModal } = useModal();

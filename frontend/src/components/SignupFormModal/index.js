@@ -12,29 +12,23 @@ function SignupFormModal() {
   const [lastName, setLastName] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  // const [hasSubmitted, setHasSubmitted] = useState(false);
   const [errors, setErrors] = useState({});
   const { closeModal } = useModal();
   const errorsObj = {};
 
 
   useEffect(() => {
+    // if (hasSubmitted) {
     if (username && username.length < 4) {
       errorsObj.username = 'Username must be at least 4 characters long'
     };
     if (password && password.length < 6) {
       errorsObj.password = 'Password must be at least 6 characters long'
     };
-
-
-
-
-    // if (email && !(email.includes('@') || email.includes('.com'))) {
-    //   errorsObj.email = 'Please provide a valid email'
     // }
-
-
     setErrors(errorsObj);
-  }, [username.length, password.length]);
+  }, [username.length, password.length]);     // inside dependency array hasSubmitted if u wanna implement it
 
 
   const handleSubmit = (e) => {
@@ -47,9 +41,10 @@ function SignupFormModal() {
           username,
           firstName,
           lastName,
-          password,
+          password
         })
       )
+        // .then (()=> setHasSubmitted(true))
         .then(closeModal)
         .catch(async (res) => {
           const data = await res.json();
