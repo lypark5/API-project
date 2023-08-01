@@ -89,7 +89,7 @@ export const editSpotThunk = (spot, spotId) => async (dispatch) => {    //getSpo
     method: 'PUT',
     headers: {'Content-Type': 'application/json'},
     body: JSON.stringify(spot)        // body comes from component, not action
-  });                                                                 // don't need res.ok shit, cuz it's getting redirected to details page.
+  });                                                                 // don't need res.ok ish, cuz it's getting redirected to details page.
 }
 
 
