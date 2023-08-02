@@ -4,6 +4,7 @@ import { useParams } from 'react-router-dom';
 import { getSpotDetailsThunk } from '../../../store/spot';
 import { getAllReviewsBySpotIdThunk } from '../../../store/reviews';
 import GetAllReviewsBySpotIdFunction from '../../Reviews/GetAllReviewsBySpotId';
+import './GetSpotDetails.css';
 
 // the review avg and num wasn't updating, so, i needed to trigger a re-render by:
 // since getAllReviews and GetSpotDetails work hand in hand, gotta update code for both of em, 
@@ -74,13 +75,13 @@ function GetSpotDetailsFunction () {
     <>
       <h1>{spot.name}</h1>
       <p>{spot.city}, {spot.state}, {spot.country}</p>
-      <div>
+      <div id='all-pics-container'>
         <span>
-          <img src={prevImg}></img>
+          <img src={prevImg} id='big-pic'></img>
         </span>
-        <span>          
+        <span id='small-pic-container'>          
           {nonPrevImg.map(img =>
-            <img src={img.url} />
+            <img src={img.url} className='small-pic'/>
           )}
         </span>
       </div>
@@ -94,7 +95,7 @@ function GetSpotDetailsFunction () {
           <span>
             <p>{yesAvgStarRatingFunction()}{numReviewsStringFunction()}</p>
           </span>
-          <button onClick={() => alertFunction()}>Reserve</button>
+          <button onClick={() => alertFunction()} className='red-button'>Reserve</button>
         </span>
       </div>
       <div>

@@ -79,7 +79,7 @@ function LoginFormModal() {
             required
           />
         </label>
-        <button type="submit" disabled={credential.length < 4 || password.length < 6 ? true : false}>Log In</button>
+        <button type="submit" disabled={credential.length < 4 || password.length < 6 ? true : false} className="red-button">Log In</button>
       </form>
       <button onClick={() => LoginTheDemoUserFunction()}>Demo User</button>
     </>

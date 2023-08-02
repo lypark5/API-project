@@ -37,26 +37,27 @@ function CreateReviewModalFunction({spotId}) {    // spotId prop we got from Get
   // inside a jsx, inside a component tag, u can pass a prop, such as rating={rating}
   // so lines 36-38 are all props, sent to RatingFunction in Rating component page.
   return (
-    <>
+    <div className='modal'>
       <h3>How was your stay?</h3>
-      <p className='errors'>{error.review}</p>
-      <p className='errors'>{error.stars}</p>
+      {error.review && <p className='errors'>{error.review}</p>}
+      {error.stars && <p className='errors'>{error.stars}</p>}
       
       <form onSubmit={handleSubmit}>
-        <input
+        <textarea
           type="textarea"
           placeholder="Leave your review here..."
           value={review}
           onChange={(e) => setReview(e.target.value)}
+          className='review-text-box'
         />
         <StarsFunction
           disabled={false}
           onChange={onChange}
           stars={stars}
         />
-        <button type="submit" disabled={review.length < 10 || stars === 0 ? true : false}>Submit Your Review</button>
+        <button type="submit" disabled={review.length < 10 || stars === 0 ? true : false} className="red-button">Submit Your Review</button>
       </form>
-    </>
+    </div>
   )
 }
 

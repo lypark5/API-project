@@ -46,24 +46,25 @@ function EditReviewModalFunction({reviewId}) {          // we needed to pass in 
   };
 
   return (
-    <>
-      <h3>Edit Review:</h3>
-      <p className='errors'>{error.review}</p>
+    <div className="modal">
+      <h3>How was your stay at ?</h3>
+      {error.review && <p className='errors'>{error.review}</p>}
       <form onSubmit={handleSubmit}>
-        <input
+        <textarea
           type="textarea"
           placeholder="Leave your review here..."
           value={review}
           onChange={(e) => setReview(e.target.value)}
+          className='review-text-box'
         />
         <StarsFunction
           disabled={false}
           onChange={onChange}
           stars={stars}
         />
-        <button type="submit">Edit Review</button>
+        <button type="submit" className="red-button">Update Your Review</button>
       </form>
-    </>
+    </div>
   )
 }
 

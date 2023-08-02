@@ -69,7 +69,7 @@ function SignupFormModal() {
   }
 
   return (
-    <>
+    <div className="modal">
       <h1>Sign Up</h1>
       {/* {errors.username && (
         <p className='errors'>{errors.username}</p>
@@ -143,9 +143,9 @@ function SignupFormModal() {
         {errors.confirmPassword && (
           <p className="errors">{errors.confirmPassword}</p>
         )}
-        <button type="submit" disabled={isDisabled()}>Sign Up</button>
+        <button type="submit" disabled={isDisabled()} className="red-button">Sign Up</button>
       </form>
-    </>
+    </div>
   );
 }
 
