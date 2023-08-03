@@ -55,6 +55,7 @@ const StarsFunction = ({ stars, disabled, onChange }) => {
       >
         <i className="fa fa-star"></i>
       </div>
+      &nbsp;&nbsp;Stars
     </div>
   );
 };

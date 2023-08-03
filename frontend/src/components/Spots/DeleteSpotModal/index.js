@@ -12,12 +12,12 @@ function DeleteSpotModalFunction({spotId}) {
   }
 
   return (
-    <>
+    <div className="modal">
       <h3>Confirm Delete</h3>
-      <p>Are you sure you want to remove this spot?</p>
-      <button onClick={() => yesDeleteFunction()}>Yes (Delete Spot)</button>
-      <button onClick={() => closeModal()}>No (Keep Spot)</button>
-    </>
+      <p>Are you sure you want to remove this spot from the listings?</p>
+      <button onClick={() => yesDeleteFunction()} className="red-button">Yes (Delete Spot)</button>
+      <button onClick={() => closeModal()} className='no-button'>No (Keep Spot)</button>
+    </div>
   )
 }
 

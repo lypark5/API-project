@@ -4,6 +4,7 @@ import { useParams } from 'react-router-dom';
 import { getSpotDetailsThunk } from '../../../store/spot';
 import { getAllReviewsBySpotIdThunk } from '../../../store/reviews';
 import GetAllReviewsBySpotIdFunction from '../../Reviews/GetAllReviewsBySpotId';
+import './GetSpotDetails.css';
 
 // the review avg and num wasn't updating, so, i needed to trigger a re-render by:
 // since getAllReviews and GetSpotDetails work hand in hand, gotta update code for both of em, 
@@ -71,37 +72,41 @@ function GetSpotDetailsFunction () {
 
   // line 53 ternary to make the review word singular if 1.
   return (
-    <>
-      <h1>{spot.name}</h1>
-      <p>{spot.city}, {spot.state}, {spot.country}</p>
-      <div>
-        <span>
-          <img src={prevImg}></img>
+    // <div id='try'>
+    <div id='spot-details-meat-container'>
+      <div id='spot-header'>
+        <h2>{spot.name}</h2>
+        <p>{spot.city}, {spot.state}, {spot.country}</p>
+      </div>
+      <div id='all-pics-container'>
+        <span id='big-pic-container'>
+          <img src={prevImg} id='big-pic'></img>
         </span>
-        <span>          
+        <span id='small-pic-container'>          
           {nonPrevImg.map(img =>
-            <img src={img.url} />
+            <img src={img.url} className='small-pic'/>
           )}
         </span>
       </div>
-      <div>
-        <span>
+      <div id='spot-detail-midsection'>
+        <span id='hosted-by-section'>
           <h3>Hosted by {spot.Owner.firstName} {spot.Owner.lastName}</h3>
           <p>{spot.description}</p>
         </span>
-        <span>
+        <span id='reserve-box'>
           <span><p>${spot.price} night</p></span>
           <span>
             <p>{yesAvgStarRatingFunction()}{numReviewsStringFunction()}</p>
           </span>
-          <button onClick={() => alertFunction()}>Reserve</button>
+          <button onClick={() => alertFunction()} className='red-button'>Reserve</button>
         </span>
       </div>
       <div>
         <p>{yesAvgStarRatingFunction()}{numReviewsStringFunction()}</p>   
         <GetAllReviewsBySpotIdFunction /> 
       </div>
-    </>
+    </div>
+    // </div>
   )
 }
 

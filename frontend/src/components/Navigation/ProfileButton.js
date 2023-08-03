@@ -46,8 +46,12 @@ function ProfileButton({ user }) {
   // line 51 is conditionally displaying if there is a user.  if not, display from line 63 instead.
   return (
     <>
-      <button onClick={openMenu}>
-        <i className="fas fa-user-circle" />
+      <button onClick={openMenu} id='profile-button'>
+        <div id='profile-button-icon-container'>        
+          <i class="fas fa-bars fa-lg"></i>
+          <i className="fas fa-user-circle fa-lg" />
+        </div>
+
       </button>
       <div className={ulClassName} ref={ulRef}>
         {user ? (

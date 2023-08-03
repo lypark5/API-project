@@ -1,3 +1,9 @@
+.stars-input {
+  display: flex;
+  justify-content: center;
+  margin: 10px 0px;
+}
+
 
 .stars-input .filled {
   color: rgb(249, 213, 82);

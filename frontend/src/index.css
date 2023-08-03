@@ -2,3 +2,58 @@
 .errors {
   color:red
 }
+
+/* i have modal in modal.css too*/
+.modal {
+  padding: 10px;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  border: 4px solid black;
+  border-radius: 10px !important;
+  overflow: hidden;
+  background-color: white;
+  width: 300px;
+}
+
+.red-button {
+  background-color: #ff5a5a;
+  width: -webkit-fill-available;
+  color: white;
+  padding: 10px 0px;
+  border: 2px solid black;
+  box-shadow: 2px 2px black;
+  font-size: 11px;
+}
+
+/* rgb(34, 34, 34) dark gray */
+
+.no-button {
+  padding: 10px 0px;
+  width: -webkit-fill-available;
+  border: 2px solid black;
+  box-shadow: 2px 2px black;
+  margin-top: 9px;
+  color: white;
+  background-color: rgb(89, 88, 88);
+  font-size: 11px;
+}
+
+.review-text-box {
+  height: 100px;
+  width: 200px;
+}
+
+h3 {
+  margin: 7px 0px;
+}
+
+p {
+  margin-top: 5px;
+}
+
+button {
+  cursor: pointer;
+}
+
