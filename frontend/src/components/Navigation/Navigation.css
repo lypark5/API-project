@@ -5,3 +5,36 @@
 #logo {
   max-width: 100px;
 }
+
+#nav-bar {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0px 20px 10px;
+  border-bottom: 2px solid rgba(185, 185, 185, 0.65);
+  height: 60px;
+}
+
+#profile-button-icon-container {
+  display: flex;
+  gap: 4px;
+}
+
+#profile-button {
+  padding: 10px 13px;
+  border-radius: 20px;
+  background-color: white;
+}
+
+#right-nav-span {
+  width: 250px;
+  gap: 17px;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: flex-end;
+  align-items: center;
+}
+

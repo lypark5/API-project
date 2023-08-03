@@ -72,11 +72,14 @@ function GetSpotDetailsFunction () {
 
   // line 53 ternary to make the review word singular if 1.
   return (
-    <>
-      <h1>{spot.name}</h1>
-      <p>{spot.city}, {spot.state}, {spot.country}</p>
+    // <div id='try'>
+    <div id='spot-details-meat-container'>
+      <div id='spot-header'>
+        <h2>{spot.name}</h2>
+        <p>{spot.city}, {spot.state}, {spot.country}</p>
+      </div>
       <div id='all-pics-container'>
-        <span>
+        <span id='big-pic-container'>
           <img src={prevImg} id='big-pic'></img>
         </span>
         <span id='small-pic-container'>          
@@ -85,12 +88,12 @@ function GetSpotDetailsFunction () {
           )}
         </span>
       </div>
-      <div>
-        <span>
+      <div id='spot-detail-midsection'>
+        <span id='hosted-by-section'>
           <h3>Hosted by {spot.Owner.firstName} {spot.Owner.lastName}</h3>
           <p>{spot.description}</p>
         </span>
-        <span>
+        <span id='reserve-box'>
           <span><p>${spot.price} night</p></span>
           <span>
             <p>{yesAvgStarRatingFunction()}{numReviewsStringFunction()}</p>
@@ -102,7 +105,8 @@ function GetSpotDetailsFunction () {
         <p>{yesAvgStarRatingFunction()}{numReviewsStringFunction()}</p>   
         <GetAllReviewsBySpotIdFunction /> 
       </div>
-    </>
+    </div>
+    // </div>
   )
 }
 

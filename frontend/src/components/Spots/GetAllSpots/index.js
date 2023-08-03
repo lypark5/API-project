@@ -18,18 +18,20 @@ function GetAllSpotsFunction() {
   console.log('spots =', spots)         // spots is an obj of objs
   console.log('spotsArray =', spotsArray)         
   return (
-    <div id='all-spots-container'>
-      {spotsArray.map(spot => 
-        <span className='all-spots-card'>
-          <Link to={`/spots/${spot.id}`} title={spot.name}>
-              <img src={spot.previewImage} alt={spot.name} className='all-spots-pic'/>
-              <p>{spot.city}, {spot.state}</p>
-              <p>${spot.price} night</p>
-              {typeof spot.avgRating === 'number' ? <p>{spot.avgRating.toFixed(1)} ⭐</p> : <p>{spot.avgRating}</p>}
-              {console.log((typeof spot.avgRating), spot.avgRating)}
-          </Link>
-        </span>
-      )}
+    <div id='container-container'>
+      <div id='all-spots-container'>
+        {spotsArray.map(spot => 
+          <span className='all-spots-card'>
+            <Link to={`/spots/${spot.id}`} title={spot.name}>
+                <img src={spot.previewImage} alt={spot.name} className='all-spots-pic'/>
+                <p>{spot.city}, {spot.state}</p>
+                <p>${spot.price} night</p>
+                {typeof spot.avgRating === 'number' ? <p>{spot.avgRating.toFixed(1)} ⭐</p> : <p>{spot.avgRating}</p>}
+                {console.log((typeof spot.avgRating), spot.avgRating)}
+            </Link>
+          </span>
+        )}
+      </div>
     </div>
   )
 };
