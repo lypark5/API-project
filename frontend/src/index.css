@@ -45,13 +45,9 @@
   width: 200px;
 }
 
-h3 {
-  margin: 7px 0px;
-}
-
-p {
+/* p {
   margin-top: 5px;
-}
+} */
 
 button {
   cursor: pointer;

@@ -75,7 +75,7 @@ function GetSpotDetailsFunction () {
     // <div id='try'>
     <div id='spot-details-meat-container'>
       <div id='spot-header'>
-        <h2>{spot.name}</h2>
+        <h2 id='spot-title'>{spot.name}</h2>
         <p>{spot.city}, {spot.state}, {spot.country}</p>
       </div>
       <div id='all-pics-container'>
@@ -90,19 +90,23 @@ function GetSpotDetailsFunction () {
       </div>
       <div id='spot-detail-midsection'>
         <span id='hosted-by-section'>
-          <h3>Hosted by {spot.Owner.firstName} {spot.Owner.lastName}</h3>
+          <h2 id='hosted-by-title'>Hosted by {spot.Owner.firstName} {spot.Owner.lastName}</h2>
           <p>{spot.description}</p>
         </span>
         <span id='reserve-box'>
-          <span><p>${spot.price} night</p></span>
-          <span>
-            <p>{yesAvgStarRatingFunction()}{numReviewsStringFunction()}</p>
-          </span>
+          <div id='reserve-box-text-line'>
+            <span id='price-per-night-left'><p id='big-price'>${spot.price}</p><p>&nbsp;&nbsp;night</p></span>
+            <span>
+              <p>{yesAvgStarRatingFunction()}{numReviewsStringFunction()}</p>
+            </span>
+          </div>
           <button onClick={() => alertFunction()} className='red-button'>Reserve</button>
         </span>
       </div>
-      <div>
-        <p>{yesAvgStarRatingFunction()}{numReviewsStringFunction()}</p>   
+      <div id='rating-and-quantity-section'>
+        <p id='large-stars-n-reviews'>{yesAvgStarRatingFunction()}{numReviewsStringFunction()}</p>   
+      </div>
+      <div id='get-all-reviews-section'>
         <GetAllReviewsBySpotIdFunction /> 
       </div>
     </div>

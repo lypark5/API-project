@@ -6,6 +6,7 @@ import DeleteReviewModalFunction from '../DeleteReviewModal';
 import OpenModalButton from '../../OpenModalButton';
 import EditReviewModalFunction from '../EditReviewModal';
 import CreateReviewModalFunction from '../CreateReviewModal';
+import './GetAllReviewsBySpotId.css';
 
 function GetAllReviewsBySpotIdFunction() {
   const dispatch = useDispatch();
@@ -53,14 +54,14 @@ function GetAllReviewsBySpotIdFunction() {
   // this is where the create review button lives, and this is where we made a prop called spotId, we pass it into the Create reviews component.
   if (!reviewsOfThisSpotArr.length) {
     return (
-    <div>
-      <p>Be the first to post a review!</p>
-      {checkIfUserOwnsSpotFunction() && 
-        <OpenModalButton
-          buttonText='Post Your Review'
-          modalComponent={<CreateReviewModalFunction spotId={spotId}/>}
-        />}
-    </div>
+      <div id='no-reviews-section'>
+        <p>Be the first to post a review!</p>
+        {checkIfUserOwnsSpotFunction() && 
+          <OpenModalButton
+            buttonText='Post Your Review'
+            modalComponent={<CreateReviewModalFunction spotId={spotId}/>}
+          />}
+      </div>
     )
   } else {
     return (
