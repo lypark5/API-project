@@ -1,6 +1,13 @@
 #no-reviews-section {
-  width: 100%;
+  width: 20%;
   display: flex;
-  border: 2px solid pink;
+  /* border: 2px solid pink; */
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+#be-the-p {
+  margin: 7px 0px 0px;
 }
 

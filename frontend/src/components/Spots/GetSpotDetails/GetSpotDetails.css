@@ -102,13 +102,16 @@
 
 #rating-and-quantity-section {
   width: 90%;
-  border: 1px solid red;
 }
 
 #large-stars-n-reviews {
   font-size: 24px;
+  margin: 15px 0px;
 }
 
-#get-all-reviews-section {
+
+/* this ↓↓ gives it a home to make the div longways*/
+#get-all-reviews-section {    
   width: 90%;
+  /* border: 2px solid blue; */
 }

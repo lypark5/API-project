@@ -54,14 +54,14 @@ function GetAllReviewsBySpotIdFunction() {
   // this is where the create review button lives, and this is where we made a prop called spotId, we pass it into the Create reviews component.
   if (!reviewsOfThisSpotArr.length) {
     return (
-      <div id='no-reviews-section'>
-        <p>Be the first to post a review!</p>
+      <span id='no-reviews-section'>
         {checkIfUserOwnsSpotFunction() && 
           <OpenModalButton
-            buttonText='Post Your Review'
-            modalComponent={<CreateReviewModalFunction spotId={spotId}/>}
+          buttonText='Post Your Review'
+          modalComponent={<CreateReviewModalFunction spotId={spotId} />}
           />}
-      </div>
+          <p id='be-the-p'>Be the first to post a review!</p>
+      </span>
     )
   } else {
     return (
@@ -69,7 +69,8 @@ function GetAllReviewsBySpotIdFunction() {
       {checkIfUserOwnsSpotFunction() && 
         <OpenModalButton
           buttonText='Post Your Review'
-          modalComponent={<CreateReviewModalFunction spotId={spotId}/>}
+          modalComponent={<CreateReviewModalFunction spotId={spotId}
+        />}
         />}
       {reviewsOfThisSpotArr.toReversed().map(review => 
         <div>
