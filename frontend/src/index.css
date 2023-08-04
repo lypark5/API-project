@@ -3,6 +3,10 @@
   color:red
 }
 
+body {
+  font-family: 'PT Sans', sans-serif;
+}
+
 /* i have modal in modal.css too*/
 .modal {
   padding: 10px;
