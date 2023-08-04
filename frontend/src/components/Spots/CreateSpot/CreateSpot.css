@@ -6,11 +6,75 @@
 }
 
 #header {
-  border: 2px solid red;
-  width: 40%;
+  border: 1px solid red;
+  width: 35%;
+  padding-bottom: 7px;
+}
+
+#sub-header {
+  display: flex;
+  gap: 2px;
+  flex-direction: column;
+  /* border: 1px solid green; */
 }
 
 form {
-  width: 40%;
-  border: 2px solid purple;
+  padding-top: 7px;
+  width: 35%;
+  border: 1px solid purple;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
 }
+
+h2 {
+  margin: 13px 0px 4px;
+}
+
+h3 {
+  margin: 2px 0px 0px;
+}
+
+p {
+  margin: 0px;
+}
+
+.one-liner {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  /* border: 2px solid black; */
+  width: 100%;
+  gap: 2px;
+  padding: 5px 0px;
+}
+
+.two-holder {
+  display: flex;
+  flex-direction: row;
+  /* align-items: flex-end; */
+  width: 100%;
+  gap: 2px;
+  padding: 5px 0px;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+}
+
+.comma-thing {
+  display: flex;
+  align-items: flex-end;
+  gap: 7px;
+}
+
+#city-halfsie {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.long-input {
+  width: 100%;
+  box-sizing: border-box;
+  /* border: 2px solid orange; */
+}
+

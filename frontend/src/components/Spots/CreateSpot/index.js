@@ -128,48 +128,66 @@ function CreateSpotFunction () {
         {/* {Object.values(errors).length > 0 ? Object.values(errors).map(error => 
           <p className='errors'>{error}</p>
           ): null}      */}
-        <h3>Where is your place located?</h3>
-        <p>Guests will only get your exact address once they booked a reservation.</p>
+        <div id='sub-header'>
+          <h3>Where is your place located?</h3>
+          <p>Guests will only get your exact address once they booked a reservation.</p>
+        </div>
       </div>
 
       
       <form onSubmit={handleSubmit}>
-        <label>
-          Country {errors.country && <p className='errors'>{errors.country}</p>}   
+        <span className='one-liner'>
+          <label>
+            Country {errors.country && <p className='errors'>{errors.country}</p>}   
+          </label>
           <input 
+            className='long-input'
             type="text"
             value={country}
             onChange={(e) => setCountry(e.target.value)}
             placeholder='Country'
           />
-        </label>
-        <label>
-          Street Address {errors.address && <p className='errors'>{errors.address}</p>}
+        </span>
+        <span className='one-liner'>
+          <label>
+            Street Address {errors.address && <p className='errors'>{errors.address}</p>}
+          </label>
           <input 
+            className='long-input'
             type="text"
             value={address}
             onChange={(e) => setAddress(e.target.value)}
             placeholder='Address'
           />
-        </label>
-        <label>
-          City {errors.city && <p className='errors'>{errors.city}</p>}
-          <input 
-            type="text"
-            value={city}
-            onChange={(e) => setCity(e.target.value)}
-            placeholder='City'
+        </span>
+        <span className='two-holder'>
+          <span className='comma-thing'>
+          <span id='city-halfsie'>
+            <label>
+              City {errors.city && <p className='errors'>{errors.city}</p>}
+            </label>
+            <input 
+              id='city-input'
+              type="text"
+              value={city}
+              onChange={(e) => setCity(e.target.value)}
+              placeholder='City'
+            />
+          </span>
+          <p>,</p>
+          </span>
+          <span className='halfsie'>
+            <label>
+              State {errors.state && <p className='errors'>{errors.state}</p>}
+            </label>
+            <input 
+              type="text"
+              value={state}
+              onChange={(e) => setState(e.target.value)}
+              placeholder='STATE'
           />
-        </label>
-        <label>
-          State {errors.state && <p className='errors'>{errors.state}</p>}
-          <input 
-            type="text"
-            value={state}
-            onChange={(e) => setState(e.target.value)}
-            placeholder='STATE'
-          />
-        </label>
+          </span>
+        </span>
         <label>
           Latitude {errors.lat && <p className='errors'>{errors.lat}</p>}
           <input 
