@@ -3,6 +3,10 @@
   color:red
 }
 
+body {
+  font-family: 'PT Sans', sans-serif;
+}
+
 /* i have modal in modal.css too*/
 .modal {
   padding: 10px;
@@ -24,7 +28,7 @@
   padding: 10px 0px;
   border: 2px solid black;
   box-shadow: 2px 2px black;
-  font-size: 11px;
+  font-size: 12px;
 }
 
 /* rgb(34, 34, 34) dark gray */
@@ -36,8 +40,8 @@
   box-shadow: 2px 2px black;
   margin-top: 9px;
   color: white;
-  background-color: rgb(89, 88, 88);
-  font-size: 11px;
+  background-color: rgb(99, 99, 99);
+  font-size: 12px;
 }
 
 .review-text-box {
@@ -45,15 +49,21 @@
   width: 200px;
 }
 
-h3 {
-  margin: 7px 0px;
-}
-
-p {
+/* p {
   margin-top: 5px;
-}
+} */
 
 button {
   cursor: pointer;
+}
+
+.open-modal-button {
+  padding: 3px;
+  width: 50%;
+  border: 2px solid black;
+  box-shadow: 2px 2px black;
+  color: white;
+  background-color: rgb(99, 99, 99);
+  font-size: 12px;
 }
 

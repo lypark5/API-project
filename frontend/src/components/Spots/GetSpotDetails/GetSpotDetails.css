@@ -1,3 +1,11 @@
+#spot-title {
+  margin: 20px 0px 15px;
+}
+
+#spot-sub-header {
+  margin-bottom: 17px;
+}
+
 #big-pic {
   width: 100%;
   height: 100%;
@@ -49,15 +57,62 @@
 
 #spot-detail-midsection {
   width: 90%;
-  border: 2px solid red;
   display: flex;
+  border-bottom: 2px solid black;
+  padding: 20px 0px;
+  justify-content: space-between;
 }
 
 #hosted-by-section {
-  width: 60%;
+  width: 70%;
+  /* border: 1px solid blue; */
 }
+
 #reserve-box {
-  width: 30%;
+  width: 24%;
   border: 3px solid black;
   border-radius: 10px;
+  padding: 20px;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+#reserve-box-text-line {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: baseline;
+  height: 45px;
+  width: 100%;
+}
+
+#big-price {
+  font-size: 24px;
+}
+
+#price-per-night-left {
+  display: flex;
+  flex-wrap: nowrap;
+  flex-direction: row;
+  align-items: baseline;
+}
+
+#hosted-by-title {
+  margin: 0px 0px 9px;
+}
+
+#rating-and-quantity-section {
+  width: 90%;
+}
+
+#large-stars-n-reviews {
+  font-size: 24px;
+  margin: 15px 0px 7px;
+}
+
+
+/* this ↓↓ gives it a home to make the div longways*/
+#get-all-reviews-section {    
+  width: 90%;
+  /* border: 2px solid blue; */
 }

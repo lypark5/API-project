@@ -43,7 +43,7 @@ export default function ManageReviewsFunction () {
   return (
     <>
       <h1>manage reviews page connected</h1>
-      {reviewsOfUserArr.map(review => 
+      {reviewsOfUserArr.toReversed().map(review => 
         <div>
           <p>{review.Spot.name}</p>
           {convertDate(review.createdAt)}

@@ -1,0 +1,80 @@
+#no-reviews-section {
+  width: 20%;
+  display: flex;
+  /* border: 2px solid pink; */
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+#be-the-p {
+  margin: 7px 0px 0px;
+}
+
+#yes-reviews-button-container {
+  width: 20%;
+  /* border: 2px solid blueviolet; */
+}
+
+.reviews-post-button {
+  padding: 3px 0px;
+  width: 125px;
+  border: 2px solid black;
+  box-shadow: 2px 2px black;
+  color: white;
+  background-color: rgb(99, 99, 99);
+  font-size: 12px;
+  margin-top: 5px;
+}
+
+#reviews-item {
+  /* border: 2px solid green; */
+  width: 100%;
+}
+
+#review-name-date {
+  /* border: 2px solid gray; */
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  padding: 20px 0px 5px;
+}
+
+#reviewer {
+  font-size: 20px;
+  margin: 0px;
+}
+
+#date {
+  color: gray;
+  margin: 0px;
+}
+
+#review {
+  margin: 7px 0px 10px;
+}
+
+#reviews-container {
+  /* border: 2px solid yellow; */
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 5px;
+}
+
+#edit-delete-buttons-container {
+  width: 100%;
+  /* border: 1px solid red; */
+  display: flex;
+  gap: 4px;
+}
+
+.update-or-delete {
+  padding: 3px;
+  width: 60px;
+  border: 2px solid black;
+  box-shadow: 2px 2px black;
+  color: white;
+  background-color: rgb(99, 99, 99);
+  font-size: 12px;
+}
