@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { createSpotThunk } from '../../../store/spot';
+import './CreateSpot.css';
 
 function CreateSpotFunction () {
   const history = useHistory();
@@ -117,13 +118,21 @@ function CreateSpotFunction () {
   // line 117: if errors.country exists then display the country error in ptag
   // line 110-112 is a way to just display the basket o errors at top of form, but we need to disperse each one so ptag it is.
   return (
-    <>
-      <h1>Create a New Spot</h1>
-      {/* {Object.values(errors).length > 0 ? Object.values(errors).map(error => 
-        <p className='errors'>{error}</p>
-        ): null}      */}
-      <h3>Where is your place located?</h3>
-      <p>Guests will only get your exact address once they booked a reservation.</p>
+    <div id='master-meat-container'>
+
+
+
+
+      <div id='header'>
+        <h2>Create a New Spot</h2>
+        {/* {Object.values(errors).length > 0 ? Object.values(errors).map(error => 
+          <p className='errors'>{error}</p>
+          ): null}      */}
+        <h3>Where is your place located?</h3>
+        <p>Guests will only get your exact address once they booked a reservation.</p>
+      </div>
+
+      
       <form onSubmit={handleSubmit}>
         <label>
           Country {errors.country && <p className='errors'>{errors.country}</p>}   
@@ -256,7 +265,10 @@ function CreateSpotFunction () {
         </div>
         <button type="submit">Create Spot</button>
       </form>
-    </>
+
+
+
+    </div>
   )
 }
 

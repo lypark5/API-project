@@ -1,0 +1,16 @@
+#master-meat-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border: 2px solid blue;
+}
+
+#header {
+  border: 2px solid red;
+  width: 40%;
+}
+
+form {
+  width: 40%;
+  border: 2px solid purple;
+}

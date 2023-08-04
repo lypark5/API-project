@@ -46,7 +46,7 @@ function GetAllReviewsBySpotIdFunction() {
       '11': 'November', 
       '12': 'December'
     };
-    return (<p>{wordMonthObj[monthNum]} {year}</p>)
+    return (<p id='date'>{wordMonthObj[monthNum]} {year}</p>)
   }
 
   // bro, u can't use forEach in jsx AT ALL, MUST USE .map
@@ -57,41 +57,61 @@ function GetAllReviewsBySpotIdFunction() {
       <span id='no-reviews-section'>
         {checkIfUserOwnsSpotFunction() && 
           <OpenModalButton
+          className='reviews-post-button'
           buttonText='Post Your Review'
           modalComponent={<CreateReviewModalFunction spotId={spotId} />}
-          />}
-          <p id='be-the-p'>Be the first to post a review!</p>
+        />}
+        <p id='be-the-p'>Be the first to post a review!</p>
       </span>
     )
   } else {
     return (
-    <div>
-      {checkIfUserOwnsSpotFunction() && 
-        <OpenModalButton
-          buttonText='Post Your Review'
-          modalComponent={<CreateReviewModalFunction spotId={spotId}
-        />}
-        />}
-      {reviewsOfThisSpotArr.toReversed().map(review => 
-        <div>
-          <p>{review.User?.firstName}</p>
-          {convertDate(review.createdAt)}
-          <p>{review.review}</p>
-          {currentUser?.id === review.userId && 
-            <div>
-              <OpenModalButton
-                buttonText='Edit'
-                modalComponent={<EditReviewModalFunction reviewId={review.id}/>}
-              />
-              <OpenModalButton
-                buttonText='Delete'
-                modalComponent={<DeleteReviewModalFunction reviewId={review.id}/>}
-              />
-            </div>}
+      <>
+        
+          {checkIfUserOwnsSpotFunction() && 
+          <span id='yes-reviews-button-container'>
+            <OpenModalButton
+              className='reviews-post-button'
+              buttonText='Post Your Review'
+              modalComponent={<CreateReviewModalFunction spotId={spotId}/>}
+          />
+          </span>}
+        
+        <div id='reviews-container'>
+          {reviewsOfThisSpotArr.toReversed().map(review => 
+            <div id='reviews-item'>
+
+
+
+              <div id='review-name-date'>
+                <p id='reviewer'>{review.User?.firstName}</p>
+                {convertDate(review.createdAt)}
+              </div>
+
+              <p id='review'>{review.review}</p>
+
+
+
+              {currentUser?.id === review.userId && 
+                <span id='edit-delete-buttons-container'>
+                  <OpenModalButton
+                    className='update-or-delete'
+                    buttonText='Edit'
+                    modalComponent={<EditReviewModalFunction reviewId={review.id}/>}
+                  />
+                  <OpenModalButton
+                    className='update-or-delete'
+                    buttonText='Delete'
+                    modalComponent={<DeleteReviewModalFunction reviewId={review.id}/>}
+                  />
+                </span>}
+
+
+                
+            </div>
+          )}
         </div>
-      )}
-    </div>
-  
+      </>
   )};
 }
 

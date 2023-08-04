@@ -60,11 +60,12 @@
 }
 
 #hosted-by-section {
-  width: 68%;
+  width: 70%;
+  /* border: 1px solid blue; */
 }
 
 #reserve-box {
-  width: 26%;
+  width: 24%;
   border: 3px solid black;
   border-radius: 10px;
   padding: 0px 20px 20px;
@@ -106,7 +107,7 @@
 
 #large-stars-n-reviews {
   font-size: 24px;
-  margin: 15px 0px;
+  margin: 15px 0px 7px;
 }
 
 

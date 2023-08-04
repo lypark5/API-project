@@ -72,7 +72,6 @@ function GetSpotDetailsFunction () {
 
   // line 53 ternary to make the review word singular if 1.
   return (
-    // <div id='try'>
     <div id='spot-details-meat-container'>
       <div id='spot-header'>
         <h2 id='spot-title'>{spot.name}</h2>
@@ -110,7 +109,6 @@ function GetSpotDetailsFunction () {
         <GetAllReviewsBySpotIdFunction /> 
       </div>
     </div>
-    // </div>
   )
 }
 
