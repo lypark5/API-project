@@ -48,20 +48,11 @@ body {
   font-size: 12px;
 }
 
-.review-text-box {
-  height: 100px;
-  width: 200px;
-}
-
-/* p {
-  margin-top: 5px;
-} */
-
 button {
   cursor: pointer;
 }
 
-.open-modal-button {
+/* .open-modal-button {
   padding: 3px;
   width: 50%;
   border: 2px solid black;
@@ -69,5 +60,5 @@ button {
   color: white;
   background-color: rgb(99, 99, 99);
   font-size: 12px;
-}
+} */
 

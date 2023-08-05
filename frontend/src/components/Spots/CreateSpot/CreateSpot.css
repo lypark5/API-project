@@ -28,8 +28,9 @@ form {
   align-items: flex-start;
 }
 
-h2 {
+#header > h2 {
   margin: 13px 0px 4px;
+  color: red;
 }
 
 h3 {

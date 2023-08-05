@@ -29,7 +29,9 @@ function OpenModalButton({
     setModalContent(modalComponent);
   };
   // ternary if there is no classname, use this default one on line 21.
-  return <button onClick={onClick} className={className? className:'open-modal-button'} id={id} style={style}>{buttonText}</button>;  // dan: add these optional props we can use later.
-}                                                                                                                                 // is there a given className value in the component page?  if not, use generic 'open-modal-button' className, which i already css'd universally in index.css.
+  // return <button onClick={onClick} className={className ? className : 'open-modal-button'} id={id} style={style}>{buttonText}</button>;  // dan: add these optional props we can use later.
+  // is there a given className value in the component page?  if not, use generic 'open-modal-button' className, which i already css'd universally in index.css.
+  return <button onClick={onClick} className={className} id={id} style={style}>{buttonText}</button>; 
+}                                                                                                                                 
 
 export default OpenModalButton;

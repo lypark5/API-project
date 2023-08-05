@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { useModal } from "../../../context/Modal";
 import StarsFunction from "../Stars";
 import { createReviewThunk } from "../../../store/reviews";
+import './CreateReviewModal.css'
 
 // component sends ish to the thunk, which sends ish to backend, then sends a complete ish to the thunk, then complete ish to action.
 function CreateReviewModalFunction({spotId}) {    // spotId prop we got from GetAllReviewsBySpotId component page, inside CreateReviewModal component.
@@ -55,7 +56,7 @@ function CreateReviewModalFunction({spotId}) {    // spotId prop we got from Get
           onChange={onChange}
           stars={stars}
         />
-        <button type="submit" disabled={review.length < 10 || stars === 0 ? true : false} className="red-button">Submit Your Review</button>
+        <button id={review.length < 10 || stars === 0 ? 'disabled-review-button' : 'submit-review-button'} type="submit" disabled={review.length < 10 || stars === 0 ? true : false}>Submit Your Review</button>
       </form>
     </div>
   )
