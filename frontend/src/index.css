@@ -7,6 +7,10 @@ body {
   font-family: 'PT Sans', sans-serif;
 }
 
+.nav-link {
+  text-decoration: none;
+}
+
 /* i have modal in modal.css too*/
 .modal {
   padding: 10px;

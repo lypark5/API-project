@@ -114,6 +114,12 @@ function CreateSpotFunction () {
       history.push(`/spots/${spot.id}`);      // we needed to make line 64 a variable so we can use it as a param
     }               // the create spot spot console log shows the regular spot obj, excluding imgs and stuff
   }
+
+  function isDisabled() {
+    if (!country || !address || !city || !state || !description || !name || !previewImg) return true;
+    else return false;
+  }
+
   
   // line 117: if errors.country exists then display the country error in ptag
   // line 110-112 is a way to just display the basket o errors at top of form, but we need to disperse each one so ptag it is.
@@ -249,11 +255,6 @@ function CreateSpotFunction () {
             {errors.price && <p className='errors'>{errors.price}</p>}
           </div>
         </div>
-
-
-
-
-
         <div id='photo-section-container'>
 
           <div className='title-n-description'>
@@ -298,14 +299,10 @@ function CreateSpotFunction () {
           />
           {errors.img5 && <p className='errors'>{errors.img5}</p>}
         </div>
-
-
         <div id='button-container'>
-          <button id='submit-button' type="submit">Create Spot</button>
+          <button id='submit-button' type="submit" disabled={isDisabled()}>Create Spot</button>
         </div>
-
-        
-        </div>
+      </div>
 
       </form>
 

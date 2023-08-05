@@ -35,7 +35,8 @@ function GetAllSpotsOfCurrentFunction () {
   // good way, it doesn't redirect cuz it's no longer under Link path.
   return (
     <>
-    <h1>Manage Spots</h1>
+    <h1>Manage Your Spots</h1>
+    <NavLink to="/spots" className='nav-link'>Create a New Spot</NavLink>
     {userSpots.length ? userSpots.map(spot => 
     <>
       <Link to={`/spots/${spot.id}`} title={spot.name}>
@@ -50,7 +51,7 @@ function GetAllSpotsOfCurrentFunction () {
         modalComponent={<DeleteSpotModalFunction spotId={spot.id} />}
       />
     </>
-    ): <NavLink to="/spots">Create a New Spot</NavLink>}
+    ):null}
     </>
   )
 }
