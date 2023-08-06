@@ -28,8 +28,9 @@ form {
   align-items: flex-start;
 }
 
-h2 {
+#header > h2 {
   margin: 13px 0px 4px;
+  color: red;
 }
 
 h3 {
@@ -165,6 +166,17 @@ input {
   padding: 3px;
   border: 2px solid black;
   box-shadow: 2px 2px black;
+  font-size: 12px;
+}
+
+#disabled-button {
+  margin-top: 30px;
+  background-color: #ffbcbc;
+  width: 25%;
+  color: rgb(99, 99, 99);
+  padding: 3px;
+  border: 2px solid rgb(99, 99, 99);
+  box-shadow: 2px 2px rgb(99, 99, 99);
   font-size: 12px;
 }
 

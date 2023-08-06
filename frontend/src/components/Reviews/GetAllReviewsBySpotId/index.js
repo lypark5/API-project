@@ -97,7 +97,7 @@ function GetAllReviewsBySpotIdFunction() {
                   <OpenModalButton
                     className='update-or-delete'
                     buttonText='Edit'
-                    modalComponent={<EditReviewModalFunction reviewId={review.id}/>}
+                    modalComponent={<EditReviewModalFunction review1={review}/>}
                   />
                   <OpenModalButton
                     className='update-or-delete'

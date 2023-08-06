@@ -46,7 +46,7 @@ module.exports = {
       },
       {
         spotId: 6,    // modern mexican apt
-        url: 'https://cdn.onekindesign.com/wp-content/uploads/2013/09/Casa-de-las-Estrellas-House-House-Architects-01-1-Kindesign.jpg',
+        url: 'https://sanmiguelrealestate.com/pictures/large-view/10108-5297536752-san-miguel-real-estate.jpg',
         preview: true
       },
       {

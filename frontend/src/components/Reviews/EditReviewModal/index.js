@@ -5,10 +5,11 @@ import StarsFunction from "../Stars";
 import { editReviewThunk } from "../../../store/reviews";
 import { getSpotDetailsThunk } from "../../../store/spot";
 
-function EditReviewModalFunction({reviewId}) {          // we needed to pass in this prop from the main get spot details page in its component.
+function EditReviewModalFunction({review1}) {          // we needed to pass in this prop from the main get spot details page in its component.
   const dispatch = useDispatch();
   const { closeModal } = useModal();
-  const reviewBeingEdited = useSelector(state => state.reviews.spot[reviewId]);  // this is crucial for pre-populating review and stars, we are grabbing it from prev state, it is NOT undefined.
+  const reviewBeingEdited = useSelector(state => state.reviews.spot[review1.id]);  // this is crucial for pre-populating review and stars, we are grabbing it from prev state, it is NOT undefined.
+  const thisSpot = useSelector(state => state.spots.singleSpot);
   const [review, setReview] = useState("");
   const [stars, setStars] = useState(0);
   const [error, setError] = useState({});
@@ -36,7 +37,7 @@ function EditReviewModalFunction({reviewId}) {          // we needed to pass in 
   const handleSubmit = async (e) => {
     e.preventDefault();
     const editedReviewObj = {review, stars};
-    await dispatch(editReviewThunk(reviewId, editedReviewObj));
+    await dispatch(editReviewThunk(review1.id, editedReviewObj));
     await dispatch (getSpotDetailsThunk(reviewBeingEdited.spotId));     // we need this line to rerender and update the specific review on the spot id page, cuz it's a cart that contains the specific cereal and u can't access it just thru details page, gotta go into cart page (get all reviews component)
     closeModal();
   }
@@ -47,7 +48,7 @@ function EditReviewModalFunction({reviewId}) {          // we needed to pass in 
 
   return (
     <div className="modal">
-      <h3>How was your stay at ?</h3>
+      <h3>How was your stay at {thisSpot.name}?</h3>
       {error.review && <p className='errors'>{error.review}</p>}
       <form onSubmit={handleSubmit}>
         <textarea

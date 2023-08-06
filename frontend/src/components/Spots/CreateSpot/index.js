@@ -4,7 +4,7 @@ import { useDispatch } from 'react-redux';
 import { createSpotThunk } from '../../../store/spot';
 import './CreateSpot.css';
 
-function CreateSpotFunction () {
+function CreateSpotFunction() {
   const history = useHistory();
   const dispatch = useDispatch();
   const [country, setCountry] = useState("");
@@ -42,13 +42,13 @@ function CreateSpotFunction () {
       errorsObj.state = "State is required"
     }
     if (lat < -90 || lat > 90) {            // if latitude in req body is invalid, add lat key to errorObj with msg value
-      errorsObj.lat = 'Latitude is not valid';  
-    };       
+      errorsObj.lat = 'Latitude is not valid';
+    };
 
     // don't need if lng exists validation cuz it auto goes to 0 when u backspace, always filled.  i converted the e.target to always be a number with +e.target.value, makes this possible.
     if (lng < -180 || lng > 180) {          // if longitude in req body is invalid, add lng key to errorObj with msg value
       errorsObj.lng = 'Longitude is not valid';
-    };    
+    };
     if (!description) errorsObj.description = 'Description is required';  // if description in req body is empty, add description key to errorObj with msg value
     if (description && description.length < 30) {
       errorsObj.description = "Description needs a minimum of 30 characters"
@@ -61,7 +61,7 @@ function CreateSpotFunction () {
       errorsObj.price = "Price is required"
     }
 
-    
+
     if (!previewImg) {
       errorsObj.previewImg = "Preview image is required"
     }
@@ -69,19 +69,19 @@ function CreateSpotFunction () {
     // if (!img2.endsWith('.png', '.jpg', 'jpeg')) {   
     //   errorsObj.img2 = "Image URL must end in .png, .jpg, or .jpeg"
     // }
-    
+
     // because create didn't let me create without these 4 imgs:
-      // i added img2 && to check if it even exists to go thru with the checking of endings.
+    // i added img2 && to check if it even exists to go thru with the checking of endings.
     if (img2 && (!(img2.endsWith('.png') || img2.endsWith('.jpg') || img2.endsWith('jpeg')))) {    // this works.  above listing commas does not work.
       errorsObj.img2 = "Image URL must end in .png, .jpg, or .jpeg"
     }
-    if (img3 && (!(img3.endsWith('.png') || img3.endsWith('.jpg') || img3.endsWith('jpeg')))) {   
+    if (img3 && (!(img3.endsWith('.png') || img3.endsWith('.jpg') || img3.endsWith('jpeg')))) {
       errorsObj.img3 = "Image URL must end in .png, .jpg, or .jpeg"
     }
-    if (img4 && (!(img4.endsWith('.png') || img4.endsWith('.jpg') || img4.endsWith('jpeg')))) {   
+    if (img4 && (!(img4.endsWith('.png') || img4.endsWith('.jpg') || img4.endsWith('jpeg')))) {
       errorsObj.img4 = "Image URL must end in .png, .jpg, or .jpeg"
     }
-    if (img5 && (!(img5.endsWith('.png') || img5.endsWith('.jpg') || img5.endsWith('jpeg')))) {   
+    if (img5 && (!(img5.endsWith('.png') || img5.endsWith('.jpg') || img5.endsWith('jpeg')))) {
       errorsObj.img5 = "Image URL must end in .png, .jpg, or .jpeg"
     }
 
@@ -89,32 +89,49 @@ function CreateSpotFunction () {
     setErrors(errorsObj);                               // this behaves in an async manner, or else it breaks the page.
     if (!Object.values(errorsObj).length) {
       if (previewImg) {                                     // only mandatory one
-        let previewImgObj = {url: previewImg, preview: true}  // these keys come from add img to spot backend variables
+        let previewImgObj = { url: previewImg, preview: true }  // these keys come from add img to spot backend variables
         urlArr.push(previewImgObj)
       }
       if (img2) {
-        let imgObj = {url: img2, preview: false}  // these keys come from add img to spot backend variables
+        let imgObj = { url: img2, preview: false }  // these keys come from add img to spot backend variables
         urlArr.push(imgObj)
       }
       if (img3) {
-        let imgObj = {url: img3, preview: false}  // these keys come from add img to spot backend variables
+        let imgObj = { url: img3, preview: false }  // these keys come from add img to spot backend variables
         urlArr.push(imgObj)
       }
       if (img4) {
-        let imgObj = {url: img4, preview: false}  // these keys come from add img to spot backend variables
+        let imgObj = { url: img4, preview: false }  // these keys come from add img to spot backend variables
         urlArr.push(imgObj)
       }
       if (img5) {
-        let imgObj = {url: img5, preview: false}  // these keys come from add img to spot backend variables
+        let imgObj = { url: img5, preview: false }  // these keys come from add img to spot backend variables
         urlArr.push(imgObj)
       }                                                                                         // below: u need "lat: " to convert it.
-      const spot = await dispatch(createSpotThunk({country, address, city, state, lat: parseInt(lat), lng: parseInt(lng), description, name, price}, urlArr))  // we await this so it is processed before redirecting to next page
+      const spot = await dispatch(createSpotThunk({ country, address, city, state, lat: parseInt(lat), lng: parseInt(lng), description, name, price }, urlArr))  // we await this so it is processed before redirecting to next page
       // console.log('create spot "spot" =', spot);        // history.push brings us to spot ID page, so we don't need a create ActionType or createReducer, if u look at dev tools, there is no create action after submitting. 
 
       history.push(`/spots/${spot.id}`);      // we needed to make line 64 a variable so we can use it as a param
     }               // the create spot spot console log shows the regular spot obj, excluding imgs and stuff
   }
-  
+
+  function isDisabled() {         // required for making default button disabled
+    if (country.length || address.length || city.length || state.length || description.length || name.length || price.length || previewImg.length) {
+      return false;
+    } else {
+      return true;
+    }
+  }
+
+  function idType() {             // required for coloring of regular or disabled button type
+    if (country.length || address.length || city.length || state.length || description.length || name.length || price.length || previewImg.length) {
+      return 'submit-button';
+    } else {
+      return 'disabled-button';
+    }
+  }
+
+
   // line 117: if errors.country exists then display the country error in ptag
   // line 110-112 is a way to just display the basket o errors at top of form, but we need to disperse each one so ptag it is.
   return (
@@ -126,15 +143,15 @@ function CreateSpotFunction () {
           ): null}      */}
         <div id='sub-header'>
           <h3>Where is your place located?</h3>
-          <p style={{fontSize:'13px'}}>Guests will only get your exact address once they booked a reservation.</p>
+          <p style={{ fontSize: '13px' }}>Guests will only get your exact address once they booked a reservation.</p>
         </div>
       </div>
       <form onSubmit={handleSubmit}>
         <div className='one-liner'>
           <label>
-            Country {errors.country && <p className='errors'>{errors.country}</p>}   
+            Country {errors.country && <p className='errors'>{errors.country}</p>}
           </label>
-          <input 
+          <input
             className='long-input'
             type="text"
             value={country}
@@ -146,7 +163,7 @@ function CreateSpotFunction () {
           <label>
             Street Address {errors.address && <p className='errors'>{errors.address}</p>}
           </label>
-          <input 
+          <input
             className='long-input'
             type="text"
             value={address}
@@ -159,19 +176,19 @@ function CreateSpotFunction () {
             <label>
               City {errors.city && <p className='errors'>{errors.city}</p>}
             </label>
-            <input 
+            <input
               type="text"
               value={city}
               onChange={(e) => setCity(e.target.value)}
               placeholder='City'
             />
           </span>
-          <p>,</p>  
+          <p>,</p>
           <span id='state'>
             <label>
               State {errors.state && <p className='errors'>{errors.state}</p>}
             </label>
-            <input 
+            <input
               type="text"
               value={state}
               onChange={(e) => setState(e.target.value)}
@@ -184,19 +201,19 @@ function CreateSpotFunction () {
             <label>
               Latitude {errors.lat && <p className='errors'>{errors.lat}</p>}
             </label>
-            <input 
+            <input
               type="number"
               value={lat}
               onChange={(e) => setLat(+e.target.value)}
               placeholder='Latitude'
             />
           </span>
-          <p>,</p>  
+          <p>,</p>
           <span className='lat-or-lng'>
             <label>
               Longitude {errors.lng && <p className='errors'>{errors.lng}</p>}
             </label>
-            <input 
+            <input
               type="number"
               value={lng}
               onChange={(e) => setLng(+e.target.value)}
@@ -210,8 +227,8 @@ function CreateSpotFunction () {
             <p className='description'>Mention the best features of your space, any special amenities like fast wifi or parking, and what you love about the neighborhood.</p>
           </div>
           <div id='textarea-container'>
-            <textarea 
-              style={{width:'100%', height:'100%', boxSizing: 'border-box'}}
+            <textarea
+              style={{ width: '100%', height: '100%', boxSizing: 'border-box' }}
               type="textarea"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
@@ -225,7 +242,7 @@ function CreateSpotFunction () {
             <h3>Create a title for your spot</h3>
             <p className='description'>Catch guests' attention with a spot title that highlights what makes your place special.</p>
           </div>
-          <input 
+          <input
             type="text"
             value={name}
             onChange={(e) => setName(e.target.value)}
@@ -240,7 +257,7 @@ function CreateSpotFunction () {
           </div>
           <div id='dollar-sign-price'>
             <p>$</p>
-            <input 
+            <input
               type="number"
               value={price}
               onChange={(e) => setPrice(e.target.value)}
@@ -249,68 +266,53 @@ function CreateSpotFunction () {
             {errors.price && <p className='errors'>{errors.price}</p>}
           </div>
         </div>
-
-
-
-
-
         <div id='photo-section-container'>
-
           <div className='title-n-description'>
             <h3>Liven up your spot with photos</h3>
             <p className='description'>Submit a link to at least one photo to publish your spot.</p>
           </div>
-
-        <div id='photo-urls-container'>
-          <input 
-            type="text"
-            value={previewImg}
-            onChange={(e) => setPreviewImg(e.target.value)}
-            placeholder='Preview Image URL'
-          />
-          {errors.previewImg && <p className='errors'>{errors.previewImg}</p>}
-          <input 
-            type="text"
-            value={img2}
-            onChange={(e) => setImg2(e.target.value)}
-            placeholder='Image URL'
-          />
-          {errors.img2 && <p className='errors'>{errors.img2}</p>}
-          <input 
-            type="text"
-            value={img3}
-            onChange={(e) => setImg3(e.target.value)}
-            placeholder='Image URL'
-          />
-          {errors.img3 && <p className='errors'>{errors.img3}</p>}
-          <input 
-            type="text"
-            value={img4}
-            onChange={(e) => setImg4(e.target.value)}
-            placeholder='Image URL'
-          />
-          {errors.img4 && <p className='errors'>{errors.img4}</p>}
-          <input 
-            type="text"
-            value={img5}
-            onChange={(e) => setImg5(e.target.value)}
-            placeholder='Image URL'
-          />
-          {errors.img5 && <p className='errors'>{errors.img5}</p>}
+          <div id='photo-urls-container'>
+            <input
+              type="text"
+              value={previewImg}
+              onChange={(e) => setPreviewImg(e.target.value)}
+              placeholder='Preview Image URL'
+            />
+            {errors.previewImg && <p className='errors'>{errors.previewImg}</p>}
+            <input
+              type="text"
+              value={img2}
+              onChange={(e) => setImg2(e.target.value)}
+              placeholder='Image URL'
+            />
+            {errors.img2 && <p className='errors'>{errors.img2}</p>}
+            <input
+              type="text"
+              value={img3}
+              onChange={(e) => setImg3(e.target.value)}
+              placeholder='Image URL'
+            />
+            {errors.img3 && <p className='errors'>{errors.img3}</p>}
+            <input
+              type="text"
+              value={img4}
+              onChange={(e) => setImg4(e.target.value)}
+              placeholder='Image URL'
+            />
+            {errors.img4 && <p className='errors'>{errors.img4}</p>}
+            <input
+              type="text"
+              value={img5}
+              onChange={(e) => setImg5(e.target.value)}
+              placeholder='Image URL'
+            />
+            {errors.img5 && <p className='errors'>{errors.img5}</p>}
+          </div>
+          <div id='button-container'>
+            <button id={idType()} type="submit" disabled={isDisabled()}>Create Spot</button>
+          </div>
         </div>
-
-
-        <div id='button-container'>
-          <button id='submit-button' type="submit">Create Spot</button>
-        </div>
-
-        
-        </div>
-
       </form>
-
-
-
     </div>
   )
 }

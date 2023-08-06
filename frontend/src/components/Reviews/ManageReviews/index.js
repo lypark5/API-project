@@ -42,7 +42,7 @@ export default function ManageReviewsFunction () {
     // we know it's a rerender issue cuz when we refresh page, it is correctly reflected.
   return (
     <>
-      <h1>manage reviews page connected</h1>
+      <h1>Manage Your Reviews</h1>
       {reviewsOfUserArr.toReversed().map(review => 
         <div>
           <p>{review.Spot.name}</p>
@@ -51,7 +51,7 @@ export default function ManageReviewsFunction () {
           <div>
             <OpenModalButton
               buttonText='Edit'
-              modalComponent={<EditReviewModalFunction2 reviewId={review.id} random={'manageReviews'}/>}
+              modalComponent={<EditReviewModalFunction2 review1={review} />}
             />
             <OpenModalButton
               buttonText='Delete'
