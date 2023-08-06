@@ -12,9 +12,9 @@ function DeleteReviewModalFunction({reviewId}) {
   }
  
   return (
-    <div className="modal">
-      <h3>Confirm Delete</h3>
-      <p>Are you sure you want to delete this review?</p>
+    <div className="modal delete-modal">
+      <h3 style={{margin:'15px 0px 0px'}}>Confirm Delete</h3>
+      <p style={{marginTop: '7px'}}>Are you sure you want to delete this review?</p>
       <button onClick={() => yesDeleteReviewFunction()} className="red-button">Yes (Delete Review)</button>
       <button onClick={() => closeModal()} className="no-button">No (Keep Review)</button>
     </div>

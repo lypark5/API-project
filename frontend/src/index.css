@@ -16,8 +16,8 @@ body {
 }
 
 /* i have modal in modal.css too*/
-/* .modal {
-  padding: 10px;
+.delete-modal {
+  padding: 0px 15px 15px;
   display: flex;
   justify-content: center;
   flex-direction: column;
@@ -27,7 +27,7 @@ body {
   overflow: hidden;
   background-color: white;
   width: 300px;
-} */
+}
 
 .red-button {
   background-color: #ff5a5a;
