@@ -1,30 +1,51 @@
 #login-modal {
   display: flex;
   flex-direction: column;
+  border: 4px solid black;
+  border-radius: 10px;
+  overflow: hidden;
+  background-color: white;
+  padding: 0px 20px;
+  width: 300px;
+  height: 250px;
+  align-items: center;
+  justify-content: center;
 }
 
 #login-form {
   display: flex;
   flex-direction: column;
-  border: 2px solid red;
+  width: 100%;
 }
 
-#username {
+#login-input-container {
   display: flex;
   flex-direction: column;
-  width: 100%;
-  border: 2px solid red;
+  gap: 8px;
 }
+
+#demo {
+  background-color: rgba(255, 255, 255, 0);
+  color: rgb(1, 156, 184);
+  border: none;
+  font-weight: bold;
+  font-size: 12px;
+  padding-bottom: 20px;
+} 
 
 .login-input {
   width: 100%;
   box-sizing: border-box;
-  border: 2px solid red;
 }
 
-#password {
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  border: 2px solid red;
+#login-red-button {
+  background-color: #ff5a5a;
+  width: -webkit-fill-available;
+  color: white;
+  padding: 10px 0px;
+  border: 2px solid black;
+  box-shadow: 2px 2px black;
+  font-size: 12px;
+  margin: 20px 0px;
 }
+

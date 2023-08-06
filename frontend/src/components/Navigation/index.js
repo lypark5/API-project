@@ -22,7 +22,6 @@ function Navigation({ isLoaded }){
             <ProfileButton user={sessionUser} />
         )}
       </span>
-
     </div>
   );
 }
