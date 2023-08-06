@@ -37,13 +37,9 @@ function GetAllSpotsOfCurrentFunction () {
   return (
     <div id='manage-container-container'>
       <div id='manage-title-container'>
-       <h2>Manage Your Spots</h2>
+       <h2 style={{marginBottom: '0px'}}>Manage Your Spots</h2>
       </div>
-
-
-
       <div id='manage-spots-container'>
-
         {userSpots.length ? userSpots.map(spot => 
           <span id='manage-spots-master-card'>
             <div id='same-card-as-get-all'>
@@ -60,25 +56,21 @@ function GetAllSpotsOfCurrentFunction () {
                 </div>
               </Link>
             </div>
-
-
             <div id='manage-buttons-container'>
-              <button onClick={() => editButtonFunction(spot.id)}>Update</button>
+              <button onClick={() => editButtonFunction(spot.id)} className="update-or-delete">Update</button>
               <OpenModalButton 
+                className='update-or-delete'
                 buttonText='Delete'
                 modalComponent={<DeleteSpotModalFunction spotId={spot.id} />}
               />
             </div>
-
           </span>
-          ) : <NavLink to="/spots" className='nav-link'>Create a New Spot</NavLink>}
-
+          ) : <NavLink to="/spots" className='nav-link' id='create-spot-button'>Create a New Spot</NavLink>}
       </div>
-
-
     </div>
   )
 }
+
 
 export default GetAllSpotsOfCurrentFunction;
 
