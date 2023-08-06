@@ -1,21 +1,62 @@
-#submit-review-button {
-  margin-top: 30px;
+.create-review-modal {
+  display: flex;
+  flex-direction: column;
+  border: 4px solid black;
+  border-radius: 10px;
+  overflow: hidden;
+  background-color: white;
+  width: 375px;
+  height: fit-content;
+  align-items: center;
+  justify-content: center;
+  padding: 20px 0px 30px;
+}
+
+.review-header {
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.review-errors-basket {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  width: 90%;
+  padding-bottom: 8px;
+}
+
+.review-errors {
+  margin: 0px;
+}
+
+.review-form {
+  width: 90%;
+}
+
+.review-textarea {
+  width: 100%;
+  height: 100px;
+  box-sizing: border-box;
+}
+
+.submit-review-button {
   background-color: #ff5a5a;
-  width: 25%;
+  width: -webkit-fill-available;
   color: white;
-  padding: 3px;
+  padding: 10px 0px;
   border: 2px solid black;
   box-shadow: 2px 2px black;
   font-size: 12px;
+  margin-top: 20px;
 }
 
-#disabled-review-button {
-  margin-top: 30px;
+.disabled-review-button {
   background-color: #ffbcbc;
-  width: 25%;
+  width: -webkit-fill-available;
   color: rgb(99, 99, 99);
-  padding: 3px;
+  padding: 10px 0px;
   border: 2px solid rgb(99, 99, 99);
   box-shadow: 2px 2px rgb(99, 99, 99);
   font-size: 12px;
+  margin-top: 20px;
 }

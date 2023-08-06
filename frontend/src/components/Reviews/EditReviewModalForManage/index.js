@@ -45,25 +45,48 @@ function EditReviewModalFunction2({review1}) {          // we needed to pass in 
   };
 
   return (
-    <div className='modal'>
-      <h3>How was your stay at {review1.Spot.name}</h3>
-      {error.review && <p className='errors'>{error.review}</p>}
-      <form onSubmit={handleSubmit}>
-        <textarea
-          type="textarea"
-          placeholder="Leave your review here..."
-          value={review}
-          onChange={(e) => setReview(e.target.value)}
-          className='review-text-box'
-        />
-        <StarsFunction
-          disabled={false}
-          onChange={onChange}
-          stars={stars}
-        />
-        <button type="submit" className="red-button">Update Your Review</button>
-      </form>
+    // <div className='modal'>
+    //   <h3>How was your stay at {review1.Spot.name}</h3>
+    //   {error.review && <p className='errors'>{error.review}</p>}
+    //   <form onSubmit={handleSubmit}>
+    //     <textarea
+    //       type="textarea"
+    //       placeholder="Leave your review here..."
+    //       value={review}
+    //       onChange={(e) => setReview(e.target.value)}
+    //     />
+    //     <StarsFunction
+    //       disabled={false}
+    //       onChange={onChange}
+    //       stars={stars}
+    //     />
+    //     <button type="submit" className="red-button">Update Your Review</button>
+    //   </form>
+    // </div>
+
+    <div className="modal create-review-modal">
+    <h2 className='review-header'>How was your stay at <br></br>{review1.Spot.name}?</h2>
+    <div className='review-errors-basket'>
+      {error.review && <p className='errors review-errors'>{error.review}</p>}
     </div>
+    <form onSubmit={handleSubmit} className='review-form'>
+      <textarea
+        className='review-textarea'
+        type="textarea"
+        placeholder="Leave your review here..."
+        value={review}
+        onChange={(e) => setReview(e.target.value)}
+      />
+      <StarsFunction
+        disabled={false}
+        onChange={onChange}
+        stars={stars}
+      />
+      <button className={review.length < 10 || stars === 0 ? 'disabled-review-button' : 'submit-review-button'} type="submit" disabled={review.length < 10 || stars === 0 ? true : false}>Update Your Review</button>
+    </form>
+  </div>
+
+
   )
 }
 

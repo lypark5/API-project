@@ -7,9 +7,9 @@
   border-radius: 10px;
   overflow: hidden;
   background-color: white;
-  padding: 0px 20px;
+  padding: 30px 20px;
   width: 350px;
-  height: 350px;
+  height: fit-content;
 }
 
 #signup-h2 {
@@ -27,6 +27,5 @@
   flex-direction: column;
   gap: 8px;
   width: 100%;
-  padding-bottom: 30px;
 }
 

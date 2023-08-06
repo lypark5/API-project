@@ -103,7 +103,7 @@ function EditSpotFunction() {
 
   // line 42: if errors.address exists then display the address error in ptag
   return (
-    <>
+    <div id='container-container'>
       <h1>Edit Spot</h1>
       {/* {Object.values(errors).length > 0 ? Object.values(errors).map(error => 
         <p className='errors'>{error}</p>
@@ -173,7 +173,7 @@ reservation.
           <p>Mention the best features of your space, any special amenities like
 fast wifi or parking, and what you love about the neighborhood.
 </p>
-          <input 
+          <textarea
             type="textarea"
             value={description}
             onChange={(e) => setDescription(e.target.value)}
@@ -208,7 +208,7 @@ in search results.</p>
         </label>
         <button type="submit">Edit Spot</button>
       </form>
-    </>
+    </div>
   )
 }
   

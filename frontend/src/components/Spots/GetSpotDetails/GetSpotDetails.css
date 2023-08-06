@@ -74,6 +74,7 @@
   padding: 20px;
   display: flex;
   flex-wrap: wrap;
+  max-height: 100px;
 }
 
 #reserve-box-text-line {

@@ -31,6 +31,7 @@
   padding: 10px 13px;
   border-radius: 20px;
   background-color: white;
+  position: relative;
 }
 
 #right-nav-span {
@@ -43,3 +44,54 @@
   align-items: center;
 }
 
+
+/******Profile Button CSS ↓↓*********/
+#drop-down-menu {
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid black;
+  position: absolute;
+  height: 175px;
+  width: 150px;
+  right: 45px;
+  top: 60px;
+  padding: 7px 0px 10px;
+}
+
+.dropdown-p {
+  font-size: 13px;
+  margin: 4px 0px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#dropdown-email {
+  border-bottom: 1px solid black;
+  padding-bottom: 10px;
+  width: 95%
+}
+
+.manage-link {
+  font-size: 13px;
+  margin: 4px 0px;
+  border-bottom: 1px solid black;
+  width: 95%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-bottom: 8px;
+}
+
+#logout-button {
+  background-color: rgb(99, 99, 99);
+  color: white;
+  border-radius: 20px;
+  margin-top: 7px;
+  padding: 10px 13px;
+  font-size: 12px;
+}

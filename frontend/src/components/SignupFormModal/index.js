@@ -68,6 +68,16 @@ function SignupFormModal() {
     else return false;
   }
 
+  const disabledClassNameFunction = () => {
+    if (!email) return 'disabled-review-button';
+    else if (!username) return 'disabled-review-button';
+    else if (!firstName) return 'disabled-review-button';
+    else if (!lastName) return 'disabled-review-button';
+    else if (!password) return 'disabled-review-button'; 
+    else if (username.length < 4 || password.length < 6) return 'disabled-review-button';
+    else return 'submit-review-button';
+  }
+
   return (
     <div className="modal" id='signup-modal'>
       <h2 id='signup-h2'>Sign Up</h2>
@@ -138,9 +148,7 @@ function SignupFormModal() {
           <p className="errors">{errors.confirmPassword}</p>
         )}
         </div>
-
-
-        <button type="submit" disabled={isDisabled()} className="red-button">Sign Up</button>
+        <button type="submit" disabled={isDisabled()} className={disabledClassNameFunction()}>Sign Up</button>
       </form>
     </div>
   );

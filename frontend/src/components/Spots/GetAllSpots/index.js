@@ -18,10 +18,10 @@ function GetAllSpotsFunction() {
   // console.log('spots =', spots)         // spots is an obj of objs
   // console.log('spotsArray =', spotsArray)         
   return (
-    <div id='container-container'>
-      <div id='all-spots-container'>
+    <div className='container-container'>
+      <div className='all-spots-container'>
         {spotsArray.map(spot => 
-          <span id='all-spots-card'>
+          <span className='all-spots-card'>
             <Link to={`/spots/${spot.id}`} title={spot.name} className='link'>
               <img src={spot.previewImage} alt={spot.name} className='all-spots-pic'/>
               <div className='bottom-half'>

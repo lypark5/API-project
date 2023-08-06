@@ -1,11 +1,11 @@
-#container-container {
+.container-container {
   display: flex;
   justify-content: center; 
   /* border: 2px solid blue; */
   margin-left: 75px;
 }
 
-#all-spots-container {
+.all-spots-container {
   padding-top: 25px;
   display: flex;
   flex-wrap: wrap;
@@ -17,7 +17,7 @@
   max-width: 1250px;
 }
 
-#all-spots-card {
+.all-spots-card {
   /* border: 1px solid black; */
   width: 250px;
   height: 300px;

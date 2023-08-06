@@ -5,9 +5,9 @@
   border-radius: 10px;
   overflow: hidden;
   background-color: white;
-  padding: 0px 20px;
+  padding: 15px 20px 25px;
   width: 300px;
-  height: 250px;
+  height: fit-content;
   align-items: center;
   justify-content: center;
 }
@@ -29,8 +29,8 @@
   color: rgb(1, 156, 184);
   border: none;
   font-weight: bold;
-  font-size: 12px;
-  padding-bottom: 20px;
+  font-size: 14px;
+  padding-top: 20px;
 } 
 
 .login-input {
@@ -38,7 +38,7 @@
   box-sizing: border-box;
 }
 
-#login-red-button {
+/* #login-red-button {
   background-color: #ff5a5a;
   width: -webkit-fill-available;
   color: white;
@@ -47,5 +47,5 @@
   box-shadow: 2px 2px black;
   font-size: 12px;
   margin: 20px 0px;
-}
+} */
 
