@@ -19,21 +19,21 @@ function GetAllSpotsFunction() {
   // console.log('spotsArray =', spotsArray)         
   return (
     <div id='container-container'>
-      <div className='all-spots-container'>
+      <div id='all-spots-container'>
         {spotsArray.map(spot => 
-          <span className='all-spots-card'>
+          <span id='all-spots-card'>
             <Link to={`/spots/${spot.id}`} title={spot.name} className='link'>
-                <img src={spot.previewImage} alt={spot.name} className='all-spots-pic'/>
-                <div id='bottom-half'>
-                  <div id='top-line'>
-                    <p id='city-n-state-left'>{spot.city}, {spot.state}</p>
-                    <span id='stars-right'>
-                      {typeof spot.avgRating === 'number' ? <p>{spot.avgRating.toFixed(1)} ⭐</p> : <p>{spot.avgRating}</p>}
-                      {/* {console.log((typeof spot.avgRating), spot.avgRating)} */}
-                    </span>
-                  </div>
-                  <p>${spot.price} night</p>
+              <img src={spot.previewImage} alt={spot.name} className='all-spots-pic'/>
+              <div className='bottom-half'>
+                <div className='top-line'>
+                  <p className='all-spots-p'>{spot.city}, {spot.state}</p>
+                  <span id='stars-right'>
+                    {typeof spot.avgRating === 'number' ? <p className='all-spots-p'>{spot.avgRating.toFixed(1)} ⭐</p> : <p className='all-spots-p'>{spot.avgRating}</p>}
+                    {/* {console.log((typeof spot.avgRating), spot.avgRating)} */}
+                  </span>
                 </div>
+                <p className='all-spots-p'>${spot.price} night</p>
+              </div>
             </Link>
           </span>
         )}

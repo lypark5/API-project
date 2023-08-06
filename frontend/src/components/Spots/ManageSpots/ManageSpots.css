@@ -1,0 +1,45 @@
+#manage-container-container {
+  display: flex;
+  flex-direction: column;
+  /* border: 2px solid blue; */
+  align-items: center;
+}
+
+#manage-title-container {
+  display: flex;
+  /* border: 2px solid pink; */
+  width: 90%;
+}
+
+#manage-spots-container {
+  padding-top: 25px;
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  justify-content: flex-start;
+  /* border: 2px solid red;  */
+  gap: 20px;
+  width: 90%;  
+  max-width: 1250px;
+}
+
+#manage-spots-master-card {
+  /* border: 2px solid yellow; */
+  width: 250px;
+  height: 350px;
+  display: flex;
+  flex-direction: column;
+}
+
+#same-card-as-get-all {
+  /* border: 1px solid black; */
+  width: 100%;
+  height: 85%;
+}
+
+#manage-buttons-container {
+  /* border: 1px solid green; */
+  padding: 10px;
+}
+
+
