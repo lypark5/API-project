@@ -17,6 +17,11 @@
   height: 60px;
 }
 
+#create-spot-link-nav {
+  color:rgb(1, 156, 184);
+  font-weight:bold;
+}
+
 #profile-button-icon-container {
   display: flex;
   gap: 4px;

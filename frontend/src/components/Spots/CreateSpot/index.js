@@ -142,17 +142,17 @@ function CreateSpotFunction() {
           <p className='errors'>{error}</p>
           ): null}      */}
         <div id='sub-header'>
-          <h3>Where is your place located?</h3>
-          <p style={{ fontSize: '13px' }}>Guests will only get your exact address once they booked a reservation.</p>
+          <h3 className='create-spot-h3'>Where is your place located?</h3>
+          <p className='create-spot-p' style={{ fontSize: '13px' }}>Guests will only get your exact address once they booked a reservation.</p>
         </div>
       </div>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} id='create-form'>
         <div className='one-liner'>
-          <label>
+          <label className='create-spot-label'>
             Country {errors.country && <p className='errors'>{errors.country}</p>}
           </label>
           <input
-            className='long-input'
+            className='long-input create-spot-input'
             type="text"
             value={country}
             onChange={(e) => setCountry(e.target.value)}
@@ -160,11 +160,11 @@ function CreateSpotFunction() {
           />
         </div>
         <div className='one-liner'>
-          <label>
+          <label className='create-spot-label'>
             Street Address {errors.address && <p className='errors'>{errors.address}</p>}
           </label>
           <input
-            className='long-input'
+            className='long-input create-spot-input'
             type="text"
             value={address}
             onChange={(e) => setAddress(e.target.value)}
@@ -173,22 +173,24 @@ function CreateSpotFunction() {
         </div>
         <div className='two-holder'>
           <span id='city'>
-            <label>
+            <label className='create-spot-label'>
               City {errors.city && <p className='errors'>{errors.city}</p>}
             </label>
             <input
+              className='create-spot-input'
               type="text"
               value={city}
               onChange={(e) => setCity(e.target.value)}
               placeholder='City'
             />
           </span>
-          <p>,</p>
+          <p className='create-spot-p'>,</p>
           <span id='state'>
-            <label>
+            <label className='create-spot-label'>
               State {errors.state && <p className='errors'>{errors.state}</p>}
             </label>
             <input
+              className='create-spot-input'
               type="text"
               value={state}
               onChange={(e) => setState(e.target.value)}
@@ -198,22 +200,24 @@ function CreateSpotFunction() {
         </div>
         <div className='two-holder' id='lat-lng-div'>
           <span className='lat-or-lng'>
-            <label>
+            <label className='create-spot-label'>
               Latitude {errors.lat && <p className='errors'>{errors.lat}</p>}
             </label>
             <input
+              className='create-spot-input'
               type="number"
               value={lat}
               onChange={(e) => setLat(+e.target.value)}
               placeholder='Latitude'
             />
           </span>
-          <p>,</p>
+          <p className='create-spot-p'>,</p>
           <span className='lat-or-lng'>
-            <label>
+            <label className='create-spot-label'>
               Longitude {errors.lng && <p className='errors'>{errors.lng}</p>}
             </label>
             <input
+              className='create-spot-input'
               type="number"
               value={lng}
               onChange={(e) => setLng(+e.target.value)}
@@ -223,8 +227,8 @@ function CreateSpotFunction() {
         </div>
         <div id='description-section-container'>
           <div className='title-n-description'>
-            <h3>Describe your place to guests</h3>
-            <p className='description'>Mention the best features of your space, any special amenities like fast wifi or parking, and what you love about the neighborhood.</p>
+            <h3 className='create-spot-h3'>Describe your place to guests</h3>
+            <p className='description create-spot-p'>Mention the best features of your space, any special amenities like fast wifi or parking, and what you love about the neighborhood.</p>
           </div>
           <div id='textarea-container'>
             <textarea
@@ -239,10 +243,11 @@ function CreateSpotFunction() {
         </div>
         <div className='title-or-price-container'>
           <div className='title-n-description'>
-            <h3>Create a title for your spot</h3>
-            <p className='description'>Catch guests' attention with a spot title that highlights what makes your place special.</p>
+            <h3 className='create-spot-h3'>Create a title for your spot</h3>
+            <p className='description create-spot-p'>Catch guests' attention with a spot title that highlights what makes your place special.</p>
           </div>
           <input
+            className='create-spot-input'
             type="text"
             value={name}
             onChange={(e) => setName(e.target.value)}
@@ -252,12 +257,15 @@ function CreateSpotFunction() {
         </div>
         <div className='title-or-price-container'>
           <div className='title-n-description'>
-            <h3>Set a base price for your spot</h3>
-            <p className='description'>Competitive pricing can help your listing stand out and rank higher in search results.</p>
+            <h3 className='create-spot-h3'>Set a base price for your spot</h3>
+            <p className='description create-spot-p'>Competitive pricing can help your listing stand out and rank higher in search results.</p>
           </div>
+
+
           <div id='dollar-sign-price'>
-            <p>$</p>
+            <p className='create-spot-p'>$</p>
             <input
+              className='create-spot-input'
               type="number"
               value={price}
               onChange={(e) => setPrice(e.target.value)}
@@ -265,14 +273,19 @@ function CreateSpotFunction() {
             />
             {errors.price && <p className='errors'>{errors.price}</p>}
           </div>
+
+
+
+          
         </div>
         <div id='photo-section-container'>
           <div className='title-n-description'>
-            <h3>Liven up your spot with photos</h3>
-            <p className='description'>Submit a link to at least one photo to publish your spot.</p>
+            <h3 className='create-spot-h3'>Liven up your spot with photos</h3>
+            <p className='description create-spot-p'>Submit a link to at least one photo to publish your spot.</p>
           </div>
           <div id='photo-urls-container'>
             <input
+              className='create-spot-input'
               type="text"
               value={previewImg}
               onChange={(e) => setPreviewImg(e.target.value)}
@@ -280,6 +293,7 @@ function CreateSpotFunction() {
             />
             {errors.previewImg && <p className='errors'>{errors.previewImg}</p>}
             <input
+              className='create-spot-input'
               type="text"
               value={img2}
               onChange={(e) => setImg2(e.target.value)}
@@ -287,6 +301,7 @@ function CreateSpotFunction() {
             />
             {errors.img2 && <p className='errors'>{errors.img2}</p>}
             <input
+              className='create-spot-input'
               type="text"
               value={img3}
               onChange={(e) => setImg3(e.target.value)}
@@ -294,6 +309,7 @@ function CreateSpotFunction() {
             />
             {errors.img3 && <p className='errors'>{errors.img3}</p>}
             <input
+              className='create-spot-input'
               type="text"
               value={img4}
               onChange={(e) => setImg4(e.target.value)}
@@ -301,6 +317,7 @@ function CreateSpotFunction() {
             />
             {errors.img4 && <p className='errors'>{errors.img4}</p>}
             <input
+              className='create-spot-input'
               type="text"
               value={img5}
               onChange={(e) => setImg5(e.target.value)}

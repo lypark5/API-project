@@ -1,18 +1,20 @@
 #container-container {
   display: flex;
   justify-content: center; 
-  border: 2px solid blue;
+  /* border: 2px solid blue; */
+  margin-left: 75px;
 }
 
 .all-spots-container {
+  padding-top: 25px;
   display: flex;
   flex-wrap: wrap;
   flex-direction: row;
-  justify-content: center;
-  border: 2px solid red; 
+  justify-content: flex-start;
+  /* border: 2px solid red;  */
   gap: 20px;
   width: 90%;  
-
+  max-width: 1250px;
 }
 
 .all-spots-card {

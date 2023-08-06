@@ -2,6 +2,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  margin-bottom: 150px;
   /* border: 2px solid blue; */
 }
 
@@ -19,7 +20,7 @@
   /* border: 1px solid green; */
 }
 
-form {
+#create-form {
   padding-top: 5px;
   width: 30%;
   /* border: 1px solid purple; */
@@ -28,20 +29,19 @@ form {
   align-items: flex-start;
 }
 
-#header > h2 {
+#header > h2 {      /* this is one way to say only h2 that is inside this id*/
   margin: 13px 0px 4px;
-  color: red;
 }
 
-h3 {
+.create-spot-h3 {
   margin: 2px 0px 0px;
 }
 
-p {
+.create-spot-p {
   margin: 0px;
 }
 
-label {
+.create-spot-label {
   font-size: 13px;
 }
 
@@ -89,7 +89,7 @@ label {
   width: 47%
 }
 
-input {
+.create-spot-input {
   width: 100%;
   box-sizing: border-box;
 }

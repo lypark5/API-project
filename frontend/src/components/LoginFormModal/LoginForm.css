@@ -1,0 +1,30 @@
+#login-modal {
+  display: flex;
+  flex-direction: column;
+}
+
+#login-form {
+  display: flex;
+  flex-direction: column;
+  border: 2px solid red;
+}
+
+#username {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  border: 2px solid red;
+}
+
+.login-input {
+  width: 100%;
+  box-sizing: border-box;
+  border: 2px solid red;
+}
+
+#password {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  border: 2px solid red;
+}

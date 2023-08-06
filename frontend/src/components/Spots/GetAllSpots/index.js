@@ -24,8 +24,6 @@ function GetAllSpotsFunction() {
           <span className='all-spots-card'>
             <Link to={`/spots/${spot.id}`} title={spot.name} className='link'>
                 <img src={spot.previewImage} alt={spot.name} className='all-spots-pic'/>
-
-
                 <div id='bottom-half'>
                   <div id='top-line'>
                     <p id='city-n-state-left'>{spot.city}, {spot.state}</p>
@@ -34,8 +32,6 @@ function GetAllSpotsFunction() {
                       {/* {console.log((typeof spot.avgRating), spot.avgRating)} */}
                     </span>
                   </div>
-
-
                   <p>${spot.price} night</p>
                 </div>
             </Link>

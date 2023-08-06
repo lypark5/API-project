@@ -16,7 +16,7 @@ body {
 }
 
 /* i have modal in modal.css too*/
-.modal {
+/* .modal {
   padding: 10px;
   display: flex;
   justify-content: center;
@@ -27,7 +27,7 @@ body {
   overflow: hidden;
   background-color: white;
   width: 300px;
-}
+} */
 
 .red-button {
   background-color: #ff5a5a;
