@@ -15,6 +15,7 @@
 .small-pic {
   width: 49%;
   height: 49%;
+  object-fit: cover;
   border: 1px solid black;
 }
 

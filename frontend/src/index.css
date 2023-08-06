@@ -7,6 +7,10 @@ body {
   font-family: 'PT Sans', sans-serif;
 }
 
+.link {
+  text-decoration: none;
+}
+
 .nav-link {
   text-decoration: none;
 }
