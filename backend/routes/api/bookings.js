@@ -19,7 +19,7 @@ router.get('/current', requireAuth, async (req, res, next) => {
   const bookingsOfUser = await Booking.findAll({        // for every findAll, you need to iterate thru each one to json it
     where: { userId: user.id }
   })
-    console.log(bookingsOfUser)
+    // console.log(bookingsOfUser)
   // console.log(Object.getOwnPropertyNames(Spot.prototype));
 
   for (let booking of bookingsOfUser) {
@@ -161,7 +161,7 @@ router.put('/:bookingId', requireAuth, async (req, res, next) => {         // ne
   const { user } = req;                                                    // get user from req (the logged in user's info)
   const { startDate, endDate } = req.body;                                 // all the variables we want to use from req body
   let editBooking = await Booking.findByPk(req.params.bookingId);          // get the specific booking from id.
-  console.log(editBooking)
+  // console.log(editBooking)
 
   // error for nonexistent booking
   if (!editBooking) {                                           // if the target booking to be edited doesn't exist
@@ -177,18 +177,18 @@ router.put('/:bookingId', requireAuth, async (req, res, next) => {         // ne
   };
 
   // error for past dates (the existing booking's end date)
-  console.log(Date.parse(endDate), Date.now())                  // attempted endDate is before today's date (already passed)
+  // console.log(Date.parse(endDate), Date.now())                  // attempted endDate is before today's date (already passed)
   if ((Date.parse(editBooking.endDate) < Date.now())) {         // editBooking.endDate = the end date of the existing booking u want to edit.          
-    console.log('entered if block')
+    // console.log('entered if block')
     let err = new Error("Past bookings can't be modified");     // make a relevant error
     err.status = 403;                                           // make error status
     next(err);                                                  // pass along error if this doesn't hit.
   };  
 
   // error for past dates (forbid u from entering past date as a newly requested date)
-  console.log(Date.parse(endDate), Date.now())
+  // console.log(Date.parse(endDate), Date.now())
   if ((Date.parse(endDate) < Date.now())) {                     // endDate = new end date from req body
-    console.log('entered if block')
+    // console.log('entered if block')
     let err = new Error("Past bookings can't be modified");     // make a relevant error
     err.status = 403;                                           // make error status
     next(err);                                                  // pass along error if this doesn't hit.

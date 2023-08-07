@@ -55,14 +55,12 @@ function ProfileButton({ user }) {
       </button>
       <div className={ulClassName} ref={ulRef}>
         {user ? (
-          <div>
-            <p>Hello, {user.firstName}</p>
-            <p>{user.email}</p>
-            <NavLink to='/spots/manage'>Manage Spots</NavLink>
-            <NavLink to='/reviews/manage'>Manage Reviews</NavLink>
-            <p>
-              <button onClick={logout}>Log Out</button>
-            </p>
+          <div id='drop-down-menu'>
+            <p className='dropdown-p'>Hello, {user.firstName}</p>
+            <p className='dropdown-p' id='dropdown-email'>{user.email}</p>
+            <NavLink to='/spots/manage' onClick={() => closeMenu()} className='nav-link manage-link'>Manage Spots</NavLink>
+            <NavLink to='/reviews/manage' onClick={() => closeMenu()} className='nav-link manage-link'>Manage Reviews</NavLink>
+            <button onClick={logout} id='logout-button'>Log Out</button>
           </div>
         ) : (
           <>

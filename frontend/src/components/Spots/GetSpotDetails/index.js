@@ -17,23 +17,23 @@ function GetSpotDetailsFunction () {
   const reviewsOfThisSpot = useSelector(state => state.reviews.spot);   
   const reviewsOfThisSpotArr = Object.values(reviewsOfThisSpot);
 
-  console.log('this is "spot" detail', spot);           // this one shows full obj with rating and imgs and stuff
+  // console.log('this is "spot" detail', spot);           // this one shows full obj with rating and imgs and stuff
 
   useEffect(() => {
     dispatch(getSpotDetailsThunk(spotId));              
   }, [dispatch, reviewsOfThisSpotArr.length]);
 
   if (!spot.SpotImages) {                                     // if SpotImages key doesn't exist in spot
-    console.log('in the if statement', spot.SpotImages)
+    // console.log('in the if statement', spot.SpotImages)
     return null;
   }
   // console.log("spot =", spot)
-  console.log("spot.SpotImages= ", spot.SpotImages)
+  // console.log("spot.SpotImages= ", spot.SpotImages)
   let prevImg;
   let nonPrevImg = spot.SpotImages.filter(img => !img.preview);
   
   for (let spotImg of spot.SpotImages) {
-    console.log('spotImg =', spotImg)
+    // console.log('spotImg =', spotImg)
     if (spotImg.preview) {
       prevImg = spotImg.url
     }
@@ -43,7 +43,7 @@ function GetSpotDetailsFunction () {
     nonPrevImg.push({url: 'https://www.beauflor.us/en/products/luxury-vinyl-roll/metro--p--/-/media/sites/ideal/general/nophoto.ashx?as=1&rev=d7c55585b143492bb40a105c8a3554f2&hash=E3318B97D01C0BC7F91476129330E4C4', preview: false})
   }
 
-  console.log('nonPrevImg =', nonPrevImg)
+  // console.log('nonPrevImg =', nonPrevImg)
 
   function yesAvgStarRatingFunction () {            // callback function
     if (typeof spot.avgStarRating === 'number') {
@@ -74,7 +74,7 @@ function GetSpotDetailsFunction () {
     <div id='spot-details-meat-container'>
       <div id='spot-header'>
         <h2 id='spot-title'>{spot.name}</h2>
-        <p id='spot-sub-header'>{spot.city}, {spot.state}, {spot.country}</p>
+        <p className='spot-details-p' id='spot-sub-header'>{spot.city}, {spot.state}, {spot.country}</p>
       </div>
       <div id='all-pics-container'>
         <span id='big-pic-container'>
@@ -89,20 +89,20 @@ function GetSpotDetailsFunction () {
       <div id='spot-detail-midsection'>
         <span id='hosted-by-section'>
           <h2 id='hosted-by-title'>Hosted by {spot.Owner.firstName} {spot.Owner.lastName}</h2>
-          <p>{spot.description}</p>
+          <p className='spot-details-p'>{spot.description}</p>
         </span>
         <span id='reserve-box'>
           <div id='reserve-box-text-line'>
-            <span id='price-per-night-left'><p id='big-price'>${spot.price}</p><p>&nbsp;&nbsp;night</p></span>
+            <span id='price-per-night-left'><p className='spot-details-p' id='big-price'>${spot.price}</p><p>&nbsp;&nbsp;night</p></span>
             <span>
-              <p>{yesAvgStarRatingFunction()}{numReviewsStringFunction()}</p>
+              <p className='spot-details-p'>{yesAvgStarRatingFunction()}{numReviewsStringFunction()}</p>
             </span>
           </div>
           <button onClick={() => alertFunction()} className='red-button'>Reserve</button>
         </span>
       </div>
       <div id='rating-and-quantity-section'>
-        <p id='large-stars-n-reviews'>{yesAvgStarRatingFunction()}{numReviewsStringFunction()}</p>   
+        <p className='spot-details-p' id='large-stars-n-reviews'>{yesAvgStarRatingFunction()}{numReviewsStringFunction()}</p>   
       </div>
       <div id='get-all-reviews-section'>
         <GetAllReviewsBySpotIdFunction /> 

@@ -49,9 +49,7 @@ function EditSpotFunction() {
     }       // else, everything will be its useState default value.
   }, [spotBeingEdited.country]);  // spotBeingEdited.country  u need this for it to recognize a change in the item inside the basket, else only sees outside of basket.  u only need one cuz it's either gonna be an empty basket or a filled basket.  if sans .country, it'll stack overflow.
   // this one needs [spotBeingEdited.country] in dependency array cuz it is NOT a modal, but its own page.
-  console.log('spotbeingedited.country =', spotBeingEdited.country)
-  // useEffect(() => {
-  // }, [])
+  // console.log('spotbeingedited.country =', spotBeingEdited.country)
   
 
   const handleSubmit = async (e) => {
@@ -76,8 +74,8 @@ function EditSpotFunction() {
 
     // don't need if lng exists validation cuz it auto goes to 0 when u backspace, always filled.  i converted the e.target to always be a number with +e.target.value, makes this possible.
     if (lng < -180 || lng > 180) {          // if longitude in req body is invalid, add lng key to errorObj with msg value
-      console.log('spotBeingEdited.lng =', spotBeingEdited.lng)
-      console.log('type of spotBeingEdited.lng =', typeof spotBeingEdited.lng)
+      // console.log('spotBeingEdited.lng =', spotBeingEdited.lng)
+      // console.log('type of spotBeingEdited.lng =', typeof spotBeingEdited.lng)
       errorsObj.lng = 'Longitude is not valid';
     };    
     if (!description) errorsObj.description = 'Description is required';  // if description in req body is empty, add description key to errorObj with msg value
@@ -103,112 +101,148 @@ function EditSpotFunction() {
 
   // line 42: if errors.address exists then display the address error in ptag
   return (
-    <>
-      <h1>Edit Spot</h1>
-      {/* {Object.values(errors).length > 0 ? Object.values(errors).map(error => 
-        <p className='errors'>{error}</p>
-        ): null}      */}
-      <h3>Where is your place located?</h3>
-      <p>Guests will only get your exact address once they booked a
-reservation.
-</p>
-      <form onSubmit={handleSubmit}>
-        <label>
-          Country {errors.country && <p className='errors'>{errors.country}</p>}   
-          <input 
+    <div className='master-meat-container'>
+      <div className='create-spot-header'>
+        <h2 className='create-spot-h2'>Create a New Spot</h2>
+          {/* {Object.values(errors).length > 0 ? Object.values(errors).map(error => 
+          <p className='errors'>{error}</p>
+          ): null}      */}
+        <div className='create-spot-sub-header'>
+          <h3 className='create-spot-h3'>Where is your place located?</h3>
+          <p className='create-spot-p' style={{ fontSize: '13px' }}>Guests will only get your exact address once they booked a reservation.</p>
+        </div>
+      </div>
+      <form onSubmit={handleSubmit} className='create-form'>
+        <div className='one-liner'>
+          <label className='create-spot-label'>
+            Country {errors.country && <p className='errors'>{errors.country}</p>}
+          </label>
+          <input
+            className='long-input create-spot-input'
             type="text"
             value={country}
             onChange={(e) => setCountry(e.target.value)}
-            placeholder='Country'>
-            
-            </input>
-        </label>
-        <label>
-          Street Address {errors.address && <p className='errors'>{errors.address}</p>}
-          <input 
+            placeholder='Country'
+          />
+        </div>
+        <div className='one-liner'>
+          <label className='create-spot-label'>
+            Street Address {errors.address && <p className='errors'>{errors.address}</p>}
+          </label>
+          <input
+            className='long-input create-spot-input'
             type="text"
             value={address}
             onChange={(e) => setAddress(e.target.value)}
             placeholder='Address'
           />
-        </label>
-        <label>
-          City {errors.city && <p className='errors'>{errors.city}</p>}
-          <input 
-            type="text"
-            value={city}
-            onChange={(e) => setCity(e.target.value)}
-            placeholder='City'
-          />
-        </label>
-        <label>
-          State {errors.state && <p className='errors'>{errors.state}</p>}
-          <input 
-            type="text"
-            value={state}
-            onChange={(e) => setState(e.target.value)}
-            placeholder='STATE'
-          />
-        </label>
-        <label>
-          Latitude {errors.lat && <p className='errors'>{errors.lat}</p>}
-          <input 
-            type="number"
-            value={lat}
-            onChange={(e) => setLat(+e.target.value)}
-            placeholder='Latitude'
-          />
-        </label>
-        <label>
-          Longitude {errors.lng && <p className='errors'>{errors.lng}</p>}
-          <input 
-            type="number"
-            value={lng}
-            onChange={(e) => setLng(+e.target.value)}
-            placeholder='Longitude'
-          />
-        </label>
-        <label>
-          <h3>Describe your place to guests</h3>
-          <p>Mention the best features of your space, any special amenities like
-fast wifi or parking, and what you love about the neighborhood.
-</p>
-          <input 
-            type="textarea"
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-            placeholder='Please write at least 30 characters'
-          />
-          {errors.description && <p className='errors'>{errors.description}</p>}
-        </label>
-        <label>
-          <h3>Create a title for your spot</h3>
-          <p>Catch guests' attention with a spot title that highlights what makes
-your place special.</p>
-          <input 
+        </div>
+        <div className='two-holder'>
+          <span className='city'>
+            <label className='create-spot-label'>
+              City {errors.city && <p className='errors'>{errors.city}</p>}
+            </label>
+            <input
+              className='create-spot-input'
+              type="text"
+              value={city}
+              onChange={(e) => setCity(e.target.value)}
+              placeholder='City'
+            />
+          </span>
+          <p className='create-spot-p'>,</p>
+          <span className='state'>
+            <label className='create-spot-label'>
+              State {errors.state && <p className='errors'>{errors.state}</p>}
+            </label>
+            <input
+              className='create-spot-input'
+              type="text"
+              value={state}
+              onChange={(e) => setState(e.target.value)}
+              placeholder='STATE'
+            />
+          </span>
+        </div>
+        <div className='two-holder lat-lng-div'>
+          <span className='lat-or-lng'>
+            <label className='create-spot-label'>
+              Latitude {errors.lat && <p className='errors'>{errors.lat}</p>}
+            </label>
+            <input
+              className='create-spot-input'
+              type="number"
+              value={lat}
+              onChange={(e) => setLat(+e.target.value)}
+              placeholder='Latitude'
+            />
+          </span>
+          <p className='create-spot-p'>,</p>
+          <span className='lat-or-lng'>
+            <label className='create-spot-label'>
+              Longitude {errors.lng && <p className='errors'>{errors.lng}</p>}
+            </label>
+            <input
+              className='create-spot-input'
+              type="number"
+              value={lng}
+              onChange={(e) => setLng(+e.target.value)}
+              placeholder='Longitude'
+            />
+          </span>
+        </div>
+        <div className='description-section-container'>
+          <div className='title-n-description'>
+            <h3 className='create-spot-h3'>Describe your place to guests</h3>
+            <p className='description create-spot-p'>Mention the best features of your space, any special amenities like fast wifi or parking, and what you love about the neighborhood.</p>
+          </div>
+          <div className='textarea-container'>
+            <textarea
+              style={{ width: '100%', height: '100%', boxSizing: 'border-box' }}
+              type="textarea"
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              placeholder='Please write at least 30 characters'
+            />
+            {errors.description && <p className='errors'>{errors.description}</p>}
+          </div>
+        </div>
+        <div className='title-or-price-container'>
+          <div className='title-n-description'>
+            <h3 className='create-spot-h3'>Create a title for your spot</h3>
+            <p className='description create-spot-p'>Catch guests' attention with a spot title that highlights what makes your place special.</p>
+          </div>
+          <input
+            className='create-spot-input'
             type="text"
             value={name}
             onChange={(e) => setName(e.target.value)}
             placeholder='Name of your spot'
           />
           {errors.name && <p className='errors'>{errors.name}</p>}
-        </label>
-        <label>
-          <h3>Set a base price for your spot</h3>
-          <p>Competitive pricing can help your listing stand out and rank higher
-in search results.</p>
-          <p>$</p>
-          <input 
-            type="number"
-            value={price}
-            onChange={(e) => setPrice(e.target.value)}
-            placeholder='Price per night (USD)'
-          />
-          {errors.price && <p className='errors'>{errors.price}</p>}
-        </label>
-        <button type="submit">Edit Spot</button>
+        </div>
+        <div className='title-or-price-container'>
+          <div className='title-n-description'>
+            <h3 className='create-spot-h3'>Set a base price for your spot</h3>
+            <p className='description create-spot-p'>Competitive pricing can help your listing stand out and rank higher in search results.</p>
+          </div>
+          <div className='dollar-sign-price'>
+            <p className='create-spot-p'>$</p>
+            <input
+              className='create-spot-input'
+              type="number"
+              value={price}
+              onChange={(e) => setPrice(e.target.value)}
+              placeholder='Price per night (USD)'
+            />
+            {errors.price && <p className='errors'>{errors.price}</p>}
+          </div>
+        </div>
+        <div className='button-container'>
+          <button id='update-button' type="submit">Update Spot</button>
+        </div>
       </form>
-    </>
+    </div>
   )
 }
   

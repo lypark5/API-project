@@ -1,18 +1,20 @@
-#container-container {
+.container-container {
   display: flex;
   justify-content: center; 
-  border: 2px solid blue;
+  /* border: 2px solid blue; */
+  margin-left: 75px;
 }
 
 .all-spots-container {
+  padding-top: 25px;
   display: flex;
   flex-wrap: wrap;
   flex-direction: row;
-  justify-content: center;
-  border: 2px solid red; 
+  justify-content: flex-start;
+  /* border: 2px solid red;  */
   gap: 20px;
   width: 90%;  
-
+  max-width: 1250px;
 }
 
 .all-spots-card {
@@ -29,7 +31,7 @@
   /* border: 2px solid orange; */
 }
 
-#bottom-half {
+.bottom-half {
   height: 20%;
   display: flex;
   flex-direction: column;
@@ -38,9 +40,13 @@
   width: 100%;
 }
 
-#top-line {
+.top-line {
   display: flex;
   justify-content: space-between;
   padding-top: 3px;
+}
+
+.all-spots-p {
+  margin: 0px;
 }
 

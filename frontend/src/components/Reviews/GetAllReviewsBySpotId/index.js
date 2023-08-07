@@ -29,7 +29,7 @@ function GetAllReviewsBySpotIdFunction() {
 
   function convertDate(date) {
     const cleanDate = date.split('T')[0].split('-')
-    console.log('cleanDate =', cleanDate)
+    // console.log('cleanDate =', cleanDate)
     const year = cleanDate[0];
     const monthNum = cleanDate[1];
     const wordMonthObj = {
@@ -46,7 +46,7 @@ function GetAllReviewsBySpotIdFunction() {
       '11': 'November', 
       '12': 'December'
     };
-    return (<p id='date'>{wordMonthObj[monthNum]} {year}</p>)
+    return (<p className='date'>{wordMonthObj[monthNum]} {year}</p>)
   }
 
   // bro, u can't use forEach in jsx AT ALL, MUST USE .map
@@ -83,17 +83,17 @@ function GetAllReviewsBySpotIdFunction() {
 
 
 
-              <div id='review-name-date'>
-                <p id='reviewer'>{review.User?.firstName}</p>
+              <div className='review-name-date'>
+                <p className='reviewer'>{review.User?.firstName}</p>
                 {convertDate(review.createdAt)}
               </div>
 
-              <p id='review'>{review.review}</p>
+              <p className='review'>{review.review}</p>
 
 
 
               {currentUser?.id === review.userId && 
-                <span id='edit-delete-buttons-container'>
+                <span className='edit-delete-buttons-container'>
                   <OpenModalButton
                     className='update-or-delete'
                     buttonText='Edit'

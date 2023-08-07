@@ -11,7 +11,6 @@ function LoginFormModal() {
   const [errors, setErrors] = useState({});
   const { closeModal } = useModal();
   const errorsObj = {};
-
   
   useEffect(() => {
     if (credential && credential.length < 4) {
@@ -22,7 +21,6 @@ function LoginFormModal() {
     };
     setErrors(errorsObj);
   }, [credential.length, password.length]);
-
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -52,37 +50,37 @@ function LoginFormModal() {
 
   // line 66 made disabled true if those things are less than the stuff, but when they are met, don't disable the button (make avail the button)
   return (
-    <>
-      <h1>Log In</h1>
+    <div className='modal' id='login-modal'>
+      <h2>Log In</h2>
       {errors.credential && (
         <p className='errors'>{errors.credential}</p>
       )}
       {errors.password && (
         <p className='errors'>{errors.password}</p>
       )}
-      <form onSubmit={handleSubmit}>
-        <label>
-          Username or Email
+      <form onSubmit={handleSubmit} id='login-form'>
+        <div id='login-input-container'>
           <input
+            className='login-input'
+            placeholder="Username or Email"
             type="text"
             value={credential}
             onChange={(e) => setCredential(e.target.value)}
             required
           />
-        </label>
-        <label>
-          Password
           <input
+            className='login-input'
+            placeholder="Password"
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
           />
-        </label>
-        <button type="submit" disabled={credential.length < 4 || password.length < 6 ? true : false} className="red-button">Log In</button>
+        </div>
+        <button type="submit" className={credential.length < 4 || password.length < 6 ? 'disabled-review-button' : 'submit-review-button'} disabled={credential.length < 4 || password.length < 6 ? true : false}>Log In</button>
       </form>
-      <button onClick={() => LoginTheDemoUserFunction()}>Demo User</button>
-    </>
+      <button onClick={() => LoginTheDemoUserFunction()} id='demo'>Demo User</button>
+    </div>
   );
 }
 

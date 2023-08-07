@@ -101,8 +101,8 @@ const spotReducer = (state = initialState, action) => {
   switch(action.type) {
     case GET_ALL_SPOTS: {
       const newState = {allSpots: {...state.allSpots}, singleSpot: {}}    // ...state.allSpots is old stuff spreading to new stuff, this is declaring without deep copying
-      console.log('action.spots.Spots = ', action.spots.Spots)       // [7 array]
-      console.log('action.spots = ', action.spots)    // {Spots: [7 array]}.  u must look at successful res of api doc
+      // console.log('action.spots.Spots = ', action.spots.Spots)       // [7 array]
+      // console.log('action.spots = ', action.spots)    // {Spots: [7 array]}.  u must look at successful res of api doc
       action.spots.Spots.forEach(spot => {            // this and next line is normalization.
         newState.allSpots[spot.id] = spot             // for each result =>     newState = {allSpots: {1:{}, 2:{}, 3:{}}}
       })
@@ -111,7 +111,7 @@ const spotReducer = (state = initialState, action) => {
     }
     case GET_SPOT_DETAILS: {
       const newState = {allSpots: {}, singleSpot: {...state.singleSpot}}
-      console.log('action.spot = ', action.spot)
+      // console.log('action.spot = ', action.spot)
       const spot = action.spot
       newState.singleSpot = spot
       return newState;
@@ -130,6 +130,11 @@ const spotReducer = (state = initialState, action) => {
       return newState;
     }
 
+    // i am not writing a reducer for manage spots, 
+    // cuz i am just using get all spots, then filtering it in my manage component.
+    // if i did use the direct route from backend instead,
+    // i'll have to write the reducer the same way as manage reviews, not spreading, but making allSpots empty {}.
+      // cuz prev page u r on might be like home page, which fills allspots.
     default: return state;
   }
 };

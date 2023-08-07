@@ -9,15 +9,17 @@ body {
 
 .link {
   text-decoration: none;
+  color: black;
 }
 
 .nav-link {
   text-decoration: none;
+  color: black;
 }
 
 /* i have modal in modal.css too*/
-.modal {
-  padding: 10px;
+.delete-modal {
+  padding: 0px 15px 15px;
   display: flex;
   justify-content: center;
   flex-direction: column;
