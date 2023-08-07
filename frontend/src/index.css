@@ -9,10 +9,12 @@ body {
 
 .link {
   text-decoration: none;
+  color: black;
 }
 
 .nav-link {
   text-decoration: none;
+  color: black;
 }
 
 /* i have modal in modal.css too*/

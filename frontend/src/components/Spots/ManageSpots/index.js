@@ -35,7 +35,7 @@ function GetAllSpotsOfCurrentFunction () {
   // if keeping it bad, after clicking delete, the page is blank cuz this spot id page no longer exists.  
   // good way, it doesn't redirect cuz it's no longer under Link path.
   return (
-    <div id='manage-container-container'>
+    <div className='manage-container-container'>
       <div id='manage-title-container'>
        <h2 style={{marginBottom: '0px'}}>Manage Your Spots</h2>
       </div>

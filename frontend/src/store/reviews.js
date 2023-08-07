@@ -75,8 +75,8 @@ export const editReviewThunk = (reviewId, editedReviewObj) => async (dispatch) =
   });
   if (res.ok) {
     const editedReview = await res.json();
-    console.log('reviewId', reviewId)
-    console.log('editedReview', editedReview)
+    // console.log('reviewId', reviewId)
+    // console.log('editedReview', editedReview)
     // await dispatch(editReviewAction(editedReview))     // this bad cuz it returns response body of edit from backend, which is incomplete body that we want, so  instead we dispatch getting the reviews stuff thunks to return full bodies.
     await dispatch(getAllReviewsByUserThunk())
     await dispatch(getAllReviewsBySpotIdThunk(editedReview.spotId))       // needed to add this one as well, so it can not only update manage reviews, but also spotid reviews thing.
@@ -149,8 +149,14 @@ const reviewReducer = (state = initialState, action) => {
       delete newState.user[action.reviewId];
       return newState;
     }
+
+
+    // basically, problem: manage reviews page was displaying my reviews plus last guy's reviews.
+    // my problem was the line 157 bad one spreading user state which combined it.  
+    // i needed to make user state empty in reducer, it fixed it.
     case GET_ALL_REVIEWS_BY_USER: {
-      newState = {...state, user: {...state.user}};
+      // newState = {...state, user: {...state.user}};        // this is bad, was combining last user's reviews with this user's reviews.
+      newState = {...state, user: {}};                        // this is good.
       action.newRes.Reviews.forEach(review => {               // action.newRes.Reviews = {'Reviews': [{},{},{}]}.   In backend, we made the response to be this format, with key of 'Reviews', value array of obj's.
         newState.user[review.id] = review                     // for each of those obj's, we are giving it an id number by grabbing it from inside obj, then making its value the obj itself.
       })                                                      

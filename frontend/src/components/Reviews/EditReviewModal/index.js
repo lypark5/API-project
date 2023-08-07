@@ -26,7 +26,7 @@ function EditReviewModalFunction({review1}) {          // we needed to pass in t
     setError(errorsObj);
   }, [review.length])
 
-  console.log('reviewBeingEdited =', reviewBeingEdited);
+  // console.log('reviewBeingEdited =', reviewBeingEdited);
   useEffect(() => {
     if (reviewBeingEdited) {                        // prepopulation
       setReview(reviewBeingEdited.review);

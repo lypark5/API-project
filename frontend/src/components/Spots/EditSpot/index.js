@@ -74,8 +74,8 @@ function EditSpotFunction() {
 
     // don't need if lng exists validation cuz it auto goes to 0 when u backspace, always filled.  i converted the e.target to always be a number with +e.target.value, makes this possible.
     if (lng < -180 || lng > 180) {          // if longitude in req body is invalid, add lng key to errorObj with msg value
-      console.log('spotBeingEdited.lng =', spotBeingEdited.lng)
-      console.log('type of spotBeingEdited.lng =', typeof spotBeingEdited.lng)
+      // console.log('spotBeingEdited.lng =', spotBeingEdited.lng)
+      // console.log('type of spotBeingEdited.lng =', typeof spotBeingEdited.lng)
       errorsObj.lng = 'Longitude is not valid';
     };    
     if (!description) errorsObj.description = 'Description is required';  // if description in req body is empty, add description key to errorObj with msg value

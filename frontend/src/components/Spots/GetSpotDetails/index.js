@@ -17,23 +17,23 @@ function GetSpotDetailsFunction () {
   const reviewsOfThisSpot = useSelector(state => state.reviews.spot);   
   const reviewsOfThisSpotArr = Object.values(reviewsOfThisSpot);
 
-  console.log('this is "spot" detail', spot);           // this one shows full obj with rating and imgs and stuff
+  // console.log('this is "spot" detail', spot);           // this one shows full obj with rating and imgs and stuff
 
   useEffect(() => {
     dispatch(getSpotDetailsThunk(spotId));              
   }, [dispatch, reviewsOfThisSpotArr.length]);
 
   if (!spot.SpotImages) {                                     // if SpotImages key doesn't exist in spot
-    console.log('in the if statement', spot.SpotImages)
+    // console.log('in the if statement', spot.SpotImages)
     return null;
   }
   // console.log("spot =", spot)
-  console.log("spot.SpotImages= ", spot.SpotImages)
+  // console.log("spot.SpotImages= ", spot.SpotImages)
   let prevImg;
   let nonPrevImg = spot.SpotImages.filter(img => !img.preview);
   
   for (let spotImg of spot.SpotImages) {
-    console.log('spotImg =', spotImg)
+    // console.log('spotImg =', spotImg)
     if (spotImg.preview) {
       prevImg = spotImg.url
     }
@@ -43,7 +43,7 @@ function GetSpotDetailsFunction () {
     nonPrevImg.push({url: 'https://www.beauflor.us/en/products/luxury-vinyl-roll/metro--p--/-/media/sites/ideal/general/nophoto.ashx?as=1&rev=d7c55585b143492bb40a105c8a3554f2&hash=E3318B97D01C0BC7F91476129330E4C4', preview: false})
   }
 
-  console.log('nonPrevImg =', nonPrevImg)
+  // console.log('nonPrevImg =', nonPrevImg)
 
   function yesAvgStarRatingFunction () {            // callback function
     if (typeof spot.avgStarRating === 'number') {
