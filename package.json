@@ -1,9 +1,10 @@
 {
   "name": "authenticate-me",
   "version": "1.0.0",
+  "description": "",
   "main": "index.js",
-  "devDependencies": {},
   "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
     "render-postbuild": "npm run build --prefix frontend",
     "install": "npm --prefix backend install backend && npm --prefix frontend install frontend",
     "dev:backend": "npm install --prefix backend start",
@@ -24,5 +25,15 @@
     "url": "https://github.com/lypark5/API-project/issues"
   },
   "homepage": "https://github.com/lypark5/API-project#readme",
-  "description": ""
+  "dependencies": {
+    "express": "^4.18.2",
+    "js-cookie": "^3.0.5",
+    "react-redux": "^8.1.2",
+    "react-router-dom": "^5.3.4",
+    "redux": "^4.2.1",
+    "redux-thunk": "^2.4.2"
+  },
+  "devDependencies": {
+    "redux-logger": "^3.0.6"
+  }
 }
