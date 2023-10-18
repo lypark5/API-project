@@ -72,7 +72,7 @@ router.get('/current', requireAuth, async (req, res, next) => {
 })
 
 
-
+/*
 // GET ALL SPOTS OWNED BY CURRENT LOGGED IN USER************************************************
 router.get('/current', requireAuth, async (req, res, next) => {
   const { user } = req;                                 // destructuring/extracting user key from req, and naming it
@@ -118,7 +118,7 @@ router.get('/current', requireAuth, async (req, res, next) => {
 
   res.json({Spots:spotsList});                          // res.json(spotsList) returns [{},{}],
 });                                                     // this returns {"Spots": [{}, {}]}
-
+*/
 
 
 // GET ALL REVIEWS BY SPOT ID **************************************************************************

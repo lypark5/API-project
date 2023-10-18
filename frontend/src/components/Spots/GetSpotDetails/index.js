@@ -5,6 +5,9 @@ import { getSpotDetailsThunk } from '../../../store/spot';
 import { getAllReviewsBySpotIdThunk } from '../../../store/reviews';
 import GetAllReviewsBySpotIdFunction from '../../Reviews/GetAllReviewsBySpotId';
 import './GetSpotDetails.css';
+import { getAllBookingsBySpotIdThunk } from '../../../store/bookings';
+import CreateBookingFunction from '../../Bookings/CreateBookingModal';
+import OpenModalButton from '../../OpenModalButton';
 
 // the review avg and num wasn't updating, so, i needed to trigger a re-render by:
 // since getAllReviews and GetSpotDetails work hand in hand, gotta update code for both of em, 
@@ -64,8 +67,13 @@ function GetSpotDetailsFunction () {
     }
   }
 
-  function alertFunction () {                       // callback function: this does the popup alert msg.
-    return alert ('Feature Coming Soon...');
+  // function alertFunction () {                       // callback function: this does the popup alert msg.
+  //   return alert ('Feature Coming Soon...');
+  // }
+
+  const random = async () => {
+    const newVar = await dispatch(getAllBookingsBySpotIdThunk(spot.id))
+    console.log('newVArrrrrrr', newVar);
   }
 
 
@@ -98,7 +106,15 @@ function GetSpotDetailsFunction () {
               <p className='spot-details-p'>{yesAvgStarRatingFunction()}{numReviewsStringFunction()}</p>
             </span>
           </div>
-          <button onClick={() => alertFunction()} className='red-button'>Reserve</button>
+          {/* <button onClick={() => alertFunction()} className='red-button'>Reserve</button> */}
+          <button onClick={() => random(spot.id)}>testButton</button>
+          <div>
+            <OpenModalButton
+              buttonText='create booking'
+              modalComponent={<CreateBookingFunction spotId={spot.id} />}
+            />
+            
+          </div>
         </span>
       </div>
       <div id='rating-and-quantity-section'>
