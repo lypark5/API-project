@@ -19,22 +19,22 @@ router.get('/current', requireAuth, async (req, res, next) => {
   const bookingsOfUser = await Booking.findAll({        // for every findAll, you need to iterate thru each one to json it
     where: { userId: user.id }
   })
-    // console.log(bookingsOfUser)
+  // console.log(bookingsOfUser)
   // console.log(Object.getOwnPropertyNames(Spot.prototype));
 
   for (let booking of bookingsOfUser) {
     const thisSpot = await Spot.findOne({                    // this specific spot for this booking
       where: { id: booking.spotId },
       attributes: [                                          // only want these attributes
-        'id', 
-        'ownerId', 
-        'address', 
-        'city', 
-        'state', 
-        'country', 
-        'lat', 
-        'lng', 
-        'name', 
+        'id',
+        'ownerId',
+        'address',
+        'city',
+        'state',
+        'country',
+        'lat',
+        'lng',
+        'name',
         'price'
       ]
     });
@@ -63,13 +63,13 @@ router.get('/current', requireAuth, async (req, res, next) => {
     }
 
     payload.push(bookingSkelly);                              // push filled out skelly to payload for this booking.
-  } 
+  }
 
-  return res.json({Bookings:payload})                         // return payload big array of all bookings.
+  return res.json({ Bookings: payload })                         // return payload big array of all bookings.
 });
 
 
-
+/*
 // GET ALL BOOKINGS BY CURRENT USER************************************************
 router.get('/current', requireAuth, async (req, res, next) => {
   const { user } = req;                                       // destructuring/extracting user key from req, and naming it
@@ -115,7 +115,7 @@ router.get('/current', requireAuth, async (req, res, next) => {
   res.json({Bookings: bookingsList});                         // res.json(bookingsList) returns [{},{}],
 });                                                           // this returns {"Bookings": [{}, {}]}
 
-
+*/
 
 // DELETE A BOOKING******************************************************************************************
 router.delete('/:bookingId', requireAuth, async (req, res, next) => {
@@ -138,7 +138,7 @@ router.delete('/:bookingId', requireAuth, async (req, res, next) => {
   }
 
   const thisBookingSpot = await Spot.findOne({                // find this spot
-    where: {id: deletedBooking.spotId}
+    where: { id: deletedBooking.spotId }
   });
 
   // match up logged-in user id to owner id in target spot
@@ -183,16 +183,16 @@ router.put('/:bookingId', requireAuth, async (req, res, next) => {         // ne
     let err = new Error("Past bookings can't be modified");     // make a relevant error
     err.status = 403;                                           // make error status
     next(err);                                                  // pass along error if this doesn't hit.
-  };  
+  };
 
   // error for past dates (forbid u from entering past date as a newly requested date)
   // console.log(Date.parse(endDate), Date.now())
-  if ((Date.parse(endDate) < Date.now())) {                     // endDate = new end date from req body
+  if ((Date.parse(endDate) < w())) {                     // endDate = new end date from req body
     // console.log('entered if block')
     let err = new Error("Past bookings can't be modified");     // make a relevant error
     err.status = 403;                                           // make error status
     next(err);                                                  // pass along error if this doesn't hit.
-  };  
+  };
 
   // checking for errors and collecting them
   let errorObj = {};                                                        // this where all the errors will be held and returned
@@ -200,14 +200,14 @@ router.put('/:bookingId', requireAuth, async (req, res, next) => {         // ne
     errorObj.endDate = 'endDate cannot be on or before startDate';          // add endDate key to error obj w/ msg value
   }
   if (Object.keys(errorObj).length) {                                             // if the array of all the keys inside errorObj has length > 0
-    return res.status(400).json({message: 'Bad Request', errors: errorObj})       // status code 400, plus "message: Bad Request", plus "errors:" plus the errorObj.
+    return res.status(400).json({ message: 'Bad Request', errors: errorObj })       // status code 400, plus "message: Bad Request", plus "errors:" plus the errorObj.
   }
 
   // i gotta a find all bookings of this house
   let currentBookings = await Booking.findAll({
     where: {
       spotId: editBooking.spotId                                // all bookings with spotId the same as the specific editBooking's spotId.
-    }                          
+    }
   });
 
   // now json the findAll bookings array:
@@ -224,25 +224,25 @@ router.put('/:bookingId', requireAuth, async (req, res, next) => {         // ne
     if (currentBooking.userId !== user.id) {                                        // NEED TO CHECK IF THIS BOOKING IS MY BOOKING.  IF NOT MINE,
       if (Date.parse(startDate) < Date.parse(currentBooking.endDate)                // if attempted startDate starts before an existing booking's end
         && Date.parse(startDate) > Date.parse(currentBooking.startDate)) {            // while also after the existing booking's start 
-          errorObj.startDate = 'Start date conflicts with an existing booking';     // VIOLATION!  add startDate key to error obj w/ msg value
+        errorObj.startDate = 'Start date conflicts with an existing booking';     // VIOLATION!  add startDate key to error obj w/ msg value
       }
       if (Date.parse(endDate) > Date.parse(currentBooking.startDate)                // if attempted endDate starts after an existing booking's start
         && Date.parse(endDate) < Date.parse(currentBooking.endDate)) {                // while also before the existing booking's end
-          errorObj.endDate = 'End Date conflicts with an existing booking';         // VIOLATION!  add endDate key to error obj w/ msg value
-      }     
-      if (Date.parse(startDate) === Date.parse(currentBooking.startDate) 
+        errorObj.endDate = 'End Date conflicts with an existing booking';         // VIOLATION!  add endDate key to error obj w/ msg value
+      }
+      if (Date.parse(startDate) === Date.parse(currentBooking.startDate)
         || Date.parse(startDate) === Date.parse(currentBooking.endDate)) {          // if new start date is the same as existing start date or existing end date
-          errorObj.startDate = 'Start date conflicts with an existing booking';          
+        errorObj.startDate = 'Start date conflicts with an existing booking';
       }
       if (Date.parse(endDate) === Date.parse(currentBooking.startDate)              // if new end date is the same as existing start date or existing end date.
         || Date.parse(endDate) === Date.parse(currentBooking.endDate)) {
-          errorObj.endDate = 'End Date conflicts with an existing booking';
+        errorObj.endDate = 'End Date conflicts with an existing booking';
       }
     }
   };
   ///////////////////////                                
   if (Object.keys(errorObj).length) {                                             // if the array of all the keys inside errorObj has length > 0
-    return res.status(403).json({message: 'Sorry, this spot is already booked for the specified dates', errors: errorObj})  // status code 400, plus "message: Bad Request", plus "errors:" plus the errorObj.
+    return res.status(403).json({ message: 'Sorry, this spot is already booked for the specified dates', errors: errorObj })  // status code 400, plus "message: Bad Request", plus "errors:" plus the errorObj.
   };
 
   // apply the edits
