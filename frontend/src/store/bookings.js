@@ -41,8 +41,8 @@ export const getAllBookingsBySpotIdThunk = (spotId) => async (dispatch) => {
   const res = await fetch(`/api/spots/${spotId}/bookings`)
   if (res.ok) {
     const newRes = await res.json();
-    // await dispatch(getAllBookingsBySpotIdAction(newRes))
-    return newRes;
+    await dispatch(getAllBookingsBySpotIdAction(newRes))
+    // return newRes;
   }
 }
 
@@ -54,4 +54,42 @@ export const getAllBookingsByUserThunk = () => async (dispatch) => {
   }
 }
 
-// export const createBookingThunk = (spotId, )
+export const createBookingThunk = (spotId, startDate, endDate) => async (dispatch) => {
+  const res = await csrfFetch(`/api/spots/${spotId}/bookings`, {
+    method: 'POST', 
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({startDate, endDate})
+  })
+  if (res.ok) {
+    const newRes = await res.json();
+    await dispatch(createBookingAction(newRes));
+    return newRes;
+  } else {
+    return res.message;
+  }
+}
+
+
+// reducer
+const initialState = {spotBookings: {}, userBookings: {}};
+const bookingReducer = (state = initialState, action) => {
+  let newState;
+  switch(action.type) {
+    case GET_ALL_BOOKINGS_BY_SPOTID: {
+      newState = {...state, spotBookings: {}};
+      newState.spotBookings = action.bookingsOfThisSpot.Bookings
+      return newState;
+    }
+    case GET_ALL_BOOKINGS_BY_USER: {
+      newState = {...state, userBookings: {}};
+      newState.userBookings = action.bookingsOfUser.Bookings
+      return newState;
+    }
+
+    
+
+    default: return state;
+  }
+};
+
+export default bookingReducer;

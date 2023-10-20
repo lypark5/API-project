@@ -1,0 +1,62 @@
+#create-booking-modal {
+  background-color: white;
+  width: 500px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#create-booking-form {
+  display: flex;
+  flex-direction: column;
+}
+
+#date-inputs-div {
+  display: flex;
+  gap: 15px;
+}
+
+/* input[type="date"]::-webkit-calendar-picker-indicator {
+  background: transparent;
+  bottom: 0;
+  color: transparent;
+  cursor: pointer;
+  height: auto;
+  left: 0; 
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: auto;
+} */
+
+/* #start {
+  height: 100px;
+} */
+
+/* input[type="date"]::-webkit-calendar-picker-indicator {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: auto;
+  height: auto;
+  color: transparent;
+  background: transparent;
+} */
+input[type="date"]::-webkit-calendar-picker-indicator {
+  cursor: pointer;
+  font-size: 20px;
+  border: 1px solid gray;
+  border-radius: 4px;
+  padding: 5px;
+  background-color: rgb(224, 224, 224);
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator:hover {
+  border: 2px solid gray;
+}
+
+/* .date-input {
+ 
+} */

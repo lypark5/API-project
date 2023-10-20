@@ -71,10 +71,10 @@ function GetSpotDetailsFunction () {
   //   return alert ('Feature Coming Soon...');
   // }
 
-  const random = async () => {
-    const newVar = await dispatch(getAllBookingsBySpotIdThunk(spot.id))
-    console.log('newVArrrrrrr', newVar);
-  }
+  // const random = async () => {
+  //   const newVar = await dispatch(getAllBookingsBySpotIdThunk(spot.id))
+  //   console.log('newVArrrrrrr', newVar);
+  // }
 
 
   // line 53 ternary to make the review word singular if 1.
@@ -107,7 +107,7 @@ function GetSpotDetailsFunction () {
             </span>
           </div>
           {/* <button onClick={() => alertFunction()} className='red-button'>Reserve</button> */}
-          <button onClick={() => random(spot.id)}>testButton</button>
+          {/* <button onClick={() => random(spot.id)}>testButton</button> */}
           <div>
             <OpenModalButton
               buttonText='create booking'

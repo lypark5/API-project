@@ -312,7 +312,7 @@ router.post('/:spotId/bookings', requireAuth, async (req, res, next) => {
     if (Date.parse(startDate) < Date.parse(currentBooking.endDate)
       && Date.parse(startDate) > Date.parse(currentBooking.startDate)) {          // if created startDate starts before an existing booking is over
         errorObj.startDate = 'Start date conflicts with an existing booking';     // add startDate key to error obj w/ msg value
-    }
+      }
     if (Date.parse(endDate) > Date.parse(currentBooking.startDate)
       && Date.parse(endDate) < Date.parse(currentBooking.endDate)) {              // if created endDate is too long, stepping over existing booking start
         errorObj.endDate = 'End Date conflicts with an existing booking';         // add endDate key to error obj w/ msg value
