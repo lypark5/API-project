@@ -111,7 +111,7 @@ function GetSpotDetailsFunction () {
           <div>
             <OpenModalButton
               buttonText='create booking'
-              modalComponent={<CreateBookingFunction spotId={spot.id} />}
+              modalComponent={<CreateBookingFunction spotId={spotId} />}
             />
             
           </div>
