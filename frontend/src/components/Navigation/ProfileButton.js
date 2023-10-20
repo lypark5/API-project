@@ -58,8 +58,9 @@ function ProfileButton({ user }) {
           <div id='drop-down-menu'>
             <p className='dropdown-p'>Hello, {user.firstName}</p>
             <p className='dropdown-p' id='dropdown-email'>{user.email}</p>
-            <NavLink to='/spots/manage' onClick={() => closeMenu()} className='nav-link manage-link'>Manage Spots</NavLink>
-            <NavLink to='/reviews/manage' onClick={() => closeMenu()} className='nav-link manage-link'>Manage Reviews</NavLink>
+            <NavLink to='/manage/spots' onClick={() => closeMenu()} className='nav-link manage-link'>Manage Spots</NavLink>
+            <NavLink to='/manage/reviews' onClick={() => closeMenu()} className='nav-link manage-link'>Manage Reviews</NavLink>
+            <NavLink to='/manage/bookings' onClick={() => closeMenu()} className='nav-link manage-link'>Manage Bookings</NavLink>
             <button onClick={logout} id='logout-button'>Log Out</button>
           </div>
         ) : (

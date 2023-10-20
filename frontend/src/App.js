@@ -9,6 +9,7 @@ import CreateSpotFunction from "./components/Spots/CreateSpot";
 import GetAllSpotsOfCurrentFunction from "./components/Spots/ManageSpots";
 import EditSpotFunction from "./components/Spots/EditSpot";
 import ManageReviewsFunction from "./components/Reviews/ManageReviews";
+import ManageBookingsFunction from "./components/Bookings/ManageBookings";
 
 
 // i load all my ish here, where i write switch and route
@@ -33,7 +34,13 @@ function App() {
           <Route exact path='/'>
             <GetAllSpotsFunction />
           </Route>
-          <Route path='/spots/manage'>
+          <Route path='/manage/bookings'>
+            <ManageBookingsFunction />
+          </Route>
+          <Route path='/manage/reviews'>
+            <ManageReviewsFunction />
+          </Route>
+          <Route path='/manage/spots'>
             <GetAllSpotsOfCurrentFunction />
           </Route>
           <Route path='/spots/:spotId/edit'>
@@ -44,9 +51,6 @@ function App() {
           </Route>
           <Route path='/spots'>
             <CreateSpotFunction />
-          </Route>
-          <Route path='/reviews/manage'>
-            <ManageReviewsFunction />
           </Route>
         </Switch>}
     </>
