@@ -46,7 +46,7 @@ export const getAllBookingsBySpotIdThunk = (spotId) => async (dispatch) => {
   }
 }
 
-export const getAllBookingsByUserThunk = () => async (dispatch) => {
+export const getAllBookingsByUserThunk = (userId) => async (dispatch) => {
   const res = await csrfFetch('/api/bookings/current');
   if (res.ok) {
     const newRes = await res.json();
@@ -85,7 +85,16 @@ const bookingReducer = (state = initialState, action) => {
       newState.userBookings = action.bookingsOfUser.Bookings
       return newState;
     }
+    case CREATE_BOOKING: {
+      newState = {...state, spotBookings: {...state.spotBookings}, userBookings: {...state.userBookings}};
+      // alter user bookings if doesn't add there
+      // newState.spotBookings = {...state.spotBookings, [state.spotBookings.length - 1]: action.newBooking};
+      // newState.userBookings = {...state.userBookings, [state.userBookings.length - 1]: action.newBooking};
+      newState.spotBookings = {...state.spotBookings, [action.newBooking.id]: action.newBooking};
+      newState.userBookings = {...state.userBookings, [action.newBooking.id]: action.newBooking};
 
+      return newState;
+    }
     
 
     default: return state;

@@ -12,9 +12,7 @@ function ManageBookingsFunction () {
   const bookingsArr = Object.values(bookingsOfUser);
   const allSpots = useSelector(state => state.spots.allSpots);
   const spotsArr = Object.values(allSpots);
-  console.log('spotsArr', spotsArr)
 
-  console.log('bookingsOfUserrrrr', bookingsOfUser);
 
   useEffect(() => {
     dispatch(getAllSpotsThunk())
@@ -24,7 +22,6 @@ function ManageBookingsFunction () {
   //bookings state already has Spot object attribute attached
   function convertDate(date) {
     const cleanDate = date.split('T')[0].split('-')
-    console.log('cleanDate', cleanDate)
     const year = cleanDate[0];
     const monthNum = cleanDate[1];
     const dateNum = cleanDate[2];
