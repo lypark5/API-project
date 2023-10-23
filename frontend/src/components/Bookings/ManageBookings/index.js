@@ -2,6 +2,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { useEffect } from "react";
 import { getAllSpotsThunk } from "../../../store/spot";
 import { getAllBookingsByUserThunk } from "../../../store/bookings";
+import DeleteBookingModalFunction from "../DeleteBookingModal";
 import OpenModalButton from "../../OpenModalButton";
 
 
@@ -44,7 +45,11 @@ function ManageBookingsFunction () {
               </div>
               <div id='bookings-buttons-div'>
                 <button>edit</button>
-                <button>cancel</button>
+                <OpenModalButton
+                  className='update-or-delete'
+                  buttonText='Delete'
+                  modalComponent={<DeleteBookingModalFunction bookingId={booking.id}/>}
+                />
               </div>
             </div>
           </span>
