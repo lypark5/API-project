@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
 import { useState, useEffect } from "react";
 import { useModal } from "../../../context/Modal";
-import { getAllBookingsBySpotIdThunk, createBookingThunk } from "../../../store/bookings";
+import { getAllBookingsBySpotIdThunk, createBookingThunk, getAllBookingsByUserThunk } from "../../../store/bookings";
 import { useHistory } from 'react-router-dom';
 import OpenModalButton from '../../OpenModalButton';
 import './CreateBookingModal.css';
@@ -12,6 +12,7 @@ function CreateBookingFunction ({spotId}) {
   const history = useHistory();
   const { closeModal } = useModal();
   const allSpotBookings = useSelector(state => state.bookings.spotBookings);
+  const userId = useSelector(state => state.session.user.id);
   const [startDate, setStartDate] = useState('');     
   const [endDate, setEndDate] = useState('');
   const [errors, setErrors] = useState({});
@@ -21,24 +22,20 @@ function CreateBookingFunction ({spotId}) {
     dispatch(getAllBookingsBySpotIdThunk(spotId))
   }, []);
 
-  console.log('allBookings', allBookings)
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       await dispatch(createBookingThunk(spotId, startDate, endDate));
+      await dispatch(getAllBookingsByUserThunk(userId));
       closeModal();
       history.push('/manage/bookings');
     }
     catch (e) {                   // e stands for error
       const errors = await e.json();
-      console.log('errorrssssss.errors', errors.errors)
       setErrors(errors.errors);
     }
   }
-
-  console.log('startdatefront', startDate)
-  console.log('enddatefronttt', endDate)
 
   return (
     <div className='modal' id='create-booking-modal'>
