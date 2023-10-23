@@ -2,6 +2,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { useEffect } from "react";
 import { getAllSpotsThunk } from "../../../store/spot";
 import { getAllBookingsByUserThunk } from "../../../store/bookings";
+import DeleteBookingModalFunction from "../DeleteBookingModal";
 import OpenModalButton from "../../OpenModalButton";
 
 
@@ -12,9 +13,7 @@ function ManageBookingsFunction () {
   const bookingsArr = Object.values(bookingsOfUser);
   const allSpots = useSelector(state => state.spots.allSpots);
   const spotsArr = Object.values(allSpots);
-  console.log('spotsArr', spotsArr)
 
-  console.log('bookingsOfUserrrrr', bookingsOfUser);
 
   useEffect(() => {
     dispatch(getAllSpotsThunk())
@@ -24,7 +23,6 @@ function ManageBookingsFunction () {
   //bookings state already has Spot object attribute attached
   function convertDate(date) {
     const cleanDate = date.split('T')[0].split('-')
-    console.log('cleanDate', cleanDate)
     const year = cleanDate[0];
     const monthNum = cleanDate[1];
     const dateNum = cleanDate[2];
@@ -47,7 +45,11 @@ function ManageBookingsFunction () {
               </div>
               <div id='bookings-buttons-div'>
                 <button>edit</button>
-                <button>cancel</button>
+                <OpenModalButton
+                  className='update-or-delete'
+                  buttonText='Delete'
+                  modalComponent={<DeleteBookingModalFunction bookingId={booking.id}/>}
+                />
               </div>
             </div>
           </span>

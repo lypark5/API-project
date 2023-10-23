@@ -46,7 +46,7 @@ export const getAllBookingsBySpotIdThunk = (spotId) => async (dispatch) => {
   }
 }
 
-export const getAllBookingsByUserThunk = () => async (dispatch) => {
+export const getAllBookingsByUserThunk = (userId) => async (dispatch) => {
   const res = await csrfFetch('/api/bookings/current');
   if (res.ok) {
     const newRes = await res.json();
@@ -69,6 +69,17 @@ export const createBookingThunk = (spotId, startDate, endDate) => async (dispatc
   }
 }
 
+export const deleteBookingThunk = (bookingId) => async (dispatch) => {
+  const res = await csrfFetch(`/api/bookings/${bookingId}`, {
+    method: 'DELETE'
+  });
+  if (res.ok) {
+    await dispatch(deleteBookingAction(bookingId))
+  } else {
+    return res.message;
+  }
+}
+
 
 // reducer
 const initialState = {spotBookings: {}, userBookings: {}};
@@ -85,8 +96,18 @@ const bookingReducer = (state = initialState, action) => {
       newState.userBookings = action.bookingsOfUser.Bookings
       return newState;
     }
-
-    
+    case CREATE_BOOKING: {
+      newState = {...state, spotBookings: {...state.spotBookings}, userBookings: {...state.userBookings}};
+      newState.spotBookings = {...state.spotBookings, [action.newBooking.id]: action.newBooking};
+      newState.userBookings = {...state.userBookings, [action.newBooking.id]: action.newBooking};
+      return newState;
+    }
+    case DELETE_BOOKING: {
+      newState = {...state, spotBookings: {...state.spotBookings}, userBookings: {...state.userBookings}};
+      delete newState.spotBookings[action.bookingId];
+      delete newState.userBookings[action.bookingId];
+      return newState;
+    }
 
     default: return state;
   }
