@@ -274,6 +274,7 @@ router.post('/:spotId/bookings', requireAuth, async (req, res, next) => {
     let err = new Error("Spot couldn't be found");     // make a relevant error
     err.status = 404;                                  // make error status
     next(err);                                         // pass along error if this doesn't hit.
+    return res.status(404).json({message: "Spot couldn't be found"});
   };
 
   // find all bookings of this property
@@ -291,6 +292,7 @@ router.post('/:spotId/bookings', requireAuth, async (req, res, next) => {
     let err = new Error('Forbidden');                  // make a new error called forbidden.
     err.status = 403;                                  // make error status
     next(err);                                         // pass on error if this doesn't catch.
+    return res.status(403).json({message: 'Forbidden'});
   };
 
   // checking for errors and collecting them
@@ -333,6 +335,9 @@ router.post('/:spotId/bookings', requireAuth, async (req, res, next) => {
 
   // create a new booking 
   let newBooking = await Booking.create({         // variable for new img created
+
+
+    Spot: spotById,
     spotId: spotById.id,
     userId: user.id,                              // this needs to be the logged in user's id, not the ownerId.
     startDate,

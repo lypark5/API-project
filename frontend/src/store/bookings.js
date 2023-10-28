@@ -65,7 +65,28 @@ export const createBookingThunk = (spotId, startDate, endDate) => async (dispatc
     await dispatch(createBookingAction(newRes));
     return newRes;
   } else {
-    return res.message;
+    return res;
+  }
+}
+
+// export const editBookingThunk = (bookingId, editedBookingObj) => async (dispatch) => {
+  export const editBookingThunk = (bookingId, startDate, endDate) => async (dispatch) => {
+  const res = await csrfFetch(`/api/bookings/${bookingId}`, {
+    method: 'PUT',
+    headers: {'Content-Type': 'application/json'},
+    // body: JSON.stringify(editedBookingObj) 
+    body: JSON.stringify({startDate, endDate})
+  });
+  if (res.ok) {
+    const editedBooking = await res.json();
+    await dispatch(editBookingAction(editedBooking));
+    console.log('edited bookingggggg', editedBooking)
+    return editedBooking;
+    // await dispatch(getAllBookingsBySpotIdThunk(editedBooking.spotId));
+    // await dispatch(getAllBookingsByUserThunk())
+  } else {
+    console.log('bad resssss', res)
+    return res;
   }
 }
 
@@ -98,8 +119,16 @@ const bookingReducer = (state = initialState, action) => {
     }
     case CREATE_BOOKING: {
       newState = {...state, spotBookings: {...state.spotBookings}, userBookings: {...state.userBookings}};
+      // newState.spotBookings = {...state.spotBookings, [action.newBooking.id]: action.newBooking};
+      // newState.userBookings = {...state.userBookings, [action.newBooking.id]: action.newBooking};
       newState.spotBookings = {...state.spotBookings, [action.newBooking.id]: action.newBooking};
       newState.userBookings = {...state.userBookings, [action.newBooking.id]: action.newBooking};
+      return newState;
+    }
+    case EDIT_BOOKING: {
+      newState = {...state, spotBookings: {...state.spotBookings}, userBookings: {...state.userBookings}};
+      newState.spotBookings = {...state.spotBookings, [action.editedBooking.id]: action.editedBooking};
+      newState.userBookings = {...state.userBookings, [action.editedBooking.id]: action.editedBooking};
       return newState;
     }
     case DELETE_BOOKING: {
