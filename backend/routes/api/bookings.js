@@ -126,13 +126,18 @@ router.put('/:bookingId', requireAuth, async (req, res, next) => {         // ne
   const { user } = req;                                                    // get user from req (the logged in user's info)
   const { startDate, endDate } = req.body;                                 // all the variables we want to use from req body
   let editBooking = await Booking.findByPk(req.params.bookingId);          // get the specific booking from id.
-  // console.log(editBooking)
+  
+  
+  
+  
+  // console.log('editBooking in backend', editBooking)
 
   // error for nonexistent booking
   if (!editBooking) {                                           // if the target booking to be edited doesn't exist
     let err = new Error("Booking couldn't be found");           // make a relevant error
     err.status = 404;                                           // make error status
     next(err);                                                  // pass along error if this doesn't hit.
+    return res.status(404).json({ message: "Booking couldn't be found"});
   }
   // error for if this user is unauthorized to edit this booking
   if (user.id !== editBooking.userId) {                         // if the currently logged-in user's id (user.id) is not the author of this booking (editBooking.userId),
@@ -143,20 +148,21 @@ router.put('/:bookingId', requireAuth, async (req, res, next) => {         // ne
 
   // error for past dates (the existing booking's end date)
   // console.log(Date.parse(endDate), Date.now())                  // attempted endDate is before today's date (already passed)
-  if ((Date.parse(editBooking.endDate) < Date.now())) {         // editBooking.endDate = the end date of the existing booking u want to edit.          
-    // console.log('entered if block')
+  if ((Date.parse(editBooking.endDate) < new Date().toISOString().split("T")[0])) {         // editBooking.endDate = the end date of the existing booking u want to edit.          
     let err = new Error("Past bookings can't be modified");     // make a relevant error
     err.status = 403;                                           // make error status
     next(err);                                                  // pass along error if this doesn't hit.
+    return res.status(403).json({message: "Past bookings can't be modified"});
   };
 
   // error for past dates (forbid u from entering past date as a newly requested date)
   // console.log(Date.parse(endDate), Date.now())
-  if ((Date.parse(endDate) < w())) {                     // endDate = new end date from req body
-    // console.log('entered if block')
+  if ((Date.parse(startDate) < new Date().toISOString().split("T")[0])
+    || (Date.parse(endDate) < new Date().toISOString().split("T")[0])) {                     // endDate = new end date from req body
     let err = new Error("Past bookings can't be modified");     // make a relevant error
     err.status = 403;                                           // make error status
     next(err);                                                  // pass along error if this doesn't hit.
+    return res.status(403).json({message: "Past bookings can't be modified"});
   };
 
   // checking for errors and collecting them
@@ -181,12 +187,29 @@ router.put('/:bookingId', requireAuth, async (req, res, next) => {         // ne
     bookingsList.push(booking.toJSON())                          // this makes each booking object json'ed and usable.
   };
 
+
+
+  // console.log('bookingsList', bookingsList)
+
+
   ///////////////////////
   // overlapping dates error, HARDDDDDD
   // refer to my drawing to understand
   // attempted startDates compared to each existing booking dates
   for (let currentBooking of bookingsList) {                                        // iterate thru every booking for this house from bookingsList array
-    if (currentBooking.userId !== user.id) {                                        // NEED TO CHECK IF THIS BOOKING IS MY BOOKING.  IF NOT MINE,
+
+
+    // console.log('currentBooking inside if statements', currentBooking)
+
+    // if (currentBooking.userId !== user.id) {                                        // NEED TO CHECK IF THIS BOOKING IS MY BOOKING.  IF NOT MINE,
+
+    if (currentBooking.id !== editBooking.id) {
+
+
+      console.log('Date.parse(startDate)', Date.parse(startDate))
+      console.log('Date.parse(currentBooking.endDate)', Date.parse(currentBooking.endDate))
+      console.log('Date.parse(currentBooking.startDate)', Date.parse(currentBooking.startDate))
+
       if (Date.parse(startDate) < Date.parse(currentBooking.endDate)                // if attempted startDate starts before an existing booking's end
         && Date.parse(startDate) > Date.parse(currentBooking.startDate)) {            // while also after the existing booking's start 
         errorObj.startDate = 'Start date conflicts with an existing booking';     // VIOLATION!  add startDate key to error obj w/ msg value
@@ -204,7 +227,14 @@ router.put('/:bookingId', requireAuth, async (req, res, next) => {         // ne
         errorObj.endDate = 'End Date conflicts with an existing booking';
       }
     }
+
+
+
   };
+
+
+
+
   ///////////////////////                                
   if (Object.keys(errorObj).length) {                                             // if the array of all the keys inside errorObj has length > 0
     return res.status(403).json({ message: 'Sorry, this spot is already booked for the specified dates', errors: errorObj })  // status code 400, plus "message: Bad Request", plus "errors:" plus the errorObj.
@@ -237,7 +267,7 @@ router.delete('/:bookingId', requireAuth, async (req, res, next) => {
   }
 
   // check if it's too late to delete
-  if (Date.parse(deletedBooking.startDate) < Date.now()) {    // if the target booking to be deleted doesn't exist
+  if (Date.parse(deletedBooking.startDate) < new Date().toISOString().split("T")[0]) {    // if the target booking to be deleted doesn't exist
     let err = new Error("Bookings that have been started can't be deleted");  // make a relevant error
     err.status = 403;                                         // make error status
     next(err);                                                // pass along error if this doesn't hit.
