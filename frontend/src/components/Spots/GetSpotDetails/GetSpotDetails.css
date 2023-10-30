@@ -68,13 +68,15 @@
 }
 
 #reserve-box {
-  width: 24%;
+  /* width: 24%; */
+  width: 400px;
   border: 3px solid black;
   border-radius: 10px;
-  padding: 20px;
+  padding: 20px 30px 25px 30px;
   display: flex;
   flex-wrap: wrap;
   max-height: 100px;
+  gap: 5px;
 }
 
 #reserve-box-text-line {
@@ -119,4 +121,18 @@
 
 .spot-details-p {
   margin: 0px;
+}
+
+#reserve-button-div {
+  width: 100%;
+}
+
+#reserve-button {
+  background-color: #ff5a5a;
+  width: -webkit-fill-available;
+  color: white;
+  padding: 15px 0px;
+  border: 2px solid black;
+  box-shadow: 2px 2px black;
+  font-size: 14px;
 }

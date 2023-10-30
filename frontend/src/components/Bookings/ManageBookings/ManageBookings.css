@@ -1,0 +1,36 @@
+#booking-meat {
+  /* border: 1px solid purple; */
+}
+
+#booking-title-div {
+  padding: 20px 25px 20px;
+}
+
+#booking-card-container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 200px;
+}
+
+#booking-card {
+  border: 1px solid #FF5A5F;
+  /* background-color: blue; */
+  padding: 15px 25px 25px;
+  width: 500px;
+}
+
+#booking-pic {
+  width: 100%;
+}
+
+#booking-dates-div {
+  /* border: 1px solid red; */
+  display: flex;
+  align-items: baseline;
+}
+
+#booking-buttons-div {
+  display: flex;
+  gap: 8px;
+}
