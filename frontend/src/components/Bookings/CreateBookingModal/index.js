@@ -83,7 +83,7 @@ function CreateBookingFunction ({spotId}) {
 
 
         </div>
-        <button type='submit'>Submit</button>
+        <button type='submit' className='booking-button'>Submit</button>
       </form>
     </div>
   )

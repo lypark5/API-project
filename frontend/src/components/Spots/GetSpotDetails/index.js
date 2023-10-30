@@ -108,10 +108,11 @@ function GetSpotDetailsFunction () {
           </div>
           {/* <button onClick={() => alertFunction()} className='red-button'>Reserve</button> */}
           {/* <button onClick={() => random(spot.id)}>testButton</button> */}
-          <div>
+          <div id='reserve-button-div'>
             <OpenModalButton
-              buttonText='create booking'
+              buttonText='Reserve'
               modalComponent={<CreateBookingFunction spotId={spotId} />}
+              id='reserve-button'
             />
             
           </div>
