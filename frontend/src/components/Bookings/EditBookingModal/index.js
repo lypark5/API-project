@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { useModal } from "../../../context/Modal";
 import { useHistory } from 'react-router-dom';
 import { editBookingThunk, getAllBookingsByUserThunk } from "../../../store/bookings";
+import './EditBookingModal.css';
 
 
 function EditBookingModalFunction({booking}) {
@@ -46,21 +47,10 @@ function EditBookingModalFunction({booking}) {
     }
   }
 
-  //
-
-
-  // need to implement errors
-
-
-
-
-
-
-
 
   return (
-    <div className='modal' id='create-booking-modal'>
-      <h1>Book your stay</h1>
+    <div className='modal' id='edit-booking-modal'>
+      <h2>Update your booking</h2>
       <form onSubmit={handleSubmit} id='create-booking-form'>
         <div id='date-inputs-div'>
           <input
@@ -85,7 +75,7 @@ function EditBookingModalFunction({booking}) {
           {errors.endDate && <p className='errors'>{errors.endDate}</p>}
           {errors.message && <p className='errors'>{errors.message}</p>}
         </div>
-        <button type='submit'>Submit</button>
+        <button type='submit' className="booking-button">Submit</button>
       </form>
     </div>
   )
