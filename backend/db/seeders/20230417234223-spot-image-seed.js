@@ -11,54 +11,104 @@ module.exports = {
     await queryInterface.bulkInsert(options, [
       {
         spotId: 1,    // pebble house
-        url: 'https://www.reinhartrealtors.com/blog/wp-content/uploads/2014/06/3443-Haab-Rd-Ann-Arbor-MI.jpg',
+        url: 'https://airbnb-api-project.s3.us-east-2.amazonaws.com/cottage1.jpg',
         preview: true
       },
       {
         spotId: 2,    // hobbit house
-        url: 'https://i.pinimg.com/736x/40/50/b9/4050b9014825ca4dbef3ad65cac9251e.jpg',
+        url: 'https://airbnb-api-project.s3.us-east-2.amazonaws.com/hobbit1.jpg',
         preview: true
       },
       {
         spotId: 2,    // hobbit house
-        url: 'https://i.pinimg.com/originals/ca/c3/fe/cac3fe07e91d18d20733b5d055ec02ea.jpg',
+        url: 'https://airbnb-api-project.s3.us-east-2.amazonaws.com/hobbit2.jpg',
+        preview: false
+      },
+      {
+        spotId: 2,    // hobbit house
+        url: 'https://airbnb-api-project.s3.us-east-2.amazonaws.com/hobbit3.webp',
+        preview: false
+      },
+      {
+        spotId: 2,    // hobbit house
+        url: 'https://airbnb-api-project.s3.us-east-2.amazonaws.com/hobbit4.jpg',
+        preview: false
+      },
+      {
+        spotId: 2,    // hobbit house
+        url: 'https://airbnb-api-project.s3.us-east-2.amazonaws.com/hobbit5.jpg',
         preview: false
       },
       {
         spotId: 3,    // totoro house
-        url: 'https://i0.wp.com/mscarefreetraveler.com/wp-content/uploads/2018/05/IMG_1046-e1525279633825.jpg?fit=640%2C480&ssl=1',
+        url: 'https://airbnb-api-project.s3.us-east-2.amazonaws.com/totoro1.webp',
         preview: true
       },
       {
-        spotId: 4,    // shigol house
-        url: 'https://uujj.co.kr/data/editor/1505/thumb-94761d934f34276a1ae55c3572c7761f_1432706931_5214_600x467.jpg',
+        spotId: 3,    // totoro house
+        url: 'https://airbnb-api-project.s3.us-east-2.amazonaws.com/totoro2.webp',
+        preview: false
+      },
+      {
+        spotId: 3,    // totoro house
+        url: 'https://airbnb-api-project.s3.us-east-2.amazonaws.com/totoro3.webp',
+        preview: false
+      },
+      {
+        spotId: 3,    // totoro house
+        url: 'https://airbnb-api-project.s3.us-east-2.amazonaws.com/totoro4.jpg',
+        preview: false
+      },
+      {
+        spotId: 3,    // totoro house
+        url: 'https://airbnb-api-project.s3.us-east-2.amazonaws.com/totoro5.webp',
         preview: false
       },
       {
         spotId: 4,    // shigol house
-        url: 'https://ncc-phinf.pstatic.net/20150817_171/1439799095509XJ5YL_JPEG/1.jpg?type=w646',
+        url: 'https://airbnb-api-project.s3.us-east-2.amazonaws.com/shigol1.jpg',
         preview: true
       },
       {
+        spotId: 4,    // shigol house
+        url: 'https://airbnb-api-project.s3.us-east-2.amazonaws.com/shigol2.jpg',
+        preview: false
+      },
+      {
         spotId: 5,    // oprah's penthouse
-        url: 'https://image.cnbcfm.com/api/v1/image/107123681-CPT-PH-STAIRCASE-spans-floors-129-131-Photo-Credit-Evan-Joseph.jpg?v=1663955462&w=1600&h=900',
+        url: 'https://airbnb-api-project.s3.us-east-2.amazonaws.com/oprah1.jpg',
         preview: true
       },
       {
         spotId: 6,    // modern mexican apt
-        url: 'https://sanmiguelrealestate.com/pictures/large-view/10108-5297536752-san-miguel-real-estate.jpg',
+        url: 'https://airbnb-api-project.s3.us-east-2.amazonaws.com/mexican1.jpg',
         preview: true
       },
       {
         spotId: 7,    // bretman rock's neighbor
-        url: 'https://images.estately.net/122_202021357_0_1598769042_636x435.jpg',
+        url: 'https://airbnb-api-project.s3.us-east-2.amazonaws.com/bretman1.jpg',
         preview: true
       },
       {
         spotId: 7,    // bretman rock's neighbor
-        url: 'https://images.estately.net/122_202021357_3_1598769043_636x435.jpg',
+        url: 'https://airbnb-api-project.s3.us-east-2.amazonaws.com/bretman2.jpg',
         preview: false
       },
+      {
+        spotId: 7,    // bretman rock's neighbor
+        url: 'https://airbnb-api-project.s3.us-east-2.amazonaws.com/bretman3.jpg',
+        preview: false
+      },
+      {
+        spotId: 7,    // bretman rock's neighbor
+        url: 'https://airbnb-api-project.s3.us-east-2.amazonaws.com/bretman4.jpg',
+        preview: false
+      },
+      {
+        spotId: 7,    // bretman rock's neighbor
+        url: 'https://airbnb-api-project.s3.us-east-2.amazonaws.com/bretman5.jpg',
+        preview: false
+      },     
     ], {});
   },
 
