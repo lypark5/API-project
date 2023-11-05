@@ -109,6 +109,106 @@ module.exports = {
         url: 'https://airbnb-api-project.s3.us-east-2.amazonaws.com/bretman5.jpg',
         preview: false
       },     
+      {
+        spotId: 8,    // L.A. Luxury Home
+        url: 'https://airbnb-api-project.s3.us-east-2.amazonaws.com/lalux1.webp',
+        preview: true
+      },  
+      {
+        spotId: 8,    // L.A. Luxury Home
+        url: 'https://airbnb-api-project.s3.us-east-2.amazonaws.com/lalux2.webp',
+        preview: false
+      }, 
+      {
+        spotId: 8,    // L.A. Luxury Home
+        url: 'https://airbnb-api-project.s3.us-east-2.amazonaws.com/lalux3.webp',
+        preview: false
+      },  
+      {
+        spotId: 8,    // L.A. Luxury Home
+        url: 'https://airbnb-api-project.s3.us-east-2.amazonaws.com/lalux4.webp',
+        preview: false
+      },  
+      {
+        spotId: 8,    // L.A. Luxury Home
+        url: 'https://airbnb-api-project.s3.us-east-2.amazonaws.com/lalux5.webp',
+        preview: false
+      }, 
+      {
+        spotId: 9,    // S.D. Waterfront Home
+        url: 'https://airbnb-api-project.s3.us-east-2.amazonaws.com/sd1.png',
+        preview: true
+      }, 
+      {
+        spotId: 9,    // S.D. Waterfront Home
+        url: 'https://airbnb-api-project.s3.us-east-2.amazonaws.com/sd2.png',
+        preview: false
+      }, 
+      {
+        spotId: 9,    // S.D. Waterfront Home
+        url: 'https://airbnb-api-project.s3.us-east-2.amazonaws.com/sd3.png',
+        preview: false
+      }, 
+      {
+        spotId: 9,    // S.D. Waterfront Home
+        url: 'https://airbnb-api-project.s3.us-east-2.amazonaws.com/sd4.png',
+        preview: false
+      }, 
+      {
+        spotId: 9,    // S.D. Waterfront Home
+        url: 'https://airbnb-api-project.s3.us-east-2.amazonaws.com/sd5.png',
+        preview: false
+      }, 
+      {
+        spotId: 10,    // Downton Abbey
+        url: 'https://airbnb-api-project.s3.us-east-2.amazonaws.com/downton1.jpg',
+        preview: true
+      }, 
+      {
+        spotId: 10,    // Downton Abbey
+        url: 'https://airbnb-api-project.s3.us-east-2.amazonaws.com/downton2.jpg',
+        preview: false
+      },
+      {
+        spotId: 10,    // Downton Abbey
+        url: 'https://airbnb-api-project.s3.us-east-2.amazonaws.com/downton3.jpg',
+        preview: false
+      },
+      {
+        spotId: 10,    // Downton Abbey
+        url: 'https://airbnb-api-project.s3.us-east-2.amazonaws.com/downton4.webp',
+        preview: false
+      },
+      {
+        spotId: 10,    // Downton Abbey
+        url: 'https://airbnb-api-project.s3.us-east-2.amazonaws.com/downton5.jpg',
+        preview: false
+      },
+      {
+        spotId: 11,    // Seoul Traditional Hanok
+        url: 'https://airbnb-api-project.s3.us-east-2.amazonaws.com/seoul1.webp',
+        preview: true
+      },
+      {
+        spotId: 11,    // Seoul Traditional Hanok
+        url: 'https://airbnb-api-project.s3.us-east-2.amazonaws.com/seoul2.webp',
+        preview: false
+      },
+      {
+        spotId: 11,    // Seoul Traditional Hanok
+        url: 'https://airbnb-api-project.s3.us-east-2.amazonaws.com/seoul3.webp',
+        preview: false
+      },
+      {
+        spotId: 11,    // Seoul Traditional Hanok
+        url: 'https://airbnb-api-project.s3.us-east-2.amazonaws.com/seoul4.webp',
+        preview: false
+      },
+      {
+        spotId: 11,    // Seoul Traditional Hanok
+        url: 'https://airbnb-api-project.s3.us-east-2.amazonaws.com/seoul5.webp',
+        preview: false
+      },      
     ], {});
   },
 

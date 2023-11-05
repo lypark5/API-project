@@ -93,6 +93,54 @@ module.exports = {
         description: "House next to Bretman Rock's house",
         price: 375.00
       },
+      {
+        ownerId: 2,          //8 
+        address: '9826 Vicar St.',
+        city: 'Los Angeles',
+        state: 'CA',
+        country: 'U.S.A.',
+        lat: 34.05,
+        lng: -118.24,
+        name: "L.A. Luxury Home",  //8
+        description: "Newly built home by Thomas James Homes located in Beverlywood, offers 5 bedrooms, 4.5 baths, and a gorgeous exterior finish. Walking through the home and into the open concept floor plan, relax in the living room with the gas fireplace on or walk into the dining room for a meal with family and friends.",
+        price: 400.00
+      },
+      {
+        ownerId: 3,          //9 
+        address: '3275 Ocean Front Walk',
+        city: 'San Diego',
+        state: 'CA',
+        country: 'U.S.A.',
+        lat: 32.72,
+        lng: -117.16,
+        name: "S.D. Waterfront Home",  //9
+        description: "Close to Little Italy and downtown San Diego, on the waterfront.",
+        price: 300.00
+      },
+      {
+        ownerId: 5,          //10 
+        address: 'Highclere Park, RG20 9RN',
+        city: 'Highclere',
+        state: 'Newbury',
+        country: 'U.K.',
+        lat: 51.40,
+        lng: -1.32,
+        name: "Downton Abbey",  //10
+        description: "Visit Downton Abbey, home of Lord Grantham.",
+        price: 1500.00
+      },
+      {
+        ownerId: 4,          //11 
+        address: '68-6, Oeginojoapateu, Munsan-eup',
+        city: 'Seoul',
+        state: 'Gyeonggi',
+        country: 'S. Korea',
+        lat: 37.57,
+        lng: 126.98,
+        name: "Seoul Traditional Hanok",  //11
+        description: "Located in Samcheong-dong, Bukchon Hanok Village, you can see Bukaksan Mountain and Inwangsan Mountain at the same time through the window according to geographical characteristics, and it has a panoramic view of Daejeon from Cheong Wa Dae to Samcheong-dong-gil.",
+        price: 275.00
+      },
     ], {});
   },
 
