@@ -102,7 +102,7 @@ module.exports = {
         lat: 34.05,
         lng: -118.24,
         name: "L.A. Luxury Home",  //8
-        description: "Newly built home by Thomas James Homes located in Beverlywood, offers 5 bedrooms, 4.5 baths, and a gorgeous exterior finish. Walking through the home and into the open concept floor plan, relax in the living room with the gas fireplace on or walk into the dining room for a meal with family and friends.",
+        description: "Newly built home by Thomas James Homes located in Beverlywood, offers 5 bedrooms, 4.5 baths, and a gorgeous exterior finish.",
         price: 400.00
       },
       {
@@ -138,7 +138,7 @@ module.exports = {
         lat: 37.57,
         lng: 126.98,
         name: "Seoul Traditional Hanok",  //11
-        description: "Located in Samcheong-dong, Bukchon Hanok Village, you can see Bukaksan Mountain and Inwangsan Mountain at the same time through the window according to geographical characteristics, and it has a panoramic view of Daejeon from Cheong Wa Dae to Samcheong-dong-gil.",
+        description: "You can see Bukaksan Mountain and Inwangsan Mountain at the same time through the window according to geographical characteristics, and it has a panoramic view of Daejeon from Cheong Wa Dae to Samcheong-dong-gil.",
         price: 275.00
       },
     ], {});
