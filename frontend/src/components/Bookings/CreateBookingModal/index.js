@@ -15,7 +15,7 @@ function CreateBookingFunction ({spotId}) {
   const spotBookingsArr = Object.values(allSpotBookings);
   const allSpots = useSelector(state => state.spots.allSpots);
   const spotsArr = Object.values(allSpots);
-  const userId = useSelector(state => state.session.user.id);
+  const userId = useSelector(state => state.session.user?.id);        // need the ? in case there is no user
   const [startDate, setStartDate] = useState('');     
   const [endDate, setEndDate] = useState('');
   const [errors, setErrors] = useState({});
@@ -52,8 +52,7 @@ function CreateBookingFunction ({spotId}) {
     }
   }
 
-
-  return (
+  return userId ?  (
     <div className='modal' id='create-booking-modal'> 
       <h1>Book your stay</h1>
       <form onSubmit={handleSubmit} id='create-booking-form'>
@@ -86,7 +85,7 @@ function CreateBookingFunction ({spotId}) {
         <button type='submit' className='booking-button'>Submit</button>
       </form>
     </div>
-  )
+  ) : <h1>You must be logged in.</h1>
 }
 
 
