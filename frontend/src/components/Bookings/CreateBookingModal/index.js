@@ -85,7 +85,7 @@ function CreateBookingFunction ({spotId}) {
         <button type='submit' className='booking-button'>Submit</button>
       </form>
     </div>
-  ) : <h1>You must be logged in.</h1>
+  ) : <h1>You must be logged in to make a booking.</h1>
 }
 
 
