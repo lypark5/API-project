@@ -64,7 +64,7 @@ function ProfileButton({ user }) {
             <button onClick={logout} id='logout-button'>Log Out</button>
           </div>
         ) : (
-          <>
+          <div id='drop-down-menu2'>
             <OpenModalMenuItem
               itemText="Log In"
               onItemClick={closeMenu}
@@ -75,7 +75,7 @@ function ProfileButton({ user }) {
               onItemClick={closeMenu}
               modalComponent={<SignupFormModal />}
             />
-          </>
+          </div>
         )}
       </div>
     </>
