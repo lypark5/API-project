@@ -62,12 +62,17 @@
 }
 
 #drop-down-menu2 {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid black;
+  width: 100px;
   right: 45px;
   top: 60px;
-  border: 1px solid red;
   position: absolute;
   background-color: white;
-  padding: 7px 10px 10px;
+  padding: 15px 10px;
 }
 
 .dropdown-p {
@@ -103,4 +108,18 @@
   margin-top: 7px;
   padding: 10px 13px;
   font-size: 12px;
+}
+
+#login-link {
+  display: flex;
+  justify-content: center;
+  border-bottom: 1px solid black;
+  padding-bottom: 10px;
+  width: 100%;
+  font-size: 13px;
+}
+
+#signup-link {
+  padding-top: 9px;
+  font-size: 13px;
 }
