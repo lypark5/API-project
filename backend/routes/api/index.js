@@ -1,7 +1,7 @@
 //// after clearing tests ////
 
-const router = require('express').Router();
-const sessionRouter = require('./session.js');        // add this every time for connecting router
+const router = require('express').Router();           
+const sessionRouter = require('./session.js');        // importing specific routes:
 const usersRouter = require('./users.js');            // add this every time for connecting router
 const spots = require('./spots.js');                  // add this every time for connecting router
 const reviews = require('./reviews.js');              // add this every time for connecting router

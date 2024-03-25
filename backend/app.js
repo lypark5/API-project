@@ -6,12 +6,8 @@ const csurf = require('csurf');
 const helmet = require('helmet');
 const cookieParser = require('cookie-parser');
 
-const routes = require('./routes');
-// const spots = require('./routes/api/spots');                  // import spots router
-// const reviews = require('./routes/api/reviews');              // import reviews router
-// const bookings = require('./routes/api/bookings');            // import bookings router
-// const spotimages = require('./routes/api/spot-images');       // import spotimages router
-// const reviewimages = require('./routes/api/review-images');   // import reviewimages router
+const routes = require('./routes');                              // only need this, looks for index.js file there 
+//                                                               // the importing of specific routes found in that index.js
 
 const { environment } = require('./config');
 const isProduction = environment === 'production';

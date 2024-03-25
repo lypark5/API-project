@@ -9,7 +9,7 @@ If there are no validation errors returned from the validationResult function,
 If there are validation errors, create an error with all the validation error messages 
   and invoke the next error-handling middleware.
 */
-const handleValidationErrors = (req, _res, next) => {
+const handleValidationErrors = (req, _res, next) => {       // the underscore is placeholder for res but not planning to use it.
   const validationErrors = validationResult(req);
 
   if (!validationErrors.isEmpty()) { 
